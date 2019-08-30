@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import os
 import shutil
+import sys
 import tempfile
 
 from yamcs import storage
@@ -129,7 +130,7 @@ class StorageCommand(utils.Command):
 
             content = client.download_object(
                 '_global', bucket_name=parts[0], object_name=parts[1])
-            print(content)
+            sys.stdout.buffer.write(content)
 
     def mv(self, args):
         opts = utils.CommandOptions(args)
