@@ -25,4 +25,4 @@ yamcs containers
     :hidden:
 
     list <yamcs_containers_list>
-    descibe <yamcs_containers_describe>
+    describe <yamcs_containers_describe>

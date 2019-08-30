@@ -67,7 +67,7 @@ class StorageCommand(utils.Command):
             if args.recurse:
                 delimiter = None
 
-            listing = client.list_objects(opts.instance, bucket_name=bucket_name,
+            listing = client.list_objects('_global', bucket_name=bucket_name,
                                           delimiter=delimiter, prefix=prefix)
             rows = []
             for prefix in listing.prefixes:
@@ -86,7 +86,7 @@ class StorageCommand(utils.Command):
 
             utils.print_table(rows)
         else:
-            for bucket in client.list_buckets(opts.instance):
+            for bucket in client.list_buckets('_global'):
                 print(bucket.name)
 
     def mb(self, args):
@@ -94,14 +94,14 @@ class StorageCommand(utils.Command):
         client = storage.Client(**opts.client_kwargs)
 
         for bucket in args.bucket:
-            client.create_bucket(opts.instance, bucket_name=bucket)
+            client.create_bucket('_global', bucket_name=bucket)
 
     def rb(self, args):
         opts = utils.CommandOptions(args)
         client = storage.Client(**opts.client_kwargs)
 
         for bucket in args.bucket:
-            client.remove_bucket(opts.instance, bucket_name=bucket)
+            client.remove_bucket('_global', bucket_name=bucket)
 
     def rm(self, args):
         opts = utils.CommandOptions(args)
@@ -114,7 +114,7 @@ class StorageCommand(utils.Command):
 
             parts = obj.split('://', 1)
             client.remove_object(
-                opts.instance, bucket_name=parts[0], object_name=parts[1])
+                '_global', bucket_name=parts[0], object_name=parts[1])
 
     def cat(self, args):
         opts = utils.CommandOptions(args)
@@ -128,7 +128,7 @@ class StorageCommand(utils.Command):
             parts = obj.split('://', 1)
 
             content = client.download_object(
-                opts.instance, bucket_name=parts[0], object_name=parts[1])
+                '_global', bucket_name=parts[0], object_name=parts[1])
             print(content)
 
     def mv(self, args):
@@ -139,7 +139,7 @@ class StorageCommand(utils.Command):
             if '://' in args.src:
                 parts = args.src.split('://', 1)
                 client.remove_object(
-                    opts.instance, bucket_name=parts[0], object_name=parts[1])
+                    '_global', bucket_name=parts[0], object_name=parts[1])
             else:
                 os.remove(args.src)
 
@@ -173,7 +173,7 @@ class StorageCommand(utils.Command):
 
         client = storage.Client(**opts.client_kwargs)
         content = client.download_object(
-            opts.instance, bucket_name=src_bucket, object_name=src_object)
+            '_global', bucket_name=src_bucket, object_name=src_object)
 
         if os.path.isdir(dst):
             target_file = os.path.join(dst, src_filename)
@@ -197,4 +197,4 @@ class StorageCommand(utils.Command):
 
         client = storage.Client(**opts.client_kwargs)
         client.upload_object(
-            opts.instance, bucket_name=dst_bucket, object_name=dst_object, file_obj=src)
+            '_global', bucket_name=dst_bucket, object_name=dst_object, file_obj=src)
