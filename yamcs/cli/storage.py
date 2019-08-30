@@ -24,7 +24,9 @@ class StorageCommand(utils.Command):
         subparser.set_defaults(func=self.ls)
 
         subparser = self.create_subparser(subparsers, 'list', 'Synonym for ls')
-        subparser.add_argument('bucket', metavar='BUCKET', type=str, nargs='?', help='bucket')
+        subparser.add_argument('bucket', metavar='BUCKET', type=str, nargs='?', help='bucket or object')
+        subparser.add_argument('-l', dest='long', action='store_true', help='List in long format')
+        subparser.add_argument('-r', '-R', dest='recurse', action='store_true', help='List recursively')
         subparser.set_defaults(func=self.ls)
 
         subparser = self.create_subparser(subparsers, 'mb', 'Make buckets')
