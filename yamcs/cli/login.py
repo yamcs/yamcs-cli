@@ -7,6 +7,7 @@ from six.moves import input
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
 from yamcs.core import auth
+from yamcs.kerberos import KerberosCredentials
 
 
 class LoginCommand(utils.Command):
@@ -16,15 +17,19 @@ class LoginCommand(utils.Command):
 
         self.parser.set_defaults(func=self.do_login)
         self.parser.add_argument('address', metavar='HOST[:PORT]', nargs='?', type=str, help='server address (example: localhost:8090)')
+        self.parser.add_argument('--kerberos', action='store_true', help='Authenticate using Kerberos negotiation')
 
     def do_login(self, args):
         opts = utils.CommandOptions(args)
 
         address = args.address or self.read_address(opts)
         client = YamcsClient(address)
-        auth_info = client.get_auth_info()
 
-        if auth_info.require_authentication:
+        if args.kerberos:
+            credentials = KerberosCredentials()
+            client = YamcsClient(address, credentials=credentials)
+            print('Login succeeded')
+        elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
             client = YamcsClient(address, credentials=credentials)
             print('Login succeeded')

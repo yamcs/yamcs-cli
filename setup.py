@@ -45,6 +45,7 @@ setuptools.setup(
     install_requires=[
         'six',
         'yamcs-client',
+        'yamcs-client-kerberos',
     ],
     include_package_data=True,
     zip_safe=False,
