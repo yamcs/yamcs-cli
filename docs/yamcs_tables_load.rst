@@ -19,6 +19,10 @@ yamcs tables load
 
         Specifies the directory where to locate dump files. Defaults to current directory.
 
+    .. option:: --gzip
+
+        Decompress the input.
+
 
 **POSITIONAL ARGUMENTS**
 

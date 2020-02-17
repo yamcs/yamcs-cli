@@ -28,12 +28,16 @@ class TablesCommand(utils.Command):
         subparser.set_defaults(func=self.dump)
         subparser.add_argument('-d', '--dir', type=str,
                                help='Specifies the directory where to output dump files. Defaults to current directory')
+        subparser.add_argument('--gzip', dest='gzip', action='store_true',
+                               help='Compress the output')
 
         subparser = self.create_subparser(subparsers, 'load', 'Load tables')
         subparser.add_argument('tables', metavar='TABLE', type=str, nargs='+', help='name of the tables')
         subparser.set_defaults(func=self.load)
         subparser.add_argument('-d', '--dir', type=str,
                                 help='Specifies the directory where to locate dump files. Defaults to current directory')
+        subparser.add_argument('--gzip', dest='gzip', action='store_true',
+                               help='Decompress the input')
 
     def list_(self, args):
         opts = utils.CommandOptions(args)
@@ -63,32 +67,58 @@ class TablesCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.instance)
         for table in args.tables:
-            path = table + '.dump'
+            path = table + '.dump.gz' if args.gzip else table + '.dump'
             if args.dir:
                 path = os.path.join(args.dir, path)
-            with gzip.open(path, 'wb') as f:
-                size = 0
-                t1 = time.time()
-                for chunk in archive.dump_table(table):
-                    size += f.write(chunk)
-                    t2 = time.time()
-                    rate = (size / 1024 / 1024) / (t2 - t1)
-                    stdout.write('\r{}: {} MB/s'.format(table, round(rate, 2)))
-                    stdout.flush()
-                if size > 0:
-                    stdout.write('\n')
+            if args.gzip:
+                with gzip.open(path, 'wb', compresslevel=1) as f:
+                    self.write_dump(f, archive, table, path)
+            else:
+                with open(path, 'wb') as f:
+                    self.write_dump(f, archive, table, path)
+    
+    def write_dump(self, f, archive, table, path):
+        txsize = 0
+        t0 = time.time()
+        t = t0
+        prev_t = None
+        for chunk in archive.dump_table(table):
+            txsize += f.write(chunk)
+            t = time.time()
+            if not prev_t or (t - prev_t > 0.5):  # Limit console writes
+                self.report_dump_stats(path, txsize, t - t0)
+                prev_t = t
+        if txsize > 0:
+            self.report_dump_stats(path, txsize, t - t0)
+            stdout.write('\n')
+
+    def report_dump_stats(self, path, txsize, elapsed):
+        fsize = os.path.getsize(path)
+        rate = (txsize / 1024 / 1024) / elapsed
+        stdout.write('\r{}: {:.2f} MB (rx: {:.2f} MB at {:.2f} MB/s)'.format(
+                     path, fsize / 1024 / 1024, txsize / 1024 / 1024, rate))
+        stdout.flush()
 
     def load(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.instance)
         for table in args.tables:
-            path = table + '.dump'
+            path = table + '.dump.gz' if args.gzip else table + '.dump'
             if args.dir:
                 path = os.path.join(args.dir, path)
-            with gzip.open(path, 'rb') as f:
-                stdout.write(table)
-                stdout.flush()
-                n = archive.load_table(table, data=f)
-                stdout.write('\r{}: loaded {} rows'.format(table, n))
-                stdout.write('\n')
+            if args.gzip:
+                with gzip.open(path, 'rb') as f:
+                    self.read_dump(f, archive, table, path)
+            else:
+                with open(path, 'rb') as f:
+                    self.read_dump(f, archive, table, path)
+
+    def read_dump(self, f, archive, table, path):
+        stdout.write(table)
+        stdout.flush()
+        try:
+            n = archive.load_table(table, data=f)
+            stdout.write('\r{}: loaded {} rows'.format(path, n))
+        finally:
+            stdout.write('\n')

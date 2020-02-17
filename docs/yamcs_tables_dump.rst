@@ -18,6 +18,10 @@ yamcs tables dump
     .. option:: -d DIR, --dir DIR
 
         Specifies the directory where to output dump files. Defaults to current directory.
+    
+    .. option:: --gzip
+
+        Compress the output.
 
 
 **POSITIONAL ARGUMENTS**
