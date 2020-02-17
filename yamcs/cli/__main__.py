@@ -4,7 +4,6 @@ import argparse
 
 from yamcs.cli import utils
 from yamcs.cli.algorithms import AlgorithmsCommand
-from yamcs.cli.clients import ClientsCommand
 from yamcs.cli.commands import CommandsCommand
 from yamcs.cli.config import ConfigCommand
 from yamcs.cli.containers import ContainersCommand
@@ -47,7 +46,6 @@ def main():
     subparsers = parser.add_subparsers(title='Commands', metavar=metavar)
 
     AlgorithmsCommand(subparsers)
-    ClientsCommand(subparsers)
     CommandsCommand(subparsers)
     ConfigCommand(subparsers)
     ContainersCommand(subparsers)
@@ -58,8 +56,8 @@ def main():
     LogoutCommand(subparsers)
     ParametersCommand(subparsers)
     ProcessorsCommand(subparsers)
-    SpaceSystemsCommand(subparsers)
     ServicesCommand(subparsers)
+    SpaceSystemsCommand(subparsers)
     StorageCommand(subparsers)
     StreamsCommand(subparsers)
     TablesCommand(subparsers)
