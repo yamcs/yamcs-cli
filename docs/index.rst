@@ -22,7 +22,6 @@ Run :doc:`yamcs_login` to initialize your environment:
     :titlesonly:
 
     yamcs_algorithms
-    yamcs_clients
     yamcs_commands
     yamcs_config
     yamcs_containers
