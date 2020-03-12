@@ -1,18 +1,12 @@
-from __future__ import print_function
-
 import argparse
 import json
 import os
+from configparser import ConfigParser
 
 import pkg_resources
 
 from yamcs.core import auth
 from yamcs.core.helpers import parse_isostring, to_isostring
-
-try:
-    from configparser import ConfigParser
-except ImportError:
-    from ConfigParser import SafeConfigParser as ConfigParser
 
 HOME = os.path.expanduser('~')
 CONFIG_DIR = os.path.join(os.path.join(HOME, '.config'), 'yamcs-cli')

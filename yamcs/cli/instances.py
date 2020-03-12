@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
 

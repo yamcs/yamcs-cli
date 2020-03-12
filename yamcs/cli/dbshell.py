@@ -1,11 +1,8 @@
-from __future__ import print_function
-
+import io
 import os
 import sys
 from cmd import Cmd
 from pydoc import pager
-
-import six
 
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
@@ -137,7 +134,7 @@ class DbShell(Cmd):
 
     def paginate(self, lines):
         if self.pager:
-            output = six.StringIO()
+            output = io.StringIO()
         else:
             output = sys.stdout
 

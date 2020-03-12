@@ -1,8 +1,4 @@
-from __future__ import print_function
-
 from getpass import getpass
-
-from six.moves import input
 
 from yamcs.cli import utils
 from yamcs.client import YamcsClient

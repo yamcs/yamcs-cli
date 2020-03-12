@@ -1,3 +1,2 @@
-six
 yamcs-client
 yamcs-client-kerberos
