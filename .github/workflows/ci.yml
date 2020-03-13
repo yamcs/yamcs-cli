@@ -16,8 +16,9 @@ jobs:
           cd docs
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Set up yamcs-cli
+        run: pip install .
       - name: Generate docs
         run: |
-          python setup.py install
           cd docs
           make html

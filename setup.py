@@ -43,8 +43,10 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     install_requires=[
         'yamcs-client',
-        'yamcs-client-kerberos',
     ],
+    extras_require={
+        'kerberos': ['yamcs-client-kerberos'],
+    },
     include_package_data=True,
     zip_safe=False,
 )
