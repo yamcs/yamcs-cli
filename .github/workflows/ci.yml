@@ -16,9 +16,8 @@ jobs:
           cd docs
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install -r docs/requirements.txt
-          python setup.py install
       - name: Generate docs
         run: |
+          python setup.py install
           cd docs
           make html
