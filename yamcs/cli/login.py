@@ -3,7 +3,6 @@ from getpass import getpass
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
 from yamcs.core import auth
-from yamcs.kerberos import KerberosCredentials
 
 
 class LoginCommand(utils.Command):
@@ -22,6 +21,12 @@ class LoginCommand(utils.Command):
         client = YamcsClient(address)
 
         if args.kerberos:
+            try:
+                from yamcs.kerberos import KerberosCredentials
+            except ImportError:
+                print('** Missing Kerberos support. This is included in this optional package: yamcs-client-kerberos')
+                return False
+
             credentials = KerberosCredentials()
             client = YamcsClient(address, credentials=credentials)
             print('Login succeeded')
