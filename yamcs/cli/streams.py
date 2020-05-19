@@ -8,6 +8,7 @@ class StreamsCommand(utils.Command):
         super(StreamsCommand, self).__init__(parent, 'streams', 'Read streams')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List streams')
         subparser.set_defaults(func=self.list_)

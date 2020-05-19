@@ -8,6 +8,7 @@ class LinksCommand(utils.Command):
         super(LinksCommand, self).__init__(parent, 'links', 'Manage data links')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List data links')
         subparser.set_defaults(func=self.list_)

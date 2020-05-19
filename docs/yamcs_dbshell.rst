@@ -5,7 +5,7 @@ yamcs dbshell
 
 **NAME**
 
-    yamcs dbshell - Launch Yarch DB Shell
+    yamcs dbshell - Launch Yamcs DB Shell
 
 
 **SYNOPSIS**

@@ -8,6 +8,7 @@ class ServicesCommand(utils.Command):
         super(ServicesCommand, self).__init__(parent, 'services', 'Manage services')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List services')
         subparser.set_defaults(func=self.list_)

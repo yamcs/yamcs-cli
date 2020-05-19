@@ -42,6 +42,7 @@ def main():
     metavar = 'COMMAND'
 
     subparsers = parser.add_subparsers(title='Commands', metavar=metavar)
+    subparsers.required = True
 
     AlgorithmsCommand(subparsers)
     CommandsCommand(subparsers)

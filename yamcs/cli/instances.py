@@ -8,6 +8,7 @@ class InstancesCommand(utils.Command):
         super(InstancesCommand, self).__init__(parent, 'instances', 'Read instances')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List instances')
         subparser.set_defaults(func=self.list_)

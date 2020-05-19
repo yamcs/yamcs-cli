@@ -8,6 +8,7 @@ class CommandsCommand(utils.Command):
         super(CommandsCommand, self).__init__(parent, 'commands', 'Read commands')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List commands')
         subparser.set_defaults(func=self.list_)

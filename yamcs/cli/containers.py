@@ -8,6 +8,7 @@ class ContainersCommand(utils.Command):
         super(ContainersCommand, self).__init__(parent, 'containers', 'Read containers')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List containers')
         subparser.set_defaults(func=self.list_)

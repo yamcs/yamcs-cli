@@ -8,6 +8,7 @@ class ProcessorsCommand(utils.Command):
         super(ProcessorsCommand, self).__init__(parent, 'processors', 'Read processors')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List processors')
         subparser.set_defaults(func=self.list_)

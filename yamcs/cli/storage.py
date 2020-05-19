@@ -14,6 +14,7 @@ class StorageCommand(utils.Command):
         super(StorageCommand, self).__init__(parent, 'storage', 'Manage object storage')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'ls', 'List buckets or objects')
         subparser.add_argument('bucket', metavar='BUCKET', type=str, nargs='?', help='bucket or object')

@@ -7,6 +7,7 @@ class ConfigCommand(utils.Command):
         super(ConfigCommand, self).__init__(parent, 'config', 'Manage Yamcs client properties')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List client properties')
         subparser.set_defaults(func=self.list_)

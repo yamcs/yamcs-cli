@@ -13,6 +13,7 @@ class TablesCommand(utils.Command):
         super(TablesCommand, self).__init__(parent, 'tables', 'Read and manipulate tables')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List tables')
         subparser.set_defaults(func=self.list_)

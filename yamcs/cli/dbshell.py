@@ -14,7 +14,7 @@ SHOW_OPTIONS = ('databases', 'engines', 'streams', 'tables', 'stream')
 class DbShellCommand(utils.Command):
 
     def __init__(self, parent):
-        super(DbShellCommand, self).__init__(parent, 'dbshell', 'Launch Yarch DB Shell', add_epilog=False)
+        super(DbShellCommand, self).__init__(parent, 'dbshell', 'Launch Yamcs DB Shell', add_epilog=False)
 
         self.parser.set_defaults(func=self.launch)
         self.parser.add_argument(

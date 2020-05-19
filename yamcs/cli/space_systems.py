@@ -8,6 +8,7 @@ class SpaceSystemsCommand(utils.Command):
         super(SpaceSystemsCommand, self).__init__(parent, 'space-systems', 'Read space systems')
 
         subparsers = self.parser.add_subparsers(title='Commands', metavar='COMMAND')
+        subparsers.required = True
 
         subparser = self.create_subparser(subparsers, 'list', 'List space systems')
         subparser.set_defaults(func=self.list_)
