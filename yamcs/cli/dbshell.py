@@ -1,3 +1,4 @@
+import binascii
 import io
 import os
 import sys
@@ -37,6 +38,70 @@ class DbShellCommand(utils.Command):
                 'Type ''help'' or ''?'' for help.\n'
             ).format(server_info.version, server_info.id)
             shell.cmdloop(intro)
+
+
+class ResultSetPrinter:
+    """
+    Capable of printing tabulated records. Print operations
+    must be manually triggered by the using code. Each print
+    may lead to an enlargement of the column widths from the
+    previous print operation.
+
+    Note that this was written such that it could be reused
+    for following a StreamSQL stream too when that actually
+    has server-side SQL support.
+    """
+
+    def __init__(self, columns, column_types, output):
+        self.columns = columns
+        self.column_types = column_types
+        self.widths = [len(name) for name in columns]
+        self.separator = ''
+        self.pending_rows = []
+        self.output = output
+        self.printed_row_count = 0
+
+    def add(self, row):
+        print_row = []
+        for i, value in enumerate(row):
+            if isinstance(value, (bytes, bytearray)):
+                string_value = '0x' + str(binascii.hexlify(value), 'ascii')
+            else:
+                string_value = str(value)
+            print_row.append(string_value)
+            self.widths[i] = max(len(string_value), self.widths[i])
+        self.pending_rows.append(print_row)
+
+    def print_pending(self):
+        fm = ''
+        for i, width in enumerate(self.widths):
+            fm += '| {' + str(i) + ':' + str(width) + '} '
+        fm += '|'
+
+        if self.printed_row_count == 0:
+            separator = self.generate_separator()
+            print(separator, file=self.output)
+            print(fm.format(*self.columns), file=self.output)
+            print(separator, file=self.output)
+
+        for row in self.pending_rows:
+            print(fm.format(*row), file=self.output)
+            self.printed_row_count += 1
+        self.pending_rows = []
+    
+    def print_summary(self):
+        print(self.generate_separator(), file=self.output)
+        if self.printed_row_count == 1:
+            print('1 row in set\n', file=self.output)
+        else:
+            print('{} rows in set\n'.format(self.printed_row_count), file=self.output)
+
+    def generate_separator(self):
+        separator = ''
+        for width in self.widths:
+            separator += '+-' + (width * '-') + '-'
+        separator += '+'
+        return separator
 
 
 class DbShell(Cmd):
@@ -96,9 +161,8 @@ class DbShell(Cmd):
                     continue
 
                 archive = self._client.get_archive(self.instance)
-                result = archive.execute_sql(statement)
-                if result:
-                    self.paginate(result.splitlines() + [''])  # Add an empty line
+                results = archive.execute_sql(statement)
+                self.paginate(results)
         except YamcsError as e:
             print(e)
 
@@ -132,15 +196,44 @@ class DbShell(Cmd):
         """Execute a system command."""
         os.system(args)
 
-    def paginate(self, lines):
+    def paginate(self, results):
         if self.pager:
+            # TODO this will blow up with large result sets.
+            # But it's best fixed server-side where we should
+            # implement resume tokens on result sets, and fetch
+            # them one by one, rather than pushing the entire
+            # data set.
             output = io.StringIO()
         else:
             output = sys.stdout
-
-        for line in lines:
-            print(line, file=output)
+        
+        self.print_results(results, output)
 
         if self.pager:
             output.seek(0)
             pager(output.read())
+
+    def print_results(self, results, output):
+        """
+        Prints a result set for a static tuple source.
+        This will not give good behaviour for a results that come
+        in live from a StreamSQL stream, because it buffers.
+        """
+        printer = None
+        for i, row in enumerate(results):
+            if i == 0:
+                printer = ResultSetPrinter(results.columns, results.column_types, output)
+            printer.add(row)
+
+            # When we have a decent amount, print the results.
+            # The actual value is not so important. The higher the
+            # less column widths will shift, but it will also use
+            # a bit more memory.
+            if len(printer.pending_rows) > 100:
+                printer.print_pending()
+        
+        if printer:
+            printer.print_pending()
+            printer.print_summary()
+        else:
+            print('Empty set\n', file=output)
