@@ -1,26 +1,26 @@
 import binascii
+import cmd
 import io
 import os
 import sys
-from cmd import Cmd
 from pydoc import pager
 
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
 from yamcs.core.exceptions import YamcsError
 
-SHOW_OPTIONS = ('databases', 'engines', 'streams', 'tables', 'stream')
+SHOW_OPTIONS = ("databases", "engines", "streams", "tables", "stream")
 
 
 class DbShellCommand(utils.Command):
-
     def __init__(self, parent):
-        super(DbShellCommand, self).__init__(parent, 'dbshell', 'Launch Yamcs DB Shell', add_epilog=False)
+        super(DbShellCommand, self).__init__(
+            parent, "dbshell", "Launch Yamcs DB Shell", add_epilog=False
+        )
 
         self.parser.set_defaults(func=self.launch)
         self.parser.add_argument(
-            '-c', '--command', metavar='COMMAND', type=str,
-            help='SQL command string'
+            "-c", "--command", metavar="COMMAND", type=str, help="SQL command string"
         )
 
     def launch(self, args):
@@ -33,9 +33,13 @@ class DbShellCommand(utils.Command):
         else:
             server_info = client.get_server_info()
             intro = (
-                'Yamcs DB Shell\n'
-                'Server version: {} - ID: {}\n\n'
-                'Type ''help'' or ''?'' for help.\n'
+                "Yamcs DB Shell\n"
+                "Server version: {} - ID: {}\n\n"
+                "Type "
+                "help"
+                " or "
+                "?"
+                " for help.\n"
             ).format(server_info.version, server_info.id)
             shell.cmdloop(intro)
 
@@ -56,7 +60,7 @@ class ResultSetPrinter:
         self.columns = columns
         self.column_types = column_types
         self.widths = [len(name) for name in columns]
-        self.separator = ''
+        self.separator = ""
         self.pending_rows = []
         self.output = output
         self.printed_row_count = 0
@@ -65,7 +69,7 @@ class ResultSetPrinter:
         print_row = []
         for i, value in enumerate(row):
             if isinstance(value, (bytes, bytearray)):
-                string_value = '0x' + str(binascii.hexlify(value), 'ascii')
+                string_value = "0x" + str(binascii.hexlify(value), "ascii")
             else:
                 string_value = str(value)
             print_row.append(string_value)
@@ -73,10 +77,10 @@ class ResultSetPrinter:
         self.pending_rows.append(print_row)
 
     def print_pending(self):
-        fm = ''
+        fm = ""
         for i, width in enumerate(self.widths):
-            fm += '| {' + str(i) + ':' + str(width) + '} '
-        fm += '|'
+            fm += "| {" + str(i) + ":" + str(width) + "} "
+        fm += "|"
 
         if self.printed_row_count == 0:
             separator = self.generate_separator()
@@ -88,43 +92,43 @@ class ResultSetPrinter:
             print(fm.format(*row), file=self.output)
             self.printed_row_count += 1
         self.pending_rows = []
-    
+
     def print_summary(self):
         print(self.generate_separator(), file=self.output)
         if self.printed_row_count == 1:
-            print('1 row in set\n', file=self.output)
+            print("1 row in set\n", file=self.output)
         else:
-            print('{} rows in set\n'.format(self.printed_row_count), file=self.output)
+            print("{} rows in set\n".format(self.printed_row_count), file=self.output)
 
     def generate_separator(self):
-        separator = ''
+        separator = ""
         for width in self.widths:
-            separator += '+-' + (width * '-') + '-'
-        separator += '+'
+            separator += "+-" + (width * "-") + "-"
+        separator += "+"
         return separator
 
 
-class DbShell(Cmd):
+class DbShell(cmd.Cmd):
 
     pager = False
-    prompt = '> '
+    prompt = "> "
     instance = None
 
     tables = []
     streams = []
 
     def __init__(self, client):
-        Cmd.__init__(self)
+        cmd.Cmd.__init__(self)
         self._client = client
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
-            print('List of dbshell commands:')
-            rows = [['?', 'Show help.']]
-            for cmd in cmds:
-                doc = getattr(self, 'do_' + cmd).__doc__
+            print("List of dbshell commands:")
+            rows = [["?", "Show help."]]
+            for command in cmds:
+                doc = getattr(self, "do_" + command).__doc__
                 if doc:
-                    rows.append([cmd, doc])
+                    rows.append([command, doc])
             utils.print_table(rows)
             print()
 
@@ -134,7 +138,7 @@ class DbShell(Cmd):
     def do_use(self, args):
         """Use another instance, provided as argument."""
         self.instance = args
-        self.prompt = self.instance + '> '
+        self.prompt = self.instance + "> "
 
         archive = self._client.get_archive(self.instance)
         self.streams = [s.name for s in archive.list_streams()]
@@ -156,7 +160,7 @@ class DbShell(Cmd):
 
     def default(self, line):
         try:
-            for statement in line.split(';'):
+            for statement in line.split(";"):
                 if not statement:
                     continue
 
@@ -168,15 +172,15 @@ class DbShell(Cmd):
 
     def do_edit(self, args):
         """Edit a command with $EDITOR."""
-        if 'EDITOR' not in os.environ:
-            print('*** $EDITOR not set')
+        if "EDITOR" not in os.environ:
+            print("*** $EDITOR not set")
         else:
-            path = os.path.join(utils.CONFIG_DIR, 'sql')
-            cmd = os.environ['EDITOR']
+            path = os.path.join(utils.CONFIG_DIR, "sql")
+            cmd = os.environ["EDITOR"]
             try:
-                os.system(cmd + ' ' + path)
+                os.system(cmd + " " + path)
                 if os.path.exists(path):
-                    with open(path, 'r') as f:
+                    with open(path, "r") as f:
                         sql = f.read()
                         if sql:
                             self.default(sql)
@@ -190,6 +194,11 @@ class DbShell(Cmd):
 
     def do_quit(self, args):
         """Quits the DB Shell."""
+        return True
+
+    def do_EOF(self, line):  # Handles CTRL-D
+        """Quits the DB Shell."""
+        print()  # Newline to remove prompt
         return True
 
     def do_system(self, args):
@@ -206,7 +215,7 @@ class DbShell(Cmd):
             output = io.StringIO()
         else:
             output = sys.stdout
-        
+
         self.print_results(results, output)
 
         if self.pager:
@@ -222,7 +231,9 @@ class DbShell(Cmd):
         printer = None
         for i, row in enumerate(results):
             if i == 0:
-                printer = ResultSetPrinter(results.columns, results.column_types, output)
+                printer = ResultSetPrinter(
+                    results.columns, results.column_types, output
+                )
             printer.add(row)
 
             # When we have a decent amount, print the results.
@@ -231,9 +242,26 @@ class DbShell(Cmd):
             # a bit more memory.
             if len(printer.pending_rows) > 100:
                 printer.print_pending()
-        
+
         if printer:
             printer.print_pending()
             printer.print_summary()
         else:
-            print('Empty set\n', file=output)
+            print("Empty set\n", file=output)
+
+    def cmdloop(self, *args, **kwargs):
+        # Monkey-patch so that ctrl-c on cmd.Cmd does not quit
+        # the dbshell, but just cancels the current input
+        def interruptable_input(_input):
+            def _interruptable_input(*args):
+                try:
+                    return _input(*args)
+                except KeyboardInterrupt:
+                    print()
+                    return "\n"
+
+            return _interruptable_input
+
+        input_fn = cmd.__builtins__["input"]
+        cmd.__builtins__["input"] = interruptable_input(input_fn)
+        super().cmdloop(*args, **kwargs)

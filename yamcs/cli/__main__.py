@@ -24,24 +24,34 @@ def create_subparser(subparsers, command, help_):
     # Override the default help action so that it does not show up in
     # the usage string of every command
     subparser = subparsers.add_parser(command, help=help_, add_help=False)
-    subparser.add_argument('-h', '--help', action='help',
-                           default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+    subparser.add_argument(
+        "-h", "--help", action="help", default=argparse.SUPPRESS, help=argparse.SUPPRESS
+    )
     return subparser
 
 
 def main():
-    parser = argparse.ArgumentParser(description=None, formatter_class=utils.SubCommandHelpFormatter,
-                                     epilog='Run \'yamcs COMMAND --help\' for more information on a command.')
-    parser.add_argument('--version', action='version',
-                        version=utils.get_user_agent(),
-                        help='Print version information and quit')
-    parser.add_argument('--instance', type=str,
-                        help='The Yamcs instance to use. Overrides the core/instance property')
+    parser = argparse.ArgumentParser(
+        description=None,
+        formatter_class=utils.SubCommandHelpFormatter,
+        epilog="Run 'yamcs COMMAND --help' for more information on a command.",
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=utils.get_user_agent(),
+        help="Print version information and quit",
+    )
+    parser.add_argument(
+        "--instance",
+        type=str,
+        help="The Yamcs instance to use. Overrides the core/instance property",
+    )
 
     # The width of this impacts the command width of the command column :-/
-    metavar = 'COMMAND'
+    metavar = "COMMAND"
 
-    subparsers = parser.add_subparsers(title='Commands', metavar=metavar)
+    subparsers = parser.add_subparsers(title="Commands", metavar=metavar)
     subparsers.required = True
 
     AlgorithmsCommand(subparsers)
@@ -67,10 +77,10 @@ def main():
     except KeyboardInterrupt:
         print()  # Clear prompt
     except Unauthorized:
-        print('Unauthorized. Run: \'yamcs login\' to login to Yamcs')
+        print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
     except Exception as e:  # pylint: disable=W0703
         print(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
