@@ -22,7 +22,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=["yamcs", "yamcs.cli"],
     entry_points={"console_scripts": ["yamcs = yamcs.cli.__main__:main"]},
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -31,7 +31,6 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -40,7 +39,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     install_requires=[
-        "yamcs-client>=1.6.0",
+        "yamcs-client>=1.6.2",
     ],
     extras_require={
         "kerberos": ["yamcs-client-kerberos"],

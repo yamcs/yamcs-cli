@@ -6,13 +6,22 @@ from yamcs.core import auth
 
 
 class LoginCommand(utils.Command):
-
     def __init__(self, parent):
-        super(LoginCommand, self).__init__(parent, 'login', 'Login to a Yamcs server')
+        super(LoginCommand, self).__init__(parent, "login", "Login to a Yamcs server")
 
         self.parser.set_defaults(func=self.do_login)
-        self.parser.add_argument('address', metavar='HOST[:PORT]', nargs='?', type=str, help='server address (example: localhost:8090)')
-        self.parser.add_argument('--kerberos', action='store_true', help='Authenticate using Kerberos negotiation')
+        self.parser.add_argument(
+            "address",
+            metavar="HOST[:PORT]",
+            nargs="?",
+            type=str,
+            help="server address (example: localhost:8090)",
+        )
+        self.parser.add_argument(
+            "--kerberos",
+            action="store_true",
+            help="Authenticate using Kerberos negotiation",
+        )
 
     def do_login(self, args):
         opts = utils.CommandOptions(args)
@@ -24,55 +33,57 @@ class LoginCommand(utils.Command):
             try:
                 from yamcs.kerberos import KerberosCredentials
             except ImportError:
-                print('** Missing Kerberos support. This is included in this optional package: yamcs-client-kerberos')
+                print(
+                    "** Missing Kerberos support. This is included in this optional package: yamcs-client-kerberos"
+                )
                 return False
 
             credentials = KerberosCredentials()
             client = YamcsClient(address, credentials=credentials)
-            print('Login succeeded')
+            print("Login succeeded")
         elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
             client = YamcsClient(address, credentials=credentials)
-            print('Login succeeded')
+            print("Login succeeded")
         else:
             user_info = client.get_user_info()
-            print('Anonymous login succeeded (username: {})'.format(user_info.username))
+            print("Anonymous login succeeded (username: {})".format(user_info.username))
 
         self.save_client_config(client, opts.config)
 
     def read_address(self, opts):
-        default_host = opts.host or 'localhost'
+        default_host = opts.host or "localhost"
         default_port = opts.port or 8090
-        host = input('Host [{}]: '.format(default_host)) or default_host
-        port = input('Port [{}]: '.format(default_port)) or default_port
-        return '{}:{}'.format(host, port)
+        host = input("Host [{}]: ".format(default_host)) or default_host
+        port = input("Port [{}]: ".format(default_port)) or default_port
+        return "{}:{}".format(host, port)
 
     def read_credentials(self):
-        username = input('Username: ')
+        username = input("Username: ")
         if not username:
-            print('*** Username may not be null')
+            print("*** Username may not be null")
             return False
 
-        password = getpass('Password: ')
+        password = getpass("Password: ")
         if not password:
-            print('*** Password may not be null')
+            print("*** Password may not be null")
             return False
 
         return auth.Credentials(username=username, password=password)
 
     def save_client_config(self, client, config):
-        if client.credentials:
-            utils.save_credentials(client.credentials)
+        if client.ctx.credentials:
+            utils.save_credentials(client.ctx.credentials)
         server_info = client.get_server_info()
 
-        host, port = client.address.split(':')
-        if not config.has_section('core'):
-            config.add_section('core')
-        config.set('core', 'host', host)
-        config.set('core', 'port', port)
+        host, port = client.ctx.address.split(":")
+        if not config.has_section("core"):
+            config.add_section("core")
+        config.set("core", "host", host)
+        config.set("core", "port", port)
 
         if server_info.default_yamcs_instance:
-            config.set('core', 'instance', server_info.default_yamcs_instance)
+            config.set("core", "instance", server_info.default_yamcs_instance)
         else:
-            config.remove_option('core', 'instance')
+            config.remove_option("core", "instance")
         utils.save_config(config)
