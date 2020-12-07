@@ -1,4 +1,5 @@
 import argparse
+import logging
 
 from yamcs.cli import utils
 from yamcs.cli.algorithms import AlgorithmsCommand
@@ -47,6 +48,11 @@ def main():
         type=str,
         help="The Yamcs instance to use. Overrides the core/instance property",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help=argparse.SUPPRESS,
+    )
 
     # The width of this impacts the command width of the command column :-/
     metavar = "COMMAND"
@@ -79,7 +85,10 @@ def main():
     except Unauthorized:
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
     except Exception as e:  # pylint: disable=W0703
-        print(e)
+        if args.debug:
+            print(logging.traceback.format_exc())
+        else:
+            print(e)
 
 
 if __name__ == "__main__":
