@@ -10,11 +10,11 @@ yamcs login
 
 **SYNOPSIS**
 
-    ``yamcs login [HOST[:PORT]]``
+    ``yamcs login [URL]``
 
 
 **POSITIONAL ARGUMENTS**
 
-    .. option:: [HOST[:PORT]]
+    .. option:: [URL]
 
-        The server address. Example: ``localhost:8090``
+        The server URL. Example: ``http://localhost:8090``

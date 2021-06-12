@@ -1,4 +1,5 @@
 from getpass import getpass
+from urllib.parse import urlparse
 
 from yamcs.cli import utils
 from yamcs.client import YamcsClient
@@ -11,11 +12,11 @@ class LoginCommand(utils.Command):
 
         self.parser.set_defaults(func=self.do_login)
         self.parser.add_argument(
-            "address",
-            metavar="HOST[:PORT]",
+            "url",
+            metavar="URL",
             nargs="?",
             type=str,
-            help="server address (example: localhost:8090)",
+            help="server URL (example: http://localhost:8090)",
         )
         self.parser.add_argument(
             "--kerberos",
@@ -26,8 +27,15 @@ class LoginCommand(utils.Command):
     def do_login(self, args):
         opts = utils.CommandOptions(args)
 
-        address = args.address or self.read_address(opts)
-        client = YamcsClient(address)
+        url = args.url or self.read_url(opts)
+
+        client_kwargs = {
+            **utils._parse_url(url),
+            "tls_verify": False,
+        }
+
+        # First a simple client without any auth (some paths are unprotected)
+        client = YamcsClient(**client_kwargs)
 
         if args.kerberos:
             try:
@@ -40,11 +48,11 @@ class LoginCommand(utils.Command):
                 return False
 
             credentials = KerberosCredentials()
-            client = YamcsClient(address, credentials=credentials)
+            client = YamcsClient(credentials=credentials, **client_kwargs)
             print("Login succeeded")
         elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
-            client = YamcsClient(address, credentials=credentials)
+            client = YamcsClient(credentials=credentials, **client_kwargs)
             print("Login succeeded")
         else:
             user_info = client.get_user_info()
@@ -52,12 +60,9 @@ class LoginCommand(utils.Command):
 
         self.save_client_config(client, opts.config)
 
-    def read_address(self, opts):
-        default_host = opts.host or "localhost"
-        default_port = opts.port or 8090
-        host = input("Host [{}]: ".format(default_host)) or default_host
-        port = input("Port [{}]: ".format(default_port)) or default_port
-        return "{}:{}".format(host, port)
+    def read_url(self, opts):
+        default_url = opts.url or "http://localhost:8090"
+        return input("URL [{}]: ".format(default_url)) or default_url
 
     def read_credentials(self):
         username = input("Username: ")
@@ -78,11 +83,13 @@ class LoginCommand(utils.Command):
             utils.save_credentials(client.ctx.credentials)
         server_info = client.get_server_info()
 
-        host, port = client.ctx.address.split(":")
         if not config.has_section("core"):
             config.add_section("core")
-        config.set("core", "host", host)
-        config.set("core", "port", port)
+        config.set("core", "url", client.ctx.url)
+
+        # Temporary (cleanup old config properties. 'host/port' was migrated to 'url')
+        config.remove_option("core", "host")
+        config.remove_option("core", "port")
 
         if server_info.default_yamcs_instance:
             config.set("core", "instance", server_info.default_yamcs_instance)

@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 from configparser import ConfigParser
+from urllib.parse import urlparse
 
 import pkg_resources
 from yamcs.core import auth
@@ -16,6 +17,20 @@ CREDENTIALS_FILE = os.path.join(CONFIG_DIR, "credentials")
 def get_user_agent():
     dist = pkg_resources.get_distribution("yamcs-cli")
     return "Yamcs CLI v" + dist.version
+
+
+def _parse_url(url):
+    components = urlparse(url)
+    tls = components.scheme == "https"
+    address = f"{components.netloc}{components.path}"
+    # YamcsClient defaults to 8090 if no port is set, with CLI
+    # we prefer to use HTTP defaults instead.
+    if not ":" in address:
+        if tls:
+            address += ":443"
+        else:
+            address += ":80"
+    return {"address": address, "tls": tls}
 
 
 def read_config():
@@ -151,20 +166,17 @@ class CommandOptions(object):
         return self._args.instance or self.config.get("core", "instance")
 
     @property
-    def host(self):
+    def url(self):
         if self.config.has_section("core"):
-            return self.config.get("core", "host")
-        return None
+            url = self.config.get("core", "url")
+            if not url:  # Temporary ('host/port' was migrated to 'url')
+                host = self.config.get("core", "host")
+                port = self.config.get("core", "port")
+                if host and port:
+                    url = f"http://{host}:{port}"
+            return url
 
-    @property
-    def port(self):
-        if self.config.has_section("core"):
-            return self.config.get("core", "port")
         return None
-
-    @property
-    def address(self):
-        return self.host + ":" + self.port
 
     @property
     def user_agent(self):
@@ -176,7 +188,8 @@ class CommandOptions(object):
     @property
     def client_kwargs(self):
         return {
-            "address": self.address,
+            **_parse_url(self.url),
+            "tls_verify": False,
             "user_agent": self.user_agent,
             "credentials": self._credentials,
             "on_token_update": self._on_token_update,
