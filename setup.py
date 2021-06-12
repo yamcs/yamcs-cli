@@ -16,7 +16,6 @@ setuptools.setup(
     author_email="yamcs@spaceapplications.com",
     license="LGPL",
     packages=setuptools.find_namespace_packages(include=["yamcs.*"]),
-    namespace_packages=["yamcs"],
     entry_points={"console_scripts": ["yamcs = yamcs.cli.__main__:main"]},
     python_requires=">=3.6",
     classifiers=[
