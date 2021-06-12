@@ -34,7 +34,10 @@ class TablesCommand(utils.Command):
             "-d",
             "--dir",
             type=str,
-            help="Specifies the directory where to output dump files. Defaults to current directory",
+            help=(
+                "Specifies the directory where to output dump files. "
+                "Defaults to current directory"
+            ),
         )
         subparser.add_argument(
             "--gzip", dest="gzip", action="store_true", help="Compress the output"
@@ -49,7 +52,10 @@ class TablesCommand(utils.Command):
             "-d",
             "--dir",
             type=str,
-            help="Specifies the directory where to locate dump files. Defaults to current directory",
+            help=(
+                "Specifies the directory where to locate dump files. "
+                "Defaults to current directory"
+            ),
         )
         subparser.add_argument(
             "--gzip", dest="gzip", action="store_true", help="Decompress the input"
@@ -62,11 +68,7 @@ class TablesCommand(utils.Command):
 
         rows = [["NAME"]]
         for table in archive.list_tables():
-            rows.append(
-                [
-                    table.name,
-                ]
-            )
+            rows.append([table.name])
         utils.print_table(rows)
 
     def describe(self, args):
@@ -74,7 +76,7 @@ class TablesCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.instance)
         table = archive.get_table(args.table)
-        print(table._proto)  # pylint: disable=protected-access
+        print(table._proto)
 
     def dump(self, args):
         if args.dir:

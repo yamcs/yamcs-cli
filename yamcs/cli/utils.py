@@ -57,9 +57,7 @@ def read_credentials():
             refresh_token = d["refresh_token"]
             expiry = parse_server_timestring(d["expiry"]) if "expiry" in d else None
             return auth.Credentials(
-                access_token=access_token,
-                refresh_token=refresh_token,
-                expiry=expiry,
+                access_token=access_token, refresh_token=refresh_token, expiry=expiry,
             )
     return None
 
@@ -118,8 +116,9 @@ class Command(object):
     def create_subparser(self, subparsers, command, help_, add_epilog=True):
         epilog = None
         if add_epilog:
-            epilog = "Run 'yamcs {} COMMAND --help' for more information on a command.".format(
-                command
+            epilog = (
+                "Run 'yamcs {} COMMAND --help' "
+                "for more information on a command.".format(command)
             )
 
         # Override the default help action so that it does not show up in

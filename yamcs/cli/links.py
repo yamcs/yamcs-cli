@@ -67,4 +67,4 @@ class LinksCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         link = client.get_link(opts.instance, args.link)
-        print(link.get_info())  # pylint: disable=protected-access
+        print(link.get_info())

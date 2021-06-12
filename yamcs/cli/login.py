@@ -34,7 +34,8 @@ class LoginCommand(utils.Command):
                 from yamcs.kerberos import KerberosCredentials
             except ImportError:
                 print(
-                    "** Missing Kerberos support. This is included in this optional package: yamcs-client-kerberos"
+                    "** Missing Kerberos support. This is included in "
+                    "this optional package: yamcs-client-kerberos"
                 )
                 return False
 

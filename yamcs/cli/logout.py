@@ -2,9 +2,10 @@ from yamcs.cli import utils
 
 
 class LogoutCommand(utils.Command):
-
     def __init__(self, parent):
-        super(LogoutCommand, self).__init__(parent, 'logout', 'Logout of a Yamcs server')
+        super(LogoutCommand, self).__init__(
+            parent, "logout", "Logout of a Yamcs server"
+        )
 
         self.parser.set_defaults(func=self.do_logout)
 
@@ -12,6 +13,6 @@ class LogoutCommand(utils.Command):
         opts = utils.CommandOptions(args)
         if not utils.clear_credentials():
             if opts.address:
-                print('Not logged in to {}'.format(opts.address))
+                print("Not logged in to {}".format(opts.address))
             else:
-                print('Not logged in')
+                print("Not logged in")

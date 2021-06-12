@@ -49,9 +49,7 @@ def main():
         help="The Yamcs instance to use. Overrides the core/instance property",
     )
     parser.add_argument(
-        "--debug",
-        action="store_true",
-        help=argparse.SUPPRESS,
+        "--debug", action="store_true", help=argparse.SUPPRESS,
     )
 
     # The width of this impacts the command width of the command column :-/
@@ -84,7 +82,7 @@ def main():
         print()  # Clear prompt
     except Unauthorized:
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
-    except Exception as e:  # pylint: disable=W0703
+    except Exception as e:
         if args.debug:
             print(logging.traceback.format_exc())
         else:
