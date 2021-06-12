@@ -1,6 +1,7 @@
 import argparse
 import logging
 
+import pkg_resources
 from yamcs.cli import utils
 from yamcs.cli.algorithms import AlgorithmsCommand
 from yamcs.cli.commands import CommandsCommand
@@ -74,6 +75,11 @@ def main():
     StorageCommand(subparsers)
     StreamsCommand(subparsers)
     TablesCommand(subparsers)
+
+    # Discover subcommand plugins
+    for entry in pkg_resources.iter_entry_points(group="yamcs.cli.subcommands"):
+        subcommand_cls = entry.load(subparsers)
+        subcommand_cls(subparsers)
 
     args = parser.parse_args()
     try:
