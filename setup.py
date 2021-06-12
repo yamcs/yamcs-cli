@@ -5,10 +5,6 @@ import setuptools
 with io.open("README.md", encoding="utf-8") as f:
     readme = f.read()
 
-packages = [
-    package for package in setuptools.find_packages() if package.startswith("yamcs")
-]
-
 setuptools.setup(
     name="yamcs-cli",
     version="1.3.1",
@@ -19,8 +15,8 @@ setuptools.setup(
     author="Space Applications Services",
     author_email="yamcs@spaceapplications.com",
     license="LGPL",
-    packages=packages,
-    namespace_packages=["yamcs", "yamcs.cli"],
+    packages=setuptools.find_namespace_packages(include=["yamcs.*"]),
+    namespace_packages=["yamcs"],
     entry_points={"console_scripts": ["yamcs = yamcs.cli.__main__:main"]},
     python_requires=">=3.6",
     classifiers=[
@@ -38,12 +34,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     platforms="Posix; MacOS X; Windows",
-    install_requires=[
-        "yamcs-client>=1.6.2",
-    ],
-    extras_require={
-        "kerberos": ["yamcs-client-kerberos"],
-    },
+    install_requires=["yamcs-client>=1.6.2"],
+    extras_require={"kerberos": ["yamcs-client-kerberos"]},
     include_package_data=True,
     zip_safe=False,
 )
