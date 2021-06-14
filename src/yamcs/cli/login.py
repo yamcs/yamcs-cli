@@ -1,5 +1,4 @@
 from getpass import getpass
-from urllib.parse import urlparse
 
 from yamcs.cli import utils
 from yamcs.client import YamcsClient

@@ -25,7 +25,7 @@ def _parse_url(url):
     address = f"{components.netloc}{components.path}"
     # YamcsClient defaults to 8090 if no port is set, with CLI
     # we prefer to use HTTP defaults instead.
-    if not ":" in address:
+    if ":" not in address:
         if tls:
             address += ":443"
         else:
