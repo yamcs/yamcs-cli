@@ -163,7 +163,9 @@ class CommandOptions(object):
 
     @property
     def instance(self):
-        return self._args.instance or self.config.get("core", "instance")
+        return self._args.instance or (
+            self.config.has_section("core") and self.config.get("core", "instance")
+        )
 
     @property
     def url(self):
