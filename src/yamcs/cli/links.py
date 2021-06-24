@@ -35,7 +35,7 @@ class LinksCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         rows = [["NAME", "CLASS", "STATUS", "IN", "OUT"]]
-        for link in client.list_data_links(opts.instance):
+        for link in client.list_links(opts.instance):
             rows.append(
                 [
                     link.name,
