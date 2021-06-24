@@ -8,6 +8,7 @@ from yamcs.cli.commands import CommandsCommand
 from yamcs.cli.config import ConfigCommand
 from yamcs.cli.containers import ContainersCommand
 from yamcs.cli.dbshell import DbShellCommand
+from yamcs.cli.exceptions import NoServerError
 from yamcs.cli.instances import InstancesCommand
 from yamcs.cli.links import LinksCommand
 from yamcs.cli.login import LoginCommand
@@ -86,6 +87,8 @@ def main():
         args.func(args)
     except KeyboardInterrupt:
         print()  # Clear prompt
+    except NoServerError:
+        print("No server. Run: 'yamcs login' to login to Yamcs")
     except Unauthorized:
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
     except Exception as e:

@@ -5,6 +5,7 @@ from configparser import ConfigParser
 from urllib.parse import urlparse
 
 import pkg_resources
+from yamcs.cli.exceptions import NoServerError
 from yamcs.core import auth
 from yamcs.core.helpers import parse_server_timestring, to_isostring
 
@@ -189,6 +190,8 @@ class CommandOptions(object):
 
     @property
     def client_kwargs(self):
+        if not self.url:
+            raise NoServerError
         return {
             **_parse_url(self.url),
             "tls_verify": False,
