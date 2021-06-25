@@ -41,8 +41,8 @@ class LoginCommand(utils.Command):
                 from yamcs.kerberos import KerberosCredentials
             except ImportError:
                 print(
-                    "** Missing Kerberos support. This is included in "
-                    "this optional package: yamcs-client-kerberos"
+                    "*** Missing Kerberos support. This is included in "
+                    "the optional package: yamcs-client-kerberos"
                 )
                 return False
 
@@ -51,8 +51,9 @@ class LoginCommand(utils.Command):
             print("Login succeeded")
         elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
-            client = YamcsClient(credentials=credentials, **client_kwargs)
-            print("Login succeeded")
+            if credentials:
+                client = YamcsClient(credentials=credentials, **client_kwargs)
+                print("Login succeeded")
         else:
             user_info = client.get_user_info()
             print("Anonymous login succeeded (username: {})".format(user_info.username))
@@ -66,12 +67,12 @@ class LoginCommand(utils.Command):
     def read_credentials(self):
         username = input("Username: ")
         if not username:
-            print("*** Username may not be null")
+            print("*** Username may not be empty")
             return False
 
         password = getpass("Password: ")
         if not password:
-            print("*** Password may not be null")
+            print("*** Password may not be empty")
             return False
 
         return auth.Credentials(username=username, password=password)
