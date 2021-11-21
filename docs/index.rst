@@ -1,8 +1,10 @@
+============================
 Yamcs Command-Line Interface
 ============================
 
-Getting Started
----------------
+.. raw:: latex
+
+    \chapter*{About Yamcs Command-Line Interface}
 
 The Yamcs Command-Line Interface is written in Python and distributed separately from Yamcs Server.
 
@@ -17,8 +19,8 @@ Run :doc:`yamcs_login` to initialize your environment:
 
     yamcs login
 
+
 .. toctree::
-    :hidden:
     :titlesonly:
 
     yamcs_algorithms

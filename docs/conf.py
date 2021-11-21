@@ -1,11 +1,11 @@
 import pkg_resources
 
-project = u"yamcs-cli"
-copyright = u"2019-present, Space Applications Services"
-author = u"Yamcs Team"
+project = "yamcs-cli"
+copyright = "2019-present, Space Applications Services"
+author = "Yamcs Team"
 
 # The short X.Y version
-version = u""
+version = ""
 
 # The full version, including alpha/beta/rc tags
 dist = pkg_resources.get_distribution("yamcs-cli")
@@ -32,7 +32,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path .
-exclude_patterns = [u"_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
@@ -65,6 +65,8 @@ html_show_sourcelink = False
 
 latex_elements = {
     "papersize": "a4paper",
+    "figure_align": "htbp",
+    "extraclassoptions": "openany",
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -74,8 +76,8 @@ latex_documents = [
     (
         master_doc,
         "yamcs-cli.tex",
-        u"Yamcs Command-Line Interface",
-        u"Space Applications Services",
+        "Yamcs Command-Line Interface",
+        "Space Applications Services",
         "manual",
     ),
 ]
