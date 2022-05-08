@@ -165,16 +165,16 @@ class CommandOptions(object):
     @property
     def instance(self):
         return self._args.instance or (
-            self.config.has_section("core") and self.config.get("core", "instance")
+            self.config.has_section("core") and self.config.get("core", "instance", fallback=None)
         )
 
     @property
     def url(self):
         if self.config.has_section("core"):
-            url = self.config.get("core", "url")
+            url = self.config.get("core", "url", fallback=None)
             if not url:  # Temporary ('host/port' was migrated to 'url')
-                host = self.config.get("core", "host")
-                port = self.config.get("core", "port")
+                host = self.config.get("core", "host", fallback=None)
+                port = self.config.get("core", "port", fallback=None)
                 if host and port:
                     url = f"http://{host}:{port}"
             return url
