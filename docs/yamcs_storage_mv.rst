@@ -17,8 +17,8 @@ yamcs storage mv
 
     .. option:: SRC
 
-        local file or an object in the format BUCKET://OBJECT.
+        local file or an object in the format ys://BUCKET/OBJECT.
 
     .. option:: DST
 
-        local file, local directory or an object in the format BUCKET://OBJECT.
+        local file, local directory or an object in the format ys://BUCKET/OBJECT.

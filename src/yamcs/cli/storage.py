@@ -8,6 +8,14 @@ from yamcs.client import YamcsClient
 from yamcs.core.helpers import to_isostring
 
 
+def _parse_ys_url(url):
+    parts = url[5:].split("/", 1)
+    if len(parts) == 2 and parts[1]:
+        return parts[0], parts[1]
+    else:
+        return parts[0], None
+
+
 class StorageCommand(utils.Command):
     def __init__(self, parent):
         super(StorageCommand, self).__init__(parent, "storage", "Manage object storage")
@@ -59,25 +67,37 @@ class StorageCommand(utils.Command):
             metavar="OBJECT",
             type=str,
             nargs="+",
-            help="object in the format bucket://object",
+            help="object in the format ys://bucket/object",
         )
         subparser.set_defaults(func=self.cat)
 
         subparser = self.create_subparser(subparsers, "cp", "Copy files or objects")
         subparser.add_argument(
-            "src", metavar="SRC", type=str, help="object in the format bucket://object"
+            "src",
+            metavar="SRC",
+            type=str,
+            help="object in the format ys://bucket/object",
         )
         subparser.add_argument(
-            "dst", metavar="DST", type=str, help="object in the format bucket://object"
+            "dst",
+            metavar="DST",
+            type=str,
+            help="object in the format ys://bucket/object",
         )
         subparser.set_defaults(func=self.cp)
 
         subparser = self.create_subparser(subparsers, "mv", "Move files or objects")
         subparser.add_argument(
-            "src", metavar="SRC", type=str, help="object in the format bucket://object"
+            "src",
+            metavar="SRC",
+            type=str,
+            help="object in the format ys://bucket/object",
         )
         subparser.add_argument(
-            "dst", metavar="DST", type=str, help="object in the format bucket://object"
+            "dst",
+            metavar="DST",
+            type=str,
+            help="object in the format ys://bucket/object",
         )
         subparser.set_defaults(func=self.mv)
 
@@ -87,7 +107,7 @@ class StorageCommand(utils.Command):
             metavar="OBJECT",
             type=str,
             nargs="+",
-            help="object in the format bucket://object",
+            help="object in the format ys://bucket/object",
         )
         subparser.set_defaults(func=self.rm)
 
@@ -97,8 +117,8 @@ class StorageCommand(utils.Command):
         storage = client.get_storage_client()
 
         if args.bucket:
-            if "://" in args.bucket:
-                bucket_name, prefix = args.bucket.split("://", 1)
+            if args.bucket.startswith("ys://"):
+                bucket_name, prefix = _parse_ys_url(args.bucket)
             else:
                 bucket_name = args.bucket
                 prefix = None
@@ -112,14 +132,14 @@ class StorageCommand(utils.Command):
             )
             rows = []
             for prefix in listing.prefixes:
-                url = "{}://{}".format(bucket_name, prefix)
+                url = "ys://{}/{}".format(bucket_name, prefix)
                 if args.long:
                     rows.append(["0", "", url])
                 else:
                     rows.append([url])
 
             for obj in listing.objects:
-                url = "{}://{}".format(bucket_name, obj.name)
+                url = "ys://{}/{}".format(bucket_name, obj.name)
                 if args.long:
                     rows.append([str(obj.size), to_isostring(obj.created), url])
                 else:
@@ -128,7 +148,7 @@ class StorageCommand(utils.Command):
             utils.print_table(rows)
         else:
             for bucket in storage.list_buckets():
-                print(bucket.name)
+                print("ys://{}/".format(bucket.name))
 
     def mb(self, args):
         opts = utils.CommandOptions(args)
@@ -152,12 +172,16 @@ class StorageCommand(utils.Command):
         storage = client.get_storage_client()
 
         for obj in args.object:
-            if "://" not in obj:
-                print("*** specify objects in the format bucket://object")
+            if not obj.startswith("ys://"):
+                print("*** specify objects in the format ys://bucket/object")
                 return False
 
-            parts = obj.split("://", 1)
-            storage.remove_object(bucket_name=parts[0], object_name=parts[1])
+            bucket_name, object_name = _parse_ys_url(obj)
+            if not object_name:
+                print("*** specify objects in the format ys://bucket/object")
+                return False
+
+            storage.remove_object(bucket_name=bucket_name, object_name=object_name)
 
     def cat(self, args):
         opts = utils.CommandOptions(args)
@@ -165,14 +189,17 @@ class StorageCommand(utils.Command):
         storage = client.get_storage_client()
 
         for obj in args.object:
-            if "://" not in obj:
-                print("*** specify objects in the format bucket://object")
+            if not obj.startswith("ys://"):
+                print("*** specify objects in the format ys://bucket/object")
                 return False
 
-            parts = obj.split("://", 1)
+            bucket_name, object_name = _parse_ys_url(obj)
+            if not object_name:
+                print("*** specify objects in the format ys://bucket/object")
+                return False
 
             content = storage.download_object(
-                bucket_name=parts[0], object_name=parts[1]
+                bucket_name=bucket_name, object_name=object_name
             )
             sys.stdout.buffer.write(content)
 
@@ -182,21 +209,25 @@ class StorageCommand(utils.Command):
         storage = client.get_storage_client()
 
         if self.cp(args) is not False:
-            if "://" in args.src:
-                parts = args.src.split("://", 1)
-                storage.remove_object(bucket_name=parts[0], object_name=parts[1])
+            if args.src.startswith("ys://"):
+                bucket_name, object_name = _parse_ys_url(args.src)
+                if not object_name:
+                    print("*** specify objects in the format ys://bucket/object")
+                    return False
+
+                storage.remove_object(bucket_name=bucket_name, object_name=object_name)
             else:
                 os.remove(args.src)
 
     def cp(self, args):
         opts = utils.CommandOptions(args)
-        if "://" in args.src:
-            if "://" in args.dst:
+        if args.src.startswith("ys://"):
+            if args.dst.startswith("ys://"):
                 return self._cp_object_to_object(opts, args.src, args.dst)
             else:
                 return self._cp_object_to_file(opts, args.src, args.dst)
         else:
-            if "://" in args.dst:
+            if args.dst.startswith("ys://"):
                 return self._cp_file_to_object(opts, args.src, args.dst)
             else:
                 shutil.copy(args.src, args.dst)
@@ -211,9 +242,7 @@ class StorageCommand(utils.Command):
             os.remove(path)
 
     def _cp_object_to_file(self, opts, src, dst):
-        parts = src.split("://", 1)
-        src_bucket = parts[0]
-        src_object = parts[1]
+        src_bucket, src_object = _parse_ys_url(src)
         _, src_filename = os.path.split(src_object)
 
         client = YamcsClient(**opts.client_kwargs)
@@ -235,15 +264,13 @@ class StorageCommand(utils.Command):
             print("*** {} is a directory".format(src))
             return False
 
-        parts = dst.split("://", 1)
-        dst_bucket = parts[0]
-        if len(parts) > 1:
-            dst_object = parts[1]
-        else:
-            _, dst_object = os.path.split(src)
+        dst_bucket, dst_object = _parse_ys_url(dst)
+        if not dst_object:
+            dst_object = os.path.basename(src)
 
         client = YamcsClient(**opts.client_kwargs)
         storage = client.get_storage_client()
-        storage.upload_object(
-            bucket_name=dst_bucket, object_name=dst_object, file_obj=src
-        )
+        with open(src, "rb") as f:
+            storage.upload_object(
+                bucket_name=dst_bucket, object_name=dst_object, file_obj=f
+            )
