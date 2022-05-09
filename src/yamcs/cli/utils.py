@@ -23,7 +23,7 @@ def get_user_agent():
 def _parse_url(url):
     components = urlparse(url)
     tls = components.scheme == "https"
-    address = f"{components.netloc}{components.path}"
+    address = components.netloc
     # YamcsClient defaults to 8090 if no port is set, with CLI
     # we prefer to use HTTP defaults instead.
     if ":" not in address:
@@ -31,6 +31,7 @@ def _parse_url(url):
             address += ":443"
         else:
             address += ":80"
+    address += components.path
     return {"address": address, "tls": tls}
 
 
@@ -73,7 +74,9 @@ def read_credentials():
             refresh_token = d["refresh_token"]
             expiry = parse_server_timestring(d["expiry"]) if "expiry" in d else None
             return auth.Credentials(
-                access_token=access_token, refresh_token=refresh_token, expiry=expiry,
+                access_token=access_token,
+                refresh_token=refresh_token,
+                expiry=expiry,
             )
     return None
 
@@ -165,7 +168,8 @@ class CommandOptions(object):
     @property
     def instance(self):
         return self._args.instance or (
-            self.config.has_section("core") and self.config.get("core", "instance", fallback=None)
+            self.config.has_section("core")
+            and self.config.get("core", "instance", fallback=None)
         )
 
     @property
