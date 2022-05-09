@@ -124,8 +124,10 @@ class DbShell(cmd.Cmd):
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
             print("List of dbshell commands:")
-            rows = [["?", "Show help."]]
+            rows = [["?", "(\\?) Show help."]]
             for command in cmds:
+                if command is "EOF":  # Don't document EOF
+                    continue
                 doc = getattr(self, "do_" + command).__doc__
                 if doc:
                     rows.append([command, doc])
@@ -136,20 +138,17 @@ class DbShell(cmd.Cmd):
         pass  # Override default behaviour of repeating the last command
 
     def do_use(self, args):
-        """Use another instance, provided as argument."""
+        """(\\u) Use another instance, provided as argument."""
         self.instance = args
         self.prompt = self.instance + "> "
-
-        archive = self._client.get_archive(self.instance)
-        self.streams = [s.name for s in archive.list_streams()]
-        self.tables = [t.name for t in archive.list_tables()]
+        self.do_rehash(None)
 
     def do_pager(self, args):
-        """Print results to a pager."""
+        """(\\P) Print results to a pager."""
         self.pager = True
 
     def do_nopager(self, args):
-        """Disable pager. Results are printed to stdout."""
+        """(\\n) Disable pager. Results are printed to stdout."""
         self.pager = False
 
     def complete_show(self, text, line, begidx, endidx):
@@ -160,18 +159,53 @@ class DbShell(cmd.Cmd):
 
     def default(self, line):
         try:
-            for statement in line.split(";"):
-                if not statement:
-                    continue
+            if line.startswith("\\"):
+                if self.run_command(line):
+                    return True
+            else:
+                for statement in line.split(";"):
+                    if not statement:
+                        continue
 
-                archive = self._client.get_archive(self.instance)
-                results = archive.execute_sql(statement)
-                self.paginate(results)
+                    archive = self._client.get_archive(self.instance)
+                    results = archive.execute_sql(statement)
+                    self.paginate(results)
         except YamcsError as e:
             print(e)
 
+    def run_command(self, command):
+        if command == "\\":
+            pass
+        else:
+            parts = command.split(None, 1)
+            command = parts[0]
+            args = parts[1] if len(parts) == 2 else None
+
+            if command == "\\?":
+                self.do_help(args)
+            elif command == "\\!":
+                self.do_system(args)
+            elif command == "\\#":
+                self.do_rehash(args)
+            elif command == "\\.":
+                self.do_source(args)
+            elif command == "\\e":
+                self.do_edit(args)
+            elif command == "\\h":
+                self.do_help(args)
+            elif command == "\\n":
+                self.do_nopager(args)
+            elif command == "\\q":
+                return self.do_quit(args)
+            elif command == "\\u":
+                self.do_use(args)
+            elif command == "\\P":
+                self.do_pager(args)
+            else:
+                print(f"*** Unknown command '{command}'")
+
     def do_edit(self, args):
-        """Edit a command with $EDITOR."""
+        """(\\e) Edit a command with $EDITOR."""
         if "EDITOR" not in os.environ:
             print("*** $EDITOR not set")
         else:
@@ -188,12 +222,30 @@ class DbShell(cmd.Cmd):
                 if os.path.exists(path):
                     os.remove(path)
 
+    def do_source(self, args):
+        """(\\.) Execute an SQL script file, provided as argument."""
+        if not args:
+            print("*** Usage: \\. <filename> | source <filename>")
+        else:
+            try:
+                with open(args, "rt") as f:
+                    for sql in f.readlines():
+                        self.default(sql)
+            except OSError as e:
+                print("***", e)
+
+    def do_rehash(self, args):
+        """(\\#) Rebuild completion hash."""
+        archive = self._client.get_archive(self.instance)
+        self.streams = [s.name for s in archive.list_streams()]
+        self.tables = [t.name for t in archive.list_tables()]
+
     def do_exit(self, args):
-        """Synonym for quit."""
+        """(\\q) Synonym for quit."""
         return self.do_quit(args)
 
     def do_quit(self, args):
-        """Quits the DB Shell."""
+        """(\\q) Quits the DB Shell."""
         return True
 
     def do_EOF(self, line):  # Handles CTRL-D
@@ -201,8 +253,12 @@ class DbShell(cmd.Cmd):
         print()  # Newline to remove prompt
         return True
 
+    def do_help(self, args):
+        """(\\h) Display this help."""
+        return super(DbShell, self).do_help(args)
+
     def do_system(self, args):
-        """Execute a system command."""
+        """(\\!) Execute a system command."""
         os.system(args)
 
     def paginate(self, results):
