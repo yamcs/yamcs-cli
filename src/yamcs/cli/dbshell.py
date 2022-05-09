@@ -69,7 +69,9 @@ class ResultSetPrinter:
     def add(self, row):
         print_row = []
         for i, value in enumerate(row):
-            if isinstance(value, (bytes, bytearray)):
+            if value is None:
+                string_value = "NULL"
+            elif isinstance(value, (bytes, bytearray)):
                 string_value = "0x" + str(binascii.hexlify(value), "ascii")
             else:
                 string_value = str(value)
