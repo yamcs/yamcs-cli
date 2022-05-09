@@ -64,6 +64,7 @@ class ResultSetPrinter:
         self.pending_rows = []
         self.output = output
         self.printed_row_count = 0
+        self.delimiter = ";"
 
     def add(self, row):
         print_row = []
@@ -109,24 +110,22 @@ class ResultSetPrinter:
 
 
 class DbShell(cmd.Cmd):
-
-    pager = False
-    prompt = "> "
-    instance = None
-
-    tables = []
-    streams = []
-
     def __init__(self, client):
         cmd.Cmd.__init__(self)
         self._client = client
+        self.pager = False
+        self.instance = None
+        self.prompt = "> "
+        self.delimiter = ";"
+        self.tables = []
+        self.streams = []
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
             print("List of dbshell commands:")
             rows = [["?", "(\\?) Show help."]]
             for command in cmds:
-                if command is "EOF":  # Don't document EOF
+                if command == "EOF":  # Don't document EOF
                     continue
                 doc = getattr(self, "do_" + command).__doc__
                 if doc:
@@ -136,6 +135,21 @@ class DbShell(cmd.Cmd):
 
     def emptyline(self):
         pass  # Override default behaviour of repeating the last command
+
+    def do_delimiter(self, args):
+        """(\\d) Set statement delimiter."""
+        if not args:
+            print("*** Delimiter not set")
+        else:
+            self.delimiter = args
+
+    def do_status(self, args):
+        """(\\s) Print status information."""
+        rows = []
+        rows.append(["Current instance:", self.instance])
+        rows.append(["Pager:", "yes" if self.pager else "no"])
+        rows.append(["Using delimiter:", self.delimiter])
+        utils.print_table(rows, header=False)
 
     def do_use(self, args):
         """(\\u) Use another instance, provided as argument."""
@@ -163,7 +177,7 @@ class DbShell(cmd.Cmd):
                 if self.run_command(line):
                     return True
             else:
-                for statement in line.split(";"):
+                for statement in line.split(self.delimiter):
                     if not statement:
                         continue
 
@@ -178,7 +192,7 @@ class DbShell(cmd.Cmd):
             pass
         else:
             parts = command.split(None, 1)
-            command = parts[0]
+            command = parts[0][:2]
             args = parts[1] if len(parts) == 2 else None
 
             if command == "\\?":
@@ -189,6 +203,8 @@ class DbShell(cmd.Cmd):
                 self.do_rehash(args)
             elif command == "\\.":
                 self.do_source(args)
+            elif command == "\\d":
+                self.do_delimiter(args)
             elif command == "\\e":
                 self.do_edit(args)
             elif command == "\\h":
@@ -197,6 +213,8 @@ class DbShell(cmd.Cmd):
                 self.do_nopager(args)
             elif command == "\\q":
                 return self.do_quit(args)
+            elif command == "\\s":
+                self.do_status(args)
             elif command == "\\u":
                 self.do_use(args)
             elif command == "\\P":
