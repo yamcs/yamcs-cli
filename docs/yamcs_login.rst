@@ -6,7 +6,9 @@ yamcs login
 Synopsis
 --------
 
-**yamcs login** [<*URL*>]
+.. rst-class:: synopsis
+
+    | **yamcs login** [<*URL*>]
 
 
 Description

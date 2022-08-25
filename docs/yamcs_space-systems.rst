@@ -6,9 +6,10 @@ yamcs space-systems
 Synopsis
 --------
 
-**yamcs space-systems list**
+.. rst-class:: synopsis
 
-**yamcs space-systems describe** <*SPACESYSTEM*>
+    | **yamcs space-systems** list
+    | **yamcs space-systems** describe <*SPACESYSTEM*>
 
 
 Description
@@ -20,8 +21,10 @@ Read space systems.
 Commands
 --------
 
-list
+.. describe:: list
+
     List space systems
 
-describe <SPACESYSTEM>
+.. describe:: describe <SPACESYSTEM>
+
     Describe a space system

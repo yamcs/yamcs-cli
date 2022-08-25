@@ -6,11 +6,11 @@ yamcs instances
 Synopsis
 --------
 
-**yamcs instances list**
+.. rst-class:: synopsis
 
-**yamcs instances start** <*INSTANCE*>...
-
-**yamcs instances stop** <*INSTANCE*>...
+    | **yamcs instances** list
+    | **yamcs instances** start <*INSTANCE*>...
+    | **yamcs instances** stop <*INSTANCE*>...
 
 
 Description
@@ -22,11 +22,14 @@ Read Yamcs instances.
 Commands
 --------
 
-list
+.. describe:: list
+
     List instances
 
-start <INSTANCE>...
+.. describe:: start <INSTANCE>...
+
     Start an instance
 
-stop <INSTANCE>...
+.. describe:: stop <INSTANCE>...
+
     Stop an instance

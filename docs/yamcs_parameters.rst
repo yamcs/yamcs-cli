@@ -6,9 +6,10 @@ yamcs parameters
 Description
 -----------
 
-**yamcs parameters list**
+.. rst-class:: synopsis
 
-**yamcs parameters describe** <*PARAMETER*>
+    | **yamcs parameters** list
+    | **yamcs parameters** describe <*PARAMETER*>
 
 
 Desription
@@ -20,8 +21,10 @@ Read parameters.
 Commands
 --------
 
-list
+.. describe:: list
+
     List parameters
 
-describe <PARAMETER>
+.. describe:: describe <PARAMETER>
+
     Describe a parameter

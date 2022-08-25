@@ -6,13 +6,12 @@ yamcs links
 Synopsis
 --------
 
-**yamcs links list**
+.. rst-class:: synopsis
 
-**yamcs links enable** <*LINK*>...
-
-**yamcs links disable** <*LINK*>...
-
-**yamcs links describe** <*LINK*>
+    | **yamcs links** list
+    | **yamcs links** enable <*LINK*>...
+    | **yamcs links** disable <*LINK*>...
+    | **yamcs links** describe <*LINK*>
 
 
 Description
@@ -24,14 +23,18 @@ Read and manipulate data links.
 Commands
 --------
 
-list
+.. describe:: list
+
     List links
 
-enable
+.. describe:: enable
+
     Enable a link
 
-disable
+.. describe:: disable
+
     Disable a link
 
-describe
+.. describe:: describe
+
     Describe a link

@@ -6,13 +6,12 @@ yamcs tables
 Synopsis
 --------
 
-**yamcs tables list**
+.. rst-class:: synopsis
 
-**yamcs tables describe** <*TABLE*>
-
-**yamcs tables dump** [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
-
-**yamcs tables load** [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
+    | **yamcs tables** list
+    | **yamcs tables** describe <*TABLE*>
+    | **yamcs tables** dump [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
+    | **yamcs tables** load [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
 
 
 Description
@@ -24,16 +23,20 @@ Read and manipulate tables.
 Commands
 --------
 
-list
+.. describe:: list
+
     List tables
 
-describe <TABLE>
+.. describe:: describe <TABLE>
+
     Describe a table
 
-dump [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+.. describe:: dump [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+
     Dump table data
 
-load [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+.. describe:: load [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+
     Load data into a table
 
 

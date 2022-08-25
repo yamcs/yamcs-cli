@@ -6,7 +6,9 @@ yamcs dbshell
 Synopsis
 --------
 
-**yamcs dbshell** [-c <*COMMAND*>, --command <*COMMAND*>]
+.. rst-class:: synopsis
+
+    | **yamcs dbshell** [-c <*COMMAND*>, --command <*COMMAND*>]
 
 
 Description

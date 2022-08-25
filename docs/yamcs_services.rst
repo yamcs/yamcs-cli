@@ -6,11 +6,11 @@ yamcs services
 Synopsis
 --------
 
-**yamcs services list**
+.. rst-class:: synopsis
 
-**yamcs services start** <*SERVICE*>...
-
-**yamcs services stop** <*SERVICE*>...
+    | **yamcs services** list
+    | **yamcs services** start <*SERVICE*>...
+    | **yamcs services** stop <*SERVICE*>...
 
 
 Description
@@ -22,11 +22,14 @@ Read and manipulate services.
 Commands
 --------
 
-list
+.. describe:: list
+
     List services
 
-start <SERVICE>...
+.. describe:: start <SERVICE>...
+
     Start a service
 
-stop <SERVICE>...
+.. describe:: stop <SERVICE>...
+
     Stop a service

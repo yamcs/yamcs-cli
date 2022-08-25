@@ -6,13 +6,12 @@ yamcs config
 Synopsis
 --------
 
-**yamcs config get** <*PROPERTY*>
+.. rst-class:: synopsis
 
-**yamcs config list**
-
-**yamcs config set** <*PROPERTY*> <*VALUE*>
-
-**yamcs config unset** <*PROPERTY*>
+    | **yamcs config** get <*PROPERTY*>
+    | **yamcs config** list
+    | **yamcs config** set <*PROPERTY*> <*VALUE*>
+    | **yamcs config** unset <*PROPERTY*>
 
 
 Description
@@ -24,16 +23,20 @@ Manage Yamcs CLI properties.
 Commands
 --------
 
-get <PROPERTY>
+.. describe:: get <PROPERTY>
+
     Get value of CLI property
 
-list
+.. describe:: list
+
     List CLI properties
 
-set <PROPERTY> <VALUE>
+.. describe:: set <PROPERTY> <VALUE>
+
     Set CLI property
 
-unset <PROPERTY>
+.. describe:: unset <PROPERTY>
+
     Unset CLI property
 
 
@@ -47,7 +50,7 @@ Currently all supported properties belong to the ``core`` section only.
 Example
 ~~~~~~~
 
-code-block:: properties
+.. code-block:: ini
 
     [core]
     url = http://localhost:8090
@@ -56,8 +59,10 @@ code-block:: properties
 Properties
 ~~~~~~~~~~
 
-url
+.. describe:: url
+
     Yamcs Server URL
 
-instance
+.. describe:: instance
+
     Yamcs instance name

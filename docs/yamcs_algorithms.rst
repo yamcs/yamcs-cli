@@ -6,9 +6,10 @@ yamcs algorithms
 Synopsis
 --------
 
-**yamcs algorithms list**
+.. rst-class:: synopsis
 
-**yamcs algorithms describe** <*ALGORITHM*>
+    | **yamcs algorithms** list
+    | **yamcs algorithms** describe <*ALGORITHM*>
 
 
 Description
@@ -20,8 +21,10 @@ Read algorithms.
 Commands
 --------
 
-list
+.. describe:: list
+
     List algorithms
 
-describe <ALGORITHM>
+.. describe:: describe <ALGORITHM>
+
     Describe an algorithm

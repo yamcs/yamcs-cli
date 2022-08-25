@@ -6,11 +6,11 @@ yamcs streams
 Synopsis
 --------
 
-**yamcs streams list**
+.. rst-class:: synopsis
 
-**yamcs streams describe**
-
-**yamcs streams subscribe**
+    | **yamcs streams** list
+    | **yamcs streams** describe
+    | **yamcs streams** subscribe
 
 
 Description
@@ -22,11 +22,14 @@ Read and manipulate streams.
 Commands
 --------
 
-list
+.. describe:: list
+
     List streams
 
-describe
+.. describe:: describe
+
     Describe a stream
 
-subscribe
+.. describe:: subscribe
+
     Subscribe to a stream

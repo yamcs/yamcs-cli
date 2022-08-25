@@ -6,7 +6,9 @@ yamcs logout
 Synopsis
 --------
 
-**yamcs logout**
+.. rst-class:: synopsis
+
+    | **yamcs logout**
 
 
 Description

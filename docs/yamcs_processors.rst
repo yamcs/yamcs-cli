@@ -6,7 +6,9 @@ yamcs processors
 Synopsis
 --------
 
-**yamcs processors list**
+.. rst-class:: synopsis
+
+    | **yamcs processors** list
 
 
 Description
@@ -18,5 +20,6 @@ Read processors.
 Commands
 --------
 
-list
+.. describe:: list
+
     List processors

@@ -6,19 +6,15 @@ yamcs storage
 Synopsis
 --------
 
-**yamcs storage ls** [-l] [-r, -R] [<*BUCKET*>]
+.. rst-class:: synopsis
 
-**yamcs storage mb** <*BUCKET*>...
-
-**yamcs storage rb** <*BUCKET*>...
-
-**yamcs storage cat** <*OBJECT*>...
-
-**yamcs storage cp** <*SRC*> <*DST*>
-
-**yamcs storage mv** <*SRC*> <*DST*>
-
-**yamcs storage rm** <*OBJECT*>...
+    | **yamcs storage** ls [-l] [-r, -R] [<*BUCKET*>]
+    | **yamcs storage** mb <*BUCKET*>...
+    | **yamcs storage** rb <*BUCKET*>...
+    | **yamcs storage** cat <*OBJECT*>...
+    | **yamcs storage** cp <*SRC*> <*DST*>
+    | **yamcs storage** mv <*SRC*> <*DST*>
+    | **yamcs storage** rm <*OBJECT*>...
 
 
 Description
@@ -30,26 +26,33 @@ Manage object storage.
 Commands
 --------
 
-ls [-l] [-r, -R] [<BUCKET>]
+.. describe:: ls [-l] [-r, -R] [<BUCKET>]
+
     | List buckets or objects
     | Synonym: ``list``
 
-mb <BUCKET>...
+.. describe:: mb <BUCKET>...
+
     Make buckets
 
-rb <BUCKET>...
+.. describe:: rb <BUCKET>...
+
     Remove buckets
 
-cat <OBJECT>...
+.. describe:: cat <OBJECT>...
+
     Concatenate object content to stdout
 
-cp <SRC> <DST>
+.. describe:: cp <SRC> <DST>
+
     Copy a file or object
 
-mv <SRC> <DST>
+.. describe:: mv <SRC> <DST>
+
     Move a file or object
 
-rm <OBJECT>...
+.. describe:: rm <OBJECT>...
+
     Remove objects
 
 

@@ -6,9 +6,10 @@ yamcs containers
 Synopsis
 --------
 
-**yamcs containers list**
+.. rst-class:: synopsis
 
-**yamcs containers describe** <*CONTAINER*>
+    | **yamcs containers** list
+    | **yamcs containers** describe <*CONTAINER*>
 
 
 Description
@@ -20,8 +21,10 @@ Read containers.
 Commands
 --------
 
-list
+.. describe:: list
+
     List containers
 
-describe <CONTAINER>
+.. describe:: describe <CONTAINER>
+
     Describe a container

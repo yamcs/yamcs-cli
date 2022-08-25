@@ -6,9 +6,10 @@ yamcs commands
 Synopsis
 --------
 
-**yamcs commands list**
+.. rst-class:: synopsis
 
-**yamcs commands describe** <*COMMAND*>
+    | **yamcs commands** list
+    | **yamcs commands** describe <*COMMAND*>
 
 Description
 -----------
@@ -19,8 +20,10 @@ Read commands.
 Commands
 --------
 
-list
+.. describe:: list
+
     List commands
 
-describe <COMMAND>
+.. describe:: describe <COMMAND>
+
     Describe a command
