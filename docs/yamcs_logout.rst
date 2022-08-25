@@ -3,11 +3,13 @@ yamcs logout
 
 .. program:: yamcs logout
 
-**NAME**
+Synopsis
+--------
 
-    yamcs logout - Logout of a Yamcs server
+**yamcs logout**
 
 
-**SYNOPSIS**
+Description
+-----------
 
-    ``yamcs logout``
+Logout of a Yamcs server.

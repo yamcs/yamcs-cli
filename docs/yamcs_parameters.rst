@@ -3,26 +3,25 @@ yamcs parameters
 
 .. program:: yamcs parameters
 
-**NAME**
+Description
+-----------
 
-    yamcs parameters - Read parameters
+**yamcs parameters list**
 
-
-**SYNOPSIS**
-
-    ``yamcs parameters COMMAND``
+**yamcs parameters describe** <*PARAMETER*>
 
 
-**COMMANDS**
+Desription
+----------
 
-    :doc:`list <yamcs_parameters_list>`
-        List parameters
-    :doc:`describe <yamcs_parameters_describe>`
-        Describe a parameter
+Read parameters.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_parameters_list>
-    describe <yamcs_parameters_describe>
+list
+    List parameters
+
+describe <PARAMETER>
+    Describe a parameter

@@ -3,29 +3,30 @@ yamcs instances
 
 .. program:: yamcs instances
 
-**NAME**
+Synopsis
+--------
 
-    yamcs instances - Read Yamcs instances
+**yamcs instances list**
 
+**yamcs instances start** <*INSTANCE*>...
 
-**SYNOPSIS**
-
-    ``yamcs instances COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_instances_list>`
-        List instances
-    :doc:`start <yamcs_instances_start>`
-        Start an instance
-    :doc:`stop <yamcs_instances_stop>`
-        Stop an instance
+**yamcs instances stop** <*INSTANCE*>...
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    list <yamcs_instances_list>
-    start <yamcs_instances_start>
-    stop <yamcs_instances_stop>
+Read Yamcs instances.
+
+
+Commands
+--------
+
+list
+    List instances
+
+start <INSTANCE>...
+    Start an instance
+
+stop <INSTANCE>...
+    Stop an instance

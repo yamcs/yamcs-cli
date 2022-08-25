@@ -3,42 +3,73 @@ yamcs storage
 
 .. program:: yamcs storage
 
-**NAME**
+Synopsis
+--------
 
-    yamcs storage - Manage object storage
+**yamcs storage ls** [-l] [-r, -R] [<*BUCKET*>]
 
+**yamcs storage mb** <*BUCKET*>...
 
-**SYNOPSIS**
+**yamcs storage rb** <*BUCKET*>...
 
-    ``yamcs storage COMMAND``
+**yamcs storage cat** <*OBJECT*>...
 
+**yamcs storage cp** <*SRC*> <*DST*>
 
-**COMMANDS**
+**yamcs storage mv** <*SRC*> <*DST*>
 
-    :doc:`ls <yamcs_storage_ls>`
-        | List buckets or objects
-        | Synonym: ``list``
-    :doc:`mb <yamcs_storage_mb>`
-        Make buckets
-    :doc:`rb <yamcs_storage_rb>`
-        Remove buckets
-    :doc:`cat <yamcs_storage_cat>`
-        Concatenate object content to stdout
-    :doc:`cp <yamcs_storage_cp>`
-        Copy a file or object
-    :doc:`mv <yamcs_storage_mv>`
-        Move a file or object
-    :doc:`rm <yamcs_storage_rm>`
-        Remove objects
+**yamcs storage rm** <*OBJECT*>...
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    ls <yamcs_storage_ls>
-    mb <yamcs_storage_mb>
-    rb <yamcs_storage_rb>
-    cat <yamcs_storage_cat>
-    cp <yamcs_storage_cp>
-    mv <yamcs_storage_mv>
-    rm <yamcs_storage_rm>
+Manage object storage.
+
+
+Commands
+--------
+
+ls [-l] [-r, -R] [<BUCKET>]
+    | List buckets or objects
+    | Synonym: ``list``
+
+mb <BUCKET>...
+    Make buckets
+
+rb <BUCKET>...
+    Remove buckets
+
+cat <OBJECT>...
+    Concatenate object content to stdout
+
+cp <SRC> <DST>
+    Copy a file or object
+
+mv <SRC> <DST>
+    Move a file or object
+
+rm <OBJECT>...
+    Remove objects
+
+
+Options
+-------
+
+.. option:: -l
+
+    With ``ls``, list in long format.
+
+.. option:: -r, -R
+
+    With ``ls``, list recursively.
+
+.. option:: <SRC>
+
+    With ``cp``, local file or an object in the format ys://BUCKET/OBJECT.
+
+.. option:: <DST>
+
+    With ``cp``, local file, or an object in the format ys://BUCKET/OBJECT.
+
+    With ``mv``, local file, local directory, or an object in the format ys://BUCKET/OBJECT.

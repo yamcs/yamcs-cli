@@ -3,18 +3,21 @@ yamcs login
 
 .. program:: yamcs login
 
-**NAME**
+Synopsis
+--------
 
-    yamcs login - Login to a Yamcs server
-
-
-**SYNOPSIS**
-
-    ``yamcs login [URL]``
+**yamcs login** [<*URL*>]
 
 
-**POSITIONAL ARGUMENTS**
+Description
+-----------
 
-    .. option:: [URL]
+Login to a Yamcs server.
 
-        The server URL. Example: ``http://localhost:8090``
+
+Options
+-------
+
+.. option:: <URL>
+
+    The server URL. Example: ``http://localhost:8090``

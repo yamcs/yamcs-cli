@@ -3,32 +3,61 @@ yamcs config
 
 .. program:: yamcs config
 
-**NAME**
+Synopsis
+--------
 
-    yamcs config - Manage Yamcs client properties
+**yamcs config get** <*PROPERTY*>
 
+**yamcs config list**
 
-**SYNOPSIS**
+**yamcs config set** <*PROPERTY*> <*VALUE*>
 
-    ``yamcs config COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`get <yamcs_config_get>`
-        Get value of client property
-    :doc:`list <yamcs_config_list>`
-        List client properties
-    :doc:`set <yamcs_config_set>`
-        Set client property
-    :doc:`unset <yamcs_config_unset>`
-        Unset client property
+**yamcs config unset** <*PROPERTY*>
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    get <yamcs_config_get>
-    list <yamcs_config_list>
-    set <yamcs_config_set>
-    unset <yamcs_config_unset>
+Manage Yamcs CLI properties.
+
+
+Commands
+--------
+
+get <PROPERTY>
+    Get value of CLI property
+
+list
+    List CLI properties
+
+set <PROPERTY> <VALUE>
+    Set CLI property
+
+unset <PROPERTY>
+    Unset CLI property
+
+
+Configuration File
+------------------
+
+Configuration properties are stored to the file ``$HOME/.config/yamcs-cli/config`` and divided in sections. Properties affect the commands' behavior.
+
+Currently all supported properties belong to the ``core`` section only.
+
+Example
+~~~~~~~
+
+code-block:: properties
+
+    [core]
+    url = http://localhost:8090
+    instance = simulator
+
+Properties
+~~~~~~~~~~
+
+url
+    Yamcs Server URL
+
+instance
+    Yamcs instance name

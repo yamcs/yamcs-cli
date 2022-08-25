@@ -3,32 +3,35 @@ yamcs links
 
 .. program:: yamcs links
 
-**NAME**
+Synopsis
+--------
 
-    yamcs links - Read and manipulate data links
+**yamcs links list**
 
+**yamcs links enable** <*LINK*>...
 
-**SYNOPSIS**
+**yamcs links disable** <*LINK*>...
 
-    ``yamcs links COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_links_list>`
-        List links
-    :doc:`enable <yamcs_links_enable>`
-        Enable a link
-    :doc:`disable <yamcs_links_disable>`
-        Disable a link
-    :doc:`describe <yamcs_links_describe>`
-        Describe a link
+**yamcs links describe** <*LINK*>
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    list <yamcs_links_list>
-    enable <yamcs_links_enable>
-    disable <yamcs_links_disable>
-    describe <yamcs_links_describe>
+Read and manipulate data links.
+
+
+Commands
+--------
+
+list
+    List links
+
+enable
+    Enable a link
+
+disable
+    Disable a link
+
+describe
+    Describe a link

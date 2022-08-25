@@ -3,32 +3,50 @@ yamcs tables
 
 .. program:: yamcs tables
 
-**NAME**
+Synopsis
+--------
 
-    yamcs tables - Read and manipulate tables
+**yamcs tables list**
 
+**yamcs tables describe** <*TABLE*>
 
-**SYNOPSIS**
+**yamcs tables dump** [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
 
-    ``yamcs tables COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_tables_list>`
-        List tables
-    :doc:`describe <yamcs_tables_describe>`
-        Describe a table
-    :doc:`dump <yamcs_tables_dump>`
-        Dump table data
-    :doc:`load <yamcs_tables_load>`
-        Load data into a table
+**yamcs tables load** [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    list <yamcs_tables_list>
-    describe <yamcs_tables_describe>
-    dump <yamcs_tables_dump>
-    load <yamcs_tables_load>
+Read and manipulate tables.
+
+
+Commands
+--------
+
+list
+    List tables
+
+describe <TABLE>
+    Describe a table
+
+dump [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+    Dump table data
+
+load [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+    Load data into a table
+
+
+Options
+-------
+
+.. option:: -d DIR, --dir DIR
+
+    Specifies the directory where to locate dump files. Defaults to current directory.
+
+.. option:: --gzip
+
+    With ``dump``, compress the output.
+
+    With ``load``, decompress the dump.
+

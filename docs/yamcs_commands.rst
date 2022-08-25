@@ -3,26 +3,24 @@ yamcs commands
 
 .. program:: yamcs commands
 
-**NAME**
+Synopsis
+--------
 
-    yamcs commands - Read commands
+**yamcs commands list**
 
+**yamcs commands describe** <*COMMAND*>
 
-**SYNOPSIS**
+Description
+-----------
 
-    ``yamcs commands COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_commands_list>`
-        List commands
-    :doc:`describe <yamcs_commands_describe>`
-        Describe a command
+Read commands.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_commands_list>
-    describe <yamcs_commands_describe>
+list
+    List commands
+
+describe <COMMAND>
+    Describe a command

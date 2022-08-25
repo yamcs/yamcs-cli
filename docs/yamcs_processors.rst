@@ -3,23 +3,20 @@ yamcs processors
 
 .. program:: yamcs processors
 
-**NAME**
+Synopsis
+--------
 
-    yamcs processors - Read processors
-
-
-**SYNOPSIS**
-
-    ``yamcs processors COMMAND``
+**yamcs processors list**
 
 
-**COMMANDS**
+Description
+-----------
 
-    :doc:`list <yamcs_processors_list>`
-        List processors
+Read processors.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_processors_list>
+list
+    List processors

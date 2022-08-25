@@ -3,26 +3,25 @@ yamcs space-systems
 
 .. program:: yamcs space-systems
 
-**NAME**
+Synopsis
+--------
 
-    yamcs space-systems - Read space systems
+**yamcs space-systems list**
 
-
-**SYNOPSIS**
-
-    ``yamcs space-systems COMMAND``
+**yamcs space-systems describe** <*SPACESYSTEM*>
 
 
-**COMMANDS**
+Description
+-----------
 
-    :doc:`list <yamcs_space-systems_list>`
-        List space systems
-    :doc:`describe <yamcs_space-systems_describe>`
-        Describe a space system
+Read space systems.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_space-systems_list>
-    describe <yamcs_space-systems_describe>
+list
+    List space systems
+
+describe <SPACESYSTEM>
+    Describe a space system

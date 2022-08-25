@@ -3,18 +3,21 @@ yamcs dbshell
 
 .. program:: yamcs dbshell
 
-**NAME**
+Synopsis
+--------
 
-    yamcs dbshell - Launch Yamcs DB Shell
-
-
-**SYNOPSIS**
-
-    ``yamcs dbshell [-c COMMAND, --command COMMAND]``
+**yamcs dbshell** [-c <*COMMAND*>, --command <*COMMAND*>]
 
 
-**OPTIONS**
+Description
+-----------
 
-    .. option:: -c COMMAND, --command COMMAND
+Launch Yamcs DB Shell.
 
-        Run a single SQL command string.
+
+Options
+-------
+
+.. option:: -c <COMMAND>, --command <COMMAND>
+
+    Run a single SQL command string.

@@ -23,6 +23,7 @@ Run :doc:`yamcs_login` to initialize your environment:
 .. toctree::
     :titlesonly:
 
+    yamcs
     yamcs_algorithms
     yamcs_commands
     yamcs_config

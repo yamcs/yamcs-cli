@@ -3,29 +3,30 @@ yamcs streams
 
 .. program:: yamcs streams
 
-**NAME**
+Synopsis
+--------
 
-    yamcs streams - Read and manipulate streams
+**yamcs streams list**
 
+**yamcs streams describe**
 
-**SYNOPSIS**
-
-    ``yamcs streams COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_streams_list>`
-        List streams
-    :doc:`describe <yamcs_streams_describe>`
-        Describe a stream
-    :doc:`subscribe <yamcs_streams_subscribe>`
-        Subscribe to a stream
+**yamcs streams subscribe**
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    list <yamcs_streams_list>
-    describe <yamcs_streams_describe>
-    subscribe <yamcs_streams_subscribe>
+Read and manipulate streams.
+
+
+Commands
+--------
+
+list
+    List streams
+
+describe
+    Describe a stream
+
+subscribe
+    Subscribe to a stream

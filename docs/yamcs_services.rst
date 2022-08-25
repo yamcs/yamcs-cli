@@ -3,29 +3,30 @@ yamcs services
 
 .. program:: yamcs services
 
-**NAME**
+Synopsis
+--------
 
-    yamcs services - Read and manipulate services
+**yamcs services list**
 
+**yamcs services start** <*SERVICE*>...
 
-**SYNOPSIS**
-
-    ``yamcs services COMMAND``
-
-
-**COMMANDS**
-
-    :doc:`list <yamcs_services_list>`
-        List services
-    :doc:`start <yamcs_services_start>`
-        Start a service
-    :doc:`stop <yamcs_services_stop>`
-        Stop a service
+**yamcs services stop** <*SERVICE*>...
 
 
-.. toctree::
-    :hidden:
+Description
+-----------
 
-    list <yamcs_services_list>
-    start <yamcs_services_start>
-    stop <yamcs_services_stop>
+Read and manipulate services.
+
+
+Commands
+--------
+
+list
+    List services
+
+start <SERVICE>...
+    Start a service
+
+stop <SERVICE>...
+    Stop a service

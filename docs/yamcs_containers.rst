@@ -3,26 +3,25 @@ yamcs containers
 
 .. program:: yamcs containers
 
-**NAME**
+Synopsis
+--------
 
-    yamcs containers - Read containers
+**yamcs containers list**
 
-
-**SYNOPSIS**
-
-    ``yamcs containers COMMAND``
+**yamcs containers describe** <*CONTAINER*>
 
 
-**COMMANDS**
+Description
+-----------
 
-    :doc:`list <yamcs_containers_list>`
-        List containers
-    :doc:`describe <yamcs_containers_describe>`
-        Describe a container
+Read containers.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_containers_list>
-    describe <yamcs_containers_describe>
+list
+    List containers
+
+describe <CONTAINER>
+    Describe a container

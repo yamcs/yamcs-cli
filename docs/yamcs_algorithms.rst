@@ -3,26 +3,25 @@ yamcs algorithms
 
 .. program:: yamcs algorithms
 
-**NAME**
+Synopsis
+--------
 
-    yamcs algorithms - Read algorithms
+**yamcs algorithms list**
 
-
-**SYNOPSIS**
-
-    ``yamcs algorithms COMMAND``
+**yamcs algorithms describe** <*ALGORITHM*>
 
 
-**COMMANDS**
+Description
+-----------
 
-    :doc:`list <yamcs_algorithms_list>`
-        List algorithms
-    :doc:`describe <yamcs_algorithms_describe>`
-        Describe an algorithm
+Read algorithms.
 
 
-.. toctree::
-    :hidden:
+Commands
+--------
 
-    list <yamcs_algorithms_list>
-    describe <yamcs_algorithms_describe>
+list
+    List algorithms
+
+describe <ALGORITHM>
+    Describe an algorithm
