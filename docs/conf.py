@@ -17,6 +17,9 @@ extensions = [
     "sphinxcontrib.fulltoc",
 ]
 
+# Force-disable conversion of -- to en-dash
+smartquotes = False
+
 source_suffix = ".rst"
 
 # The master toctree document.
