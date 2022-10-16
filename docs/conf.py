@@ -1,4 +1,4 @@
-import pkg_resources
+import os
 
 project = "yamcs-cli"
 copyright = "2019-present, Space Applications Services"
@@ -8,8 +8,13 @@ author = "Yamcs Team"
 version = ""
 
 # The full version, including alpha/beta/rc tags
-dist = pkg_resources.get_distribution("yamcs-cli")
-release = dist.version
+try:
+    release = os.environ["DOC_VERSION"]
+except KeyError:
+    import pkg_resources
+
+    dist = pkg_resources.get_distribution("yamcs-cli")
+    release = dist.version
 
 extensions = [
     "sphinx.ext.autodoc",
