@@ -35,7 +35,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -158,6 +158,13 @@ man_pages = [
         "yamcs_logout",
         "yamcs-logout",
         "Logout of a Yamcs server",
+        author,
+        1,
+    ),
+    (
+        "yamcs_parameter-archive",
+        "yamcs-parameter-archive",
+        "Manipulate the Parameter Archive",
         author,
         1,
     ),

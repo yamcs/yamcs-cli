@@ -33,6 +33,7 @@ Run :doc:`yamcs_login` to initialize your environment:
     yamcs_links
     yamcs_login
     yamcs_logout
+    yamcs_parameter-archive
     yamcs_parameters
     yamcs_processors
     yamcs_services

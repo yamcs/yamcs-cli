@@ -13,6 +13,7 @@ from yamcs.cli.instances import InstancesCommand
 from yamcs.cli.links import LinksCommand
 from yamcs.cli.login import LoginCommand
 from yamcs.cli.logout import LogoutCommand
+from yamcs.cli.parameter_archive import ParameterArchiveCommand
 from yamcs.cli.parameters import ParametersCommand
 from yamcs.cli.processors import ProcessorsCommand
 from yamcs.cli.services import ServicesCommand
@@ -51,7 +52,9 @@ def main():
         help="The Yamcs instance to use. Overrides the core/instance property",
     )
     parser.add_argument(
-        "--debug", action="store_true", help=argparse.SUPPRESS,
+        "--debug",
+        action="store_true",
+        help=argparse.SUPPRESS,
     )
 
     # The width of this impacts the command width of the command column :-/
@@ -69,6 +72,7 @@ def main():
     LinksCommand(subparsers)
     LoginCommand(subparsers)
     LogoutCommand(subparsers)
+    ParameterArchiveCommand(subparsers)
     ParametersCommand(subparsers)
     ProcessorsCommand(subparsers)
     ServicesCommand(subparsers)
