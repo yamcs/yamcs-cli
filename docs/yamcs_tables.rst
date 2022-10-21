@@ -12,6 +12,8 @@ Synopsis
     | **yamcs tables** describe <*TABLE*>
     | **yamcs tables** dump [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
     | **yamcs tables** load [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
+    | **yamcs tables** rebuild-histogram [-s <*DATE*>, --since <*DATE*>]
+       [-u <*DATE*>, --until <*DATE*>] <*TABLE*>...
 
 
 Description
@@ -39,6 +41,10 @@ Commands
 
     Load data into a table
 
+.. describe:: rebuild-histogram [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] <TABLE>...
+
+    Rebuilds the histogram for a table. This may be necessary for example after bulk loading data.
+
 
 Options
 -------
@@ -53,3 +59,29 @@ Options
 
     With ``load``, decompress the dump.
 
+.. option:: -s DATE, --since DATE
+
+    With ``rebuild-histogram``, include records not older than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: -u DATE, --until DATE
+
+    With ``rebuild-histogram``, include records not newer than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+
+Timestamps
+----------
+
+When parsing timestamps, yamcs-cli accepts a specification in ISO format. The following special patterns are also recognised:
+
+* ``now``: current time
+* ``now UTC``: current UTC time
+* ``today``: 00:00:00 of the current day
+* ``today UTC``: 00:00:00 UTC of the current day
+* ``yesterday``: 00:00:00 of the day before
+* ``yesterday UTC``: 00:00:00 UTC of the day before
+* ``tomorrow``: 00:00:00 of the next day
+* ``tomorrow UTC``: 00:00:00 UTC of the next day

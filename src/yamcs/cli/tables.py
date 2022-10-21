@@ -61,6 +61,30 @@ class TablesCommand(utils.Command):
             "--gzip", dest="gzip", action="store_true", help="Decompress the input"
         )
 
+        subparser = self.create_subparser(
+            subparsers, "rebuild-histogram", "Rebuild histogram"
+        )
+        subparser.add_argument(
+            "tables",
+            metavar="TABLE",
+            type=str,
+            nargs="+",
+            help="name of the tables",
+        )
+        subparser.set_defaults(func=self.rebuild_histogram)
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include records not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include records not newer than the specified date",
+        )
+
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
@@ -136,6 +160,23 @@ class TablesCommand(utils.Command):
             else:
                 with open(path, "rb") as f:
                     self.read_dump(f, archive, table, path)
+
+    def rebuild_histogram(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.instance)
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+        for table in args.tables:
+            stdout.write(f"Rebuilding histogram of table '{table}'...")
+            stdout.flush()
+            archive.rebuild_histogram(table, start=start, stop=stop)
+            stdout.write(" done\n")
+            stdout.flush()
 
     def read_dump(self, f, archive, table, path):
         txsize = 0

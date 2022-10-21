@@ -2,9 +2,11 @@ import argparse
 import json
 import os
 from configparser import ConfigParser
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlparse
 
 import pkg_resources
+from dateutil import parser
 from yamcs.cli.exceptions import NoServerError
 from yamcs.core import auth
 from yamcs.core.helpers import parse_server_timestring, to_isostring
@@ -124,6 +126,29 @@ def print_table(rows, decorate=False, header=False):
             print(prefix + cols + suffix)
         if decorate:
             print("+{}+".format("-" * (total_width - 2)))
+
+
+def parse_timestamp(timestamp):
+    utc = False
+    if timestamp.lower().endswith(" utc"):
+        utc = True
+        timestamp = timestamp[:-4]
+
+    tz = timezone.utc if utc else None
+    now = datetime.now().astimezone(tz=tz)
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    if timestamp == "now":
+        return now
+    elif timestamp == "today":
+        return today
+    elif timestamp == "yesterday":
+        return today - timedelta(days=1)
+    elif timestamp == "tomorrow":
+        return today + timedelta(days=1)
+
+    # Switch to datetime.fromisoformat when dropping Python 3.6
+    parsed = parser.isoparse(timestamp)
+    return parsed if parsed.tzinfo else parsed.astimezone(tz=tz)
 
 
 class Command(object):
