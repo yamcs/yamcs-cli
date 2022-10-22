@@ -71,7 +71,10 @@ def save_credentials(credentials):
 def read_credentials():
     if os.path.exists(CREDENTIALS_FILE):
         with open(CREDENTIALS_FILE, "rt") as f:
-            d = json.load(f)
+            try:
+                d = json.load(f)
+            except json.JSONDecodeError:
+                return None
             access_token = d["access_token"]
             refresh_token = d["refresh_token"]
             expiry = parse_server_timestring(d["expiry"]) if "expiry" in d else None
