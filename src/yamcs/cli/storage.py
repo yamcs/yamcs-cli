@@ -4,16 +4,9 @@ import sys
 import tempfile
 
 from yamcs.cli import utils
+from yamcs.cli.completers import BucketCompleter, BucketOrObjectCompleter
 from yamcs.client import YamcsClient
 from yamcs.core.helpers import to_isostring
-
-
-def _parse_ys_url(url):
-    parts = url[5:].split("/", 1)
-    if len(parts) == 2 and parts[1]:
-        return parts[0], parts[1]
-    else:
-        return parts[0], None
 
 
 class StorageCommand(utils.Command):
@@ -26,7 +19,7 @@ class StorageCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "ls", "List buckets or objects")
         subparser.add_argument(
             "bucket", metavar="BUCKET", type=str, nargs="?", help="bucket or object"
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.add_argument(
             "-l", dest="long", action="store_true", help="List in long format"
         )
@@ -38,7 +31,7 @@ class StorageCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "list", "Synonym for ls")
         subparser.add_argument(
             "bucket", metavar="BUCKET", type=str, nargs="?", help="bucket or object"
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.add_argument(
             "-l", dest="long", action="store_true", help="List in long format"
         )
@@ -56,7 +49,7 @@ class StorageCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "rb", "Remove buckets")
         subparser.add_argument(
             "bucket", metavar="BUCKET", type=str, nargs="+", help="bucket"
-        )
+        ).completer = BucketCompleter
         subparser.set_defaults(func=self.rb)
 
         subparser = self.create_subparser(
@@ -68,7 +61,7 @@ class StorageCommand(utils.Command):
             type=str,
             nargs="+",
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.set_defaults(func=self.cat)
 
         subparser = self.create_subparser(subparsers, "cp", "Copy files or objects")
@@ -77,13 +70,13 @@ class StorageCommand(utils.Command):
             metavar="SRC",
             type=str,
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.add_argument(
             "dst",
             metavar="DST",
             type=str,
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.set_defaults(func=self.cp)
 
         subparser = self.create_subparser(subparsers, "mv", "Move files or objects")
@@ -92,13 +85,13 @@ class StorageCommand(utils.Command):
             metavar="SRC",
             type=str,
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.add_argument(
             "dst",
             metavar="DST",
             type=str,
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.set_defaults(func=self.mv)
 
         subparser = self.create_subparser(subparsers, "rm", "Remove objects")
@@ -108,7 +101,7 @@ class StorageCommand(utils.Command):
             type=str,
             nargs="+",
             help="object in the format ys://bucket/object",
-        )
+        ).completer = BucketOrObjectCompleter
         subparser.set_defaults(func=self.rm)
 
     def ls(self, args):
@@ -118,7 +111,7 @@ class StorageCommand(utils.Command):
 
         if args.bucket:
             if args.bucket.startswith("ys://"):
-                bucket_name, prefix = _parse_ys_url(args.bucket)
+                bucket_name, prefix = utils.parse_ys_url(args.bucket)
             else:
                 bucket_name = args.bucket
                 prefix = None
@@ -176,7 +169,7 @@ class StorageCommand(utils.Command):
                 print("*** specify objects in the format ys://bucket/object")
                 return False
 
-            bucket_name, object_name = _parse_ys_url(obj)
+            bucket_name, object_name = utils.parse_ys_url(obj)
             if not object_name:
                 print("*** specify objects in the format ys://bucket/object")
                 return False
@@ -193,7 +186,7 @@ class StorageCommand(utils.Command):
                 print("*** specify objects in the format ys://bucket/object")
                 return False
 
-            bucket_name, object_name = _parse_ys_url(obj)
+            bucket_name, object_name = utils.parse_ys_url(obj)
             if not object_name:
                 print("*** specify objects in the format ys://bucket/object")
                 return False
@@ -210,7 +203,7 @@ class StorageCommand(utils.Command):
 
         if self.cp(args) is not False:
             if args.src.startswith("ys://"):
-                bucket_name, object_name = _parse_ys_url(args.src)
+                bucket_name, object_name = utils.parse_ys_url(args.src)
                 if not object_name:
                     print("*** specify objects in the format ys://bucket/object")
                     return False
@@ -242,7 +235,7 @@ class StorageCommand(utils.Command):
             os.remove(path)
 
     def _cp_object_to_file(self, opts, src, dst):
-        src_bucket, src_object = _parse_ys_url(src)
+        src_bucket, src_object = utils.parse_ys_url(src)
         _, src_filename = os.path.split(src_object)
 
         client = YamcsClient(**opts.client_kwargs)
@@ -264,7 +257,7 @@ class StorageCommand(utils.Command):
             print("*** {} is a directory".format(src))
             return False
 
-        dst_bucket, dst_object = _parse_ys_url(dst)
+        dst_bucket, dst_object = utils.parse_ys_url(dst)
         if not dst_object:
             dst_object = os.path.basename(src)
 

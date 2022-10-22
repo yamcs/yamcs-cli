@@ -151,6 +151,17 @@ def parse_timestamp(timestamp):
     return parsed if parsed.tzinfo else parsed.astimezone(tz=tz)
 
 
+def parse_ys_url(url):
+    parts = url[5:].split("/", 1)
+    if len(parts) == 2 and parts[1]:
+        if parts[1] == "/":
+            return parts[0], None
+        else:
+            return parts[0], parts[1]
+    else:
+        return parts[0], None
+
+
 class Command(object):
     def __init__(self, subparsers, command, help_, add_epilog=True):
         self.parser = self.create_subparser(

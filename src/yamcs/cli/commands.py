@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import CommandCompleter
 from yamcs.client import YamcsClient
 
 
@@ -15,7 +16,7 @@ class CommandsCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "describe", "Describe a command")
         subparser.add_argument(
             "command", metavar="NAME", type=str, help="name of the command"
-        )
+        ).completer = CommandCompleter
         subparser.set_defaults(func=self.describe)
 
     def list_(self, args):

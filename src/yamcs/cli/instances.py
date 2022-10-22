@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import InstanceCompleter
 from yamcs.client import YamcsClient
 
 
@@ -19,7 +20,7 @@ class InstancesCommand(utils.Command):
             type=str,
             nargs="+",
             help="name of the instance",
-        )
+        ).completer = InstanceCompleter
         subparser.set_defaults(func=self.start)
 
         subparser = self.create_subparser(subparsers, "stop", "Stop an instance")
@@ -29,7 +30,7 @@ class InstancesCommand(utils.Command):
             type=str,
             nargs="+",
             help="name of the instance",
-        )
+        ).completer = InstanceCompleter
         subparser.set_defaults(func=self.stop)
 
     def list_(self, args):

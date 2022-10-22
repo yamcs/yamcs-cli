@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import ServiceCompleter
 from yamcs.client import YamcsClient
 
 
@@ -19,7 +20,7 @@ class ServicesCommand(utils.Command):
             type=str,
             nargs="+",
             help="name of the service",
-        )
+        ).completer = ServiceCompleter
         subparser.set_defaults(func=self.start)
 
         subparser = self.create_subparser(subparsers, "stop", "Stop a service")
@@ -29,7 +30,7 @@ class ServicesCommand(utils.Command):
             type=str,
             nargs="+",
             help="name of the service",
-        )
+        ).completer = ServiceCompleter
         subparser.set_defaults(func=self.stop)
 
     def list_(self, args):

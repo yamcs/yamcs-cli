@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import AlgorithmCompleter
 from yamcs.client import YamcsClient
 
 
@@ -17,7 +18,7 @@ class AlgorithmsCommand(utils.Command):
         )
         subparser.add_argument(
             "algorithm", metavar="NAME", type=str, help="name of the algorithm"
-        )
+        ).completer = AlgorithmCompleter
         subparser.set_defaults(func=self.describe)
 
     def list_(self, args):

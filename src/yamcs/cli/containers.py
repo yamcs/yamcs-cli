@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import ContainerCompleter
 from yamcs.client import YamcsClient
 
 
@@ -17,7 +18,7 @@ class ContainersCommand(utils.Command):
         )
         subparser.add_argument(
             "container", metavar="NAME", type=str, help="name of the container"
-        )
+        ).completer = ContainerCompleter
         subparser.set_defaults(func=self.describe)
 
     def list_(self, args):

@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import LinkCompleter
 from yamcs.client import YamcsClient
 
 
@@ -15,19 +16,19 @@ class LinksCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "describe", "Describe a link")
         subparser.add_argument(
             "link", metavar="LINK", type=str, help="name of the link"
-        )
+        ).completer = LinkCompleter
         subparser.set_defaults(func=self.describe)
 
         subparser = self.create_subparser(subparsers, "enable", "Enable a link")
         subparser.add_argument(
             "links", metavar="LINK", type=str, nargs="+", help="name of the link"
-        )
+        ).completer = LinkCompleter
         subparser.set_defaults(func=self.enable)
 
         subparser = self.create_subparser(subparsers, "disable", "Disable a link")
         subparser.add_argument(
             "links", metavar="LINK", type=str, nargs="+", help="name of the link"
-        )
+        ).completer = LinkCompleter
         subparser.set_defaults(func=self.disable)
 
     def list_(self, args):

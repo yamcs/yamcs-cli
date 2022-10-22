@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import SpaceSystemCompleter
 from yamcs.client import YamcsClient
 
 
@@ -19,7 +20,7 @@ class SpaceSystemsCommand(utils.Command):
         )
         subparser.add_argument(
             "space_system", metavar="NAME", type=str, help="name of the space system"
-        )
+        ).completer = SpaceSystemCompleter
         subparser.set_defaults(func=self.describe)
 
     def list_(self, args):

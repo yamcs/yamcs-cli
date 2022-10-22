@@ -35,7 +35,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     platforms="Posix; MacOS X; Windows",
-    install_requires=["python-dateutil", "yamcs-client>=1.7.0"],
+    install_requires=["argcomplete", "python-dateutil", "yamcs-client>=1.7.0"],
     extras_require={"kerberos": ["yamcs-client-kerberos>=1.2.0"]},
     include_package_data=True,
     zip_safe=False,

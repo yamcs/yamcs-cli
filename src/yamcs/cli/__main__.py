@@ -1,10 +1,12 @@
 import argparse
 import logging
 
+import argcomplete
 import pkg_resources
 from yamcs.cli import utils
 from yamcs.cli.algorithms import AlgorithmsCommand
 from yamcs.cli.commands import CommandsCommand
+from yamcs.cli.completers import InstanceCompleter
 from yamcs.cli.config import ConfigCommand
 from yamcs.cli.containers import ContainersCommand
 from yamcs.cli.dbshell import DbShellCommand
@@ -50,7 +52,7 @@ def main():
         "--instance",
         type=str,
         help="The Yamcs instance to use. Overrides the core/instance property",
-    )
+    ).completer = InstanceCompleter
     parser.add_argument(
         "--debug",
         action="store_true",
@@ -85,6 +87,9 @@ def main():
     for entry in pkg_resources.iter_entry_points(group="yamcs.cli.subcommands"):
         subcommand_cls = entry.load(subparsers)
         subcommand_cls(subparsers)
+
+    # Provide bash autocompletion
+    argcomplete.autocomplete(parser)
 
     args = parser.parse_args()
     try:

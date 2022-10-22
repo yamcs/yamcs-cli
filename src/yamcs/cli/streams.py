@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.completers import StreamCompleter
 from yamcs.client import YamcsClient
 
 
@@ -15,7 +16,7 @@ class StreamsCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "describe", "Describe a stream")
         subparser.add_argument(
             "stream", metavar="STREAM", type=str, help="name of the stream"
-        )
+        ).completer = StreamCompleter
         subparser.set_defaults(func=self.describe)
 
         subparser = self.create_subparser(
@@ -23,7 +24,7 @@ class StreamsCommand(utils.Command):
         )
         subparser.add_argument(
             "stream", metavar="STREAM", type=str, help="name of the stream"
-        )
+        ).completer = StreamCompleter
         # subparser.add_argument(
         #    "--limit",
         #    type=int,

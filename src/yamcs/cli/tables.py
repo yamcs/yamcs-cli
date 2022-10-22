@@ -4,6 +4,7 @@ import time
 from sys import stdout
 
 from yamcs.cli import utils
+from yamcs.cli.completers import TableCompleter
 from yamcs.client import YamcsClient
 
 
@@ -22,13 +23,13 @@ class TablesCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "describe", "Describe a table")
         subparser.add_argument(
             "table", metavar="TABLE", type=str, help="name of the table"
-        )
+        ).completer = TableCompleter
         subparser.set_defaults(func=self.describe)
 
         subparser = self.create_subparser(subparsers, "dump", "Dump tables")
         subparser.add_argument(
             "tables", metavar="TABLE", type=str, nargs="+", help="name of the tables"
-        )
+        ).completer = TableCompleter
         subparser.set_defaults(func=self.dump)
         subparser.add_argument(
             "-d",
@@ -46,7 +47,7 @@ class TablesCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "load", "Load tables")
         subparser.add_argument(
             "tables", metavar="TABLE", type=str, nargs="+", help="name of the tables"
-        )
+        ).completer = TableCompleter
         subparser.set_defaults(func=self.load)
         subparser.add_argument(
             "-d",
@@ -70,7 +71,7 @@ class TablesCommand(utils.Command):
             type=str,
             nargs="+",
             help="name of the tables",
-        )
+        ).completer = TableCompleter
         subparser.set_defaults(func=self.rebuild_histogram)
         subparser.add_argument(
             "-s",
@@ -172,10 +173,10 @@ class TablesCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
         for table in args.tables:
-            stdout.write(f"Rebuilding histogram of table '{table}'...")
+            stdout.write(f"Rebuilding histogram of table '{table}'... ")
             stdout.flush()
             archive.rebuild_histogram(table, start=start, stop=stop)
-            stdout.write(" done\n")
+            stdout.write("done\n")
             stdout.flush()
 
     def read_dump(self, f, archive, table, path):
