@@ -134,6 +134,13 @@ man_pages = [
         1,
     ),
     (
+        "yamcs_events",
+        "yamcs-events",
+        "Create events",
+        author,
+        1,
+    ),
+    (
         "yamcs_instances",
         "yamcs-instances",
         "Manage Yamcs instances",

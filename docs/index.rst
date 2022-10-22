@@ -29,6 +29,7 @@ Run :doc:`yamcs_login` to initialize your environment:
     yamcs_config
     yamcs_containers
     yamcs_dbshell
+    yamcs_events
     yamcs_instances
     yamcs_links
     yamcs_login

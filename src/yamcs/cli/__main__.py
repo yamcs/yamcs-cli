@@ -10,6 +10,7 @@ from yamcs.cli.completers import InstanceCompleter
 from yamcs.cli.config import ConfigCommand
 from yamcs.cli.containers import ContainersCommand
 from yamcs.cli.dbshell import DbShellCommand
+from yamcs.cli.events import EventsCommand
 from yamcs.cli.exceptions import NoInstanceError, NoServerError
 from yamcs.cli.instances import InstancesCommand
 from yamcs.cli.links import LinksCommand
@@ -70,6 +71,7 @@ def main():
     ConfigCommand(subparsers)
     ContainersCommand(subparsers)
     DbShellCommand(subparsers)
+    EventsCommand(subparsers)
     InstancesCommand(subparsers)
     LinksCommand(subparsers)
     LoginCommand(subparsers)
