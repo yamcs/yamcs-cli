@@ -87,10 +87,6 @@ class LoginCommand(utils.Command):
             config.add_section("core")
         config.set("core", "url", client.ctx.url)
 
-        # Temporary (cleanup old config properties. 'host/port' was migrated to 'url')
-        config.remove_option("core", "host")
-        config.remove_option("core", "port")
-
         if server_info.default_yamcs_instance:
             config.set("core", "instance", server_info.default_yamcs_instance)
         else:

@@ -163,6 +163,9 @@ def parse_ys_url(url):
 
 
 class Command(object):
+
+    config_options = ["core.url", "core.instance"]
+
     def __init__(self, subparsers, command, help_, add_epilog=True):
         self.parser = self.create_subparser(
             subparsers, command, help_, add_epilog=add_epilog
@@ -194,6 +197,19 @@ class Command(object):
         )
         return subparser
 
+    def register_config_option(self, option):
+        """
+        Add to the list of known config settings
+        """
+        if not option:
+            raise ValueError("Empty option")
+        if "." not in option:
+            raise ValueError("Missing section")
+        if option.startswith("core."):
+            raise ValueError("Extensions cannot add core options")
+        if option not in Command.config_options:
+            Command.config_options.append(option)
+
 
 class CommandOptions(object):
     def __init__(self, args):
@@ -211,14 +227,7 @@ class CommandOptions(object):
     @property
     def url(self):
         if self.config.has_section("core"):
-            url = self.config.get("core", "url", fallback=None)
-            if not url:  # Temporary ('host/port' was migrated to 'url')
-                host = self.config.get("core", "host", fallback=None)
-                port = self.config.get("core", "port", fallback=None)
-                if host and port:
-                    url = f"http://{host}:{port}"
-            return url
-
+            return self.config.get("core", "url", fallback=None)
         return None
 
     @property
