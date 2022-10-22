@@ -12,7 +12,7 @@ class LogoutCommand(utils.Command):
     def do_logout(self, args):
         opts = utils.CommandOptions(args)
         if not utils.clear_credentials():
-            if opts.address:
-                print("Not logged in to {}".format(opts.address))
+            if opts.url:
+                print("Not logged in to {}".format(opts.url))
             else:
                 print("Not logged in")

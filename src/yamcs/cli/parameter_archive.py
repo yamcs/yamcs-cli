@@ -31,10 +31,10 @@ class ParameterArchiveCommand(utils.Command):
     def rebuild(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
 
         start = utils.parse_timestamp(args.start)
         stop = utils.parse_timestamp(args.stop)
 
         archive.rebuild_parameter_archive(start=start, stop=stop)
-        print("Submitted rebuild request. This task will finish asynchronously.")
+        print("Task submitted. It will finish asynchronously.")

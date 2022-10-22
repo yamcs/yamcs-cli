@@ -17,7 +17,7 @@ class ProcessorsCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         rows = [["NAME", "TYPE", "OWNER", "PERSISTENT", "MISSION TIME", "STATE"]]
-        for processor in client.list_processors(opts.instance):
+        for processor in client.list_processors(opts.require_instance()):
             rows.append(
                 [
                     processor.name,

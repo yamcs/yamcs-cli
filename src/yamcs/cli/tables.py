@@ -89,7 +89,7 @@ class TablesCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
 
         rows = [["NAME"]]
         for table in archive.list_tables():
@@ -99,7 +99,7 @@ class TablesCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         table = archive.get_table(args.table)
         print(table._proto)
 
@@ -110,7 +110,7 @@ class TablesCommand(utils.Command):
 
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         for table in args.tables:
             path = table + ".dump.gz" if args.gzip else table + ".dump"
             if args.dir:
@@ -150,7 +150,7 @@ class TablesCommand(utils.Command):
     def load(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         for table in args.tables:
             path = table + ".dump.gz" if args.gzip else table + ".dump"
             if args.dir:
@@ -165,7 +165,7 @@ class TablesCommand(utils.Command):
     def rebuild_histogram(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         start = None
         if args.since:
             start = utils.parse_timestamp(args.since)

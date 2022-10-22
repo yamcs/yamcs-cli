@@ -22,9 +22,9 @@ Commands
 
 .. describe:: rebuild
 
-    Rebuild the Parameter Archive
+    Rebuild the Parameter Archive.
 
-    The rebuild must be constrained by using the ``START`` and ``STOP`` options. These values are only hints to the Parameter Archive, which will extend the requested range based on archive segmentation.
+    This operation must be constrained by using the ``START`` and ``STOP`` options. These values are only hints to the Parameter Archive, which will extend the requested range based on archive segmentation.
 
     Rebuild run as an asynchronous operation: this command will not await the outcome.
 

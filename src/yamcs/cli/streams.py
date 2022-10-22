@@ -35,7 +35,7 @@ class StreamsCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
 
         rows = [["NAME"]]
         for stream in archive.list_streams():
@@ -45,7 +45,7 @@ class StreamsCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         stream = archive.get_stream(args.stream)
         print(stream._proto)
 
@@ -55,7 +55,7 @@ class StreamsCommand(utils.Command):
 
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        archive = client.get_archive(opts.instance)
+        archive = client.get_archive(opts.require_instance())
         try:
             subscription = archive.create_stream_subscription(
                 args.stream, on_data=on_data

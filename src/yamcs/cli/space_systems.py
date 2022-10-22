@@ -26,7 +26,7 @@ class SpaceSystemsCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
 
         rows = [["NAME", "DESCRIPTION"]]
         for space_system in mdb.list_space_systems():
@@ -41,6 +41,6 @@ class SpaceSystemsCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
         space_system = mdb.get_space_system(args.space_system)
         print(space_system._proto)

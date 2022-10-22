@@ -24,7 +24,7 @@ class ParametersCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
 
         rows = [["NAME", "DATA SOURCE"]]
         for parameter in mdb.list_parameters():
@@ -39,6 +39,6 @@ class ParametersCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
         parameter = mdb.get_parameter(args.parameter)
         print(parameter._proto)

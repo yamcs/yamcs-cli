@@ -5,7 +5,7 @@ from yamcs.client import YamcsClient
 def AlgorithmCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    mdb = client.get_mdb(opts.instance)
+    mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_algorithms()]
 
 
@@ -50,14 +50,14 @@ def BucketOrObjectCompleter(prefix, parsed_args, **kwargs):
 def CommandCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    mdb = client.get_mdb(opts.instance)
+    mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_commands()]
 
 
 def ContainerCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    mdb = client.get_mdb(opts.instance)
+    mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_containers()]
 
 
@@ -70,38 +70,38 @@ def InstanceCompleter(prefix, parsed_args, **kwargs):
 def LinkCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    return [x.name for x in client.list_links(opts.instance)]
+    return [x.name for x in client.list_links(opts.require_instance())]
 
 
 def ParameterCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    mdb = client.get_mdb(opts.instance)
+    mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_parameters()]
 
 
 def ServiceCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    return [x.name for x in client.list_services(opts.instance)]
+    return [x.name for x in client.list_services(opts.require_instance())]
 
 
 def SpaceSystemCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    mdb = client.get_mdb(opts.instance)
+    mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_space_systems()]
 
 
 def StreamCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    archive = client.get_archive(opts.instance)
+    archive = client.get_archive(opts.require_instance())
     return [x.name for x in archive.list_streams()]
 
 
 def TableCompleter(prefix, parsed_args, **kwargs):
     opts = utils.CommandOptions(parsed_args)
     client = YamcsClient(**opts.client_kwargs)
-    archive = client.get_archive(opts.instance)
+    archive = client.get_archive(opts.require_instance())
     return [x.name for x in archive.list_tables()]

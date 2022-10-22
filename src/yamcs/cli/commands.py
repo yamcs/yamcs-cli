@@ -22,7 +22,7 @@ class CommandsCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
 
         rows = [["NAME", "DESCRIPTION", "ABSTRACT"]]
         for command in mdb.list_commands():
@@ -38,6 +38,6 @@ class CommandsCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
         command = mdb.get_command(args.command)
         print(command._proto)

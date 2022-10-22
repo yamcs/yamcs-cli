@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 import pkg_resources
 from dateutil import parser
-from yamcs.cli.exceptions import NoServerError
+from yamcs.cli.exceptions import NoInstanceError, NoServerError
 from yamcs.core import auth
 from yamcs.core.helpers import parse_server_timestring, to_isostring
 
@@ -233,6 +233,11 @@ class CommandOptions(object):
     @property
     def user_agent(self):
         return get_user_agent()
+
+    def require_instance(self):
+        if not self.instance:
+            raise NoInstanceError()
+        return self.instance
 
     def _on_token_update(self, credentials):
         save_credentials(credentials)

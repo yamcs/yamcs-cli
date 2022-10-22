@@ -27,7 +27,7 @@ class DbShellCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         shell = DbShell(client)
-        shell.do_use(opts.instance)
+        shell.do_use(opts.require_instance())
         if args.command:
             shell.onecmd(args.command)
         else:

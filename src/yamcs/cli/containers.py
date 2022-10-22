@@ -24,7 +24,7 @@ class ContainersCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
 
         rows = [["NAME", "DESCRIPTION"]]
         for container in mdb.list_containers():
@@ -39,6 +39,6 @@ class ContainersCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
         container = mdb.get_container(args.container)
         print(container._proto)

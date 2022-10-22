@@ -38,7 +38,7 @@ class ServicesCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         rows = [["NAME", "CLASS", "STATUS"]]
-        for service in client.list_services(opts.instance):
+        for service in client.list_services(opts.require_instance()):
             rows.append(
                 [
                     service.name,
@@ -53,11 +53,11 @@ class ServicesCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         for service in args.services:
-            client.start_service(opts.instance, service=service)
+            client.start_service(opts.require_instance(), service=service)
 
     def stop(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
 
         for service in args.services:
-            client.stop_service(opts.instance, service=service)
+            client.stop_service(opts.require_instance(), service=service)

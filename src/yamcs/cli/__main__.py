@@ -10,7 +10,7 @@ from yamcs.cli.completers import InstanceCompleter
 from yamcs.cli.config import ConfigCommand
 from yamcs.cli.containers import ContainersCommand
 from yamcs.cli.dbshell import DbShellCommand
-from yamcs.cli.exceptions import NoServerError
+from yamcs.cli.exceptions import NoInstanceError, NoServerError
 from yamcs.cli.instances import InstancesCommand
 from yamcs.cli.links import LinksCommand
 from yamcs.cli.login import LoginCommand
@@ -98,6 +98,8 @@ def main():
         print()  # Clear prompt
     except NoServerError:
         print("No server. Run: 'yamcs login' to login to Yamcs")
+    except NoInstanceError:
+        print("No instance. Run: 'yamcs config set instance <instance>'")
     except Unauthorized:
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
     except Exception as e:

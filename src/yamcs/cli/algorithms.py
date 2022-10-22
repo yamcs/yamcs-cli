@@ -24,7 +24,7 @@ class AlgorithmsCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
 
         rows = [["NAME", "DESCRIPTION"]]
         for algorithm in mdb.list_algorithms():
@@ -39,6 +39,6 @@ class AlgorithmsCommand(utils.Command):
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        mdb = client.get_mdb(opts.instance)
+        mdb = client.get_mdb(opts.require_instance())
         algorithm = mdb.get_algorithm(args.algorithm)
         print(algorithm._proto)

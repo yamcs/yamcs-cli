@@ -36,7 +36,7 @@ class LinksCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         rows = [["NAME", "CLASS", "STATUS", "IN", "OUT"]]
-        for link in client.list_links(opts.instance):
+        for link in client.list_links(opts.require_instance()):
             rows.append(
                 [
                     link.name,
@@ -53,7 +53,7 @@ class LinksCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         for link_name in args.links:
-            link = client.get_link(opts.instance, link_name)
+            link = client.get_link(opts.require_instance(), link_name)
             link.enable_link()
 
     def disable(self, args):
@@ -61,11 +61,11 @@ class LinksCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
 
         for link_name in args.links:
-            link = client.get_link(opts.instance, link_name)
+            link = client.get_link(opts.require_instance(), link_name)
             link.disable_link()
 
     def describe(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        link = client.get_link(opts.instance, args.link)
+        link = client.get_link(opts.require_instance(), args.link)
         print(link.get_info())
