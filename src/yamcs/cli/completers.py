@@ -43,8 +43,13 @@ def BucketOrObjectCompleter(prefix, parsed_args, **kwargs):
             return [f"ys://{bucket_name}/{p}" for p in listing.prefixes] + [
                 f"ys://{bucket_name}/{o.name}" for o in listing.objects
             ]
-
-        return [f"ys://{b.name}/" for b in storage.list_buckets()]
+        elif prefix.endswith("/"):  # Bucket already entered, complete direct children
+            listing = storage.list_objects(bucket_name, delimiter="/")
+            return [f"ys://{bucket_name}/{p}" for p in listing.prefixes] + [
+                f"ys://{bucket_name}/{o.name}" for o in listing.objects
+            ]
+        else:
+            return [f"ys://{b.name}/" for b in storage.list_buckets()]
 
 
 def CommandCompleter(prefix, parsed_args, **kwargs):
