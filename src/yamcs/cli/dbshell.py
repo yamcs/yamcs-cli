@@ -7,11 +7,18 @@ import sys
 from collections import abc
 from pydoc import pager
 
+from google.protobuf import json_format
 from yamcs.cli import utils
+from yamcs.cli.protobuf import cmdhistory_pb2, timeline_pb2
 from yamcs.client import YamcsClient
 from yamcs.core.exceptions import YamcsError
+from yamcs.protobuf.events import events_pb2
 
 SHOW_OPTIONS = ("databases", "engines", "streams", "tables", "stream")
+
+PB_ASSIGNMENT_TYPE = "PROTOBUF(org.yamcs.cmdhistory.protobuf.Cmdhistory$AssignmentInfo)"
+PB_BANDFILTER_TYPE = "PROTOBUF(org.yamcs.timeline.protobuf.BandFilter)"
+PB_EVENT_TYPE = "PROTOBUF(org.yamcs.yarch.protobuf.Db$Event)"
 
 
 class DbShellCommand(utils.Command):
@@ -73,6 +80,21 @@ class ResultSetPrinter:
         for i, value in enumerate(row):
             if value is None:
                 string_value = "NULL"
+            elif self.column_types[i] == PB_EVENT_TYPE:
+                pb = events_pb2.Event()
+                pb.ParseFromString(value)
+                dict_value = json_format.MessageToDict(pb)
+                string_value = json.dumps(dict_value)
+            elif self.column_types[i] == PB_ASSIGNMENT_TYPE:
+                pb = cmdhistory_pb2.AssignmentInfo()
+                pb.ParseFromString(value)
+                dict_value = json_format.MessageToDict(pb)
+                string_value = json.dumps(dict_value)
+            elif self.column_types[i] == PB_BANDFILTER_TYPE:
+                pb = timeline_pb2.BandFilter()
+                pb.ParseFromString(value)
+                dict_value = json_format.MessageToDict(pb)
+                string_value = json.dumps(dict_value)
             elif isinstance(value, (bytes, bytearray)):
                 string_value = "0x" + str(binascii.hexlify(value), "ascii")
             elif isinstance(value, abc.Mapping):
