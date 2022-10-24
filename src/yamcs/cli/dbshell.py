@@ -1,8 +1,10 @@
 import binascii
 import cmd
 import io
+import json
 import os
 import sys
+from collections import abc
 from pydoc import pager
 
 from yamcs.cli import utils
@@ -73,6 +75,8 @@ class ResultSetPrinter:
                 string_value = "NULL"
             elif isinstance(value, (bytes, bytearray)):
                 string_value = "0x" + str(binascii.hexlify(value), "ascii")
+            elif isinstance(value, abc.Mapping):
+                string_value = json.dumps(value)
             else:
                 string_value = str(value)
             print_row.append(string_value)
