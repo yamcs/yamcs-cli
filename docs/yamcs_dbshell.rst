@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs dbshell** [-c <*COMMAND*>, --command <*COMMAND*>]
+    | **yamcs dbshell** [*OPTIONS*]
 
 
 Description
@@ -23,6 +23,10 @@ Options
 .. option:: -c <COMMAND>, --command <COMMAND>
 
     Run a single SQL command string.
+
+.. option:: -N, --skip-column-names
+
+    Don't print column names.
 
 
 DB Shell Commands

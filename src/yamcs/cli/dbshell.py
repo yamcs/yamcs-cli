@@ -32,11 +32,17 @@ class DbShellCommand(utils.Command):
         self.parser.add_argument(
             "-c", "--command", metavar="COMMAND", type=str, help="SQL command string"
         )
+        self.parser.add_argument(
+            "-N",
+            "--skip-column-names",
+            action="store_true",
+            help="Don't print print column names",
+        )
 
     def launch(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        shell = DbShell(client)
+        shell = DbShell(client, skip_column_names=args.skip_column_names)
         shell.do_use(opts.require_instance())
         if args.command:
             shell.onecmd(args.command)
@@ -66,15 +72,19 @@ class ResultSetPrinter:
     has server-side SQL support.
     """
 
-    def __init__(self, columns, column_types, output):
+    def __init__(self, columns, column_types, output, skip_column_names):
         self.columns = columns
         self.column_types = column_types
-        self.widths = [len(name) for name in columns]
+        if not skip_column_names:
+            self.widths = [len(name) for name in columns]
+        else:
+            self.widths = [0 for _ in columns]
         self.separator = ""
         self.pending_rows = []
         self.output = output
         self.printed_row_count = 0
         self.delimiter = ";"
+        self.skip_column_names = skip_column_names
 
     def add(self, row):
         print_row = []
@@ -114,8 +124,9 @@ class ResultSetPrinter:
 
         if self.printed_row_count == 0:
             separator = self.generate_separator()
-            print(separator, file=self.output)
-            print(fm.format(*self.columns), file=self.output)
+            if not self.skip_column_names:
+                print(separator, file=self.output)
+                print(fm.format(*self.columns), file=self.output)
             print(separator, file=self.output)
 
         for row in self.pending_rows:
@@ -139,7 +150,7 @@ class ResultSetPrinter:
 
 
 class DbShell(cmd.Cmd):
-    def __init__(self, client):
+    def __init__(self, client, skip_column_names=False):
         cmd.Cmd.__init__(self)
         self._client = client
         self.pager = False
@@ -148,6 +159,7 @@ class DbShell(cmd.Cmd):
         self.delimiter = ";"
         self.tables = []
         self.streams = []
+        self.skip_column_names = skip_column_names
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
@@ -335,7 +347,10 @@ class DbShell(cmd.Cmd):
         for i, row in enumerate(results):
             if i == 0:
                 printer = ResultSetPrinter(
-                    results.columns, results.column_types, output
+                    results.columns,
+                    results.column_types,
+                    output,
+                    skip_column_names=self.skip_column_names,
                 )
             printer.add(row)
 
