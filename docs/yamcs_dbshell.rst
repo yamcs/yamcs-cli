@@ -28,6 +28,10 @@ Options
 
     Don't print column names.
 
+.. option:: -B, --batch
+
+    Don't use history file. Disable interactive behavior.
+
 
 DB Shell Commands
 -----------------

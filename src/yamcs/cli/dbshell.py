@@ -38,26 +38,44 @@ class DbShellCommand(utils.Command):
             action="store_true",
             help="Don't print print column names",
         )
+        self.parser.add_argument(
+            "-B",
+            "--batch",
+            action="store_true",
+            help="Don't use history file. Disable interactive behavior",
+        )
 
     def launch(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
-        shell = DbShell(client, skip_column_names=args.skip_column_names)
+
+        interactive = not args.batch
+        column_names = not args.skip_column_names
+
+        histfile = None
+        if interactive:
+            histfile = os.path.join(utils.CONFIG_DIR, "history")
+
+        shell = DbShell(
+            client,
+            column_names=column_names,
+            interactive=interactive,
+            histfile=histfile,
+        )
         shell.do_use(opts.require_instance())
         if args.command:
             shell.onecmd(args.command)
         else:
-            server_info = client.get_server_info()
-            intro = (
-                "Yamcs DB Shell\n"
-                "Server version: {} - ID: {}\n\n"
-                "Type "
-                "help"
-                " or "
-                "?"
-                " for help.\n"
-            ).format(server_info.version, server_info.id)
-            shell.cmdloop(intro)
+            if interactive:
+                server_info = client.get_server_info()
+                intro = (
+                    "Yamcs DB Shell\n"
+                    "Server version: {} - ID: {}\n\n"
+                    "Type help or ? for help.\n"
+                ).format(server_info.version, server_info.id)
+                shell.cmdloop(intro)
+            else:
+                shell.cmdloop()
 
 
 class ResultSetPrinter:
@@ -72,10 +90,12 @@ class ResultSetPrinter:
     has server-side SQL support.
     """
 
-    def __init__(self, columns, column_types, output, skip_column_names):
+    def __init__(self, columns, column_types, output, interactive, column_names):
         self.columns = columns
         self.column_types = column_types
-        if not skip_column_names:
+        self.interactive = interactive
+        self.column_names = column_names
+        if column_names:
             self.widths = [len(name) for name in columns]
         else:
             self.widths = [0 for _ in columns]
@@ -84,7 +104,6 @@ class ResultSetPrinter:
         self.output = output
         self.printed_row_count = 0
         self.delimiter = ";"
-        self.skip_column_names = skip_column_names
 
     def add(self, row):
         print_row = []
@@ -107,7 +126,10 @@ class ResultSetPrinter:
                 dict_value = json_format.MessageToDict(pb)
                 string_value = json.dumps(dict_value)
             elif isinstance(value, (bytes, bytearray)):
-                string_value = "0x" + str(binascii.hexlify(value), "ascii")
+                if self.interactive:
+                    string_value = "0x" + str(binascii.hexlify(value), "ascii")
+                else:
+                    string_value = value  # Raw bytes
             elif isinstance(value, abc.Mapping):
                 string_value = json.dumps(value)
             else:
@@ -124,22 +146,36 @@ class ResultSetPrinter:
 
         if self.printed_row_count == 0:
             separator = self.generate_separator()
-            if not self.skip_column_names:
+            if self.column_names:
+                if self.interactive:
+                    print(separator, file=self.output)
+                    print(fm.format(*self.columns), file=self.output)
+                else:
+                    print("\t".join(self.columns), file=self.output)
+            if self.interactive:
                 print(separator, file=self.output)
-                print(fm.format(*self.columns), file=self.output)
-            print(separator, file=self.output)
 
         for row in self.pending_rows:
-            print(fm.format(*row), file=self.output)
+            if self.interactive:
+                print(fm.format(*row), file=self.output)
+            else:
+                # Don't use join, we want to output binary
+                for idx, el in enumerate(row):
+                    if idx != 0:
+                        self.output.buffer.write("\t")
+                    self.output.buffer.write(el)
             self.printed_row_count += 1
         self.pending_rows = []
 
     def print_summary(self):
-        print(self.generate_separator(), file=self.output)
-        if self.printed_row_count == 1:
-            print("1 row in set\n", file=self.output)
-        else:
-            print("{} rows in set\n".format(self.printed_row_count), file=self.output)
+        if self.interactive:
+            print(self.generate_separator(), file=self.output)
+            if self.printed_row_count == 1:
+                print("1 row in set\n", file=self.output)
+            else:
+                print(
+                    "{} rows in set\n".format(self.printed_row_count), file=self.output
+                )
 
     def generate_separator(self):
         separator = ""
@@ -150,16 +186,18 @@ class ResultSetPrinter:
 
 
 class DbShell(cmd.Cmd):
-    def __init__(self, client, skip_column_names=False):
+    def __init__(self, client, column_names=True, interactive=True, histfile=None):
         cmd.Cmd.__init__(self)
         self._client = client
+        self.column_names = column_names
+        self.interactive = interactive
+        self.histfile = histfile
         self.pager = False
         self.instance = None
-        self.prompt = "> "
+        self.prompt = "> " if self.interactive else ""
         self.delimiter = ";"
         self.tables = []
         self.streams = []
-        self.skip_column_names = skip_column_names
 
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
@@ -195,7 +233,7 @@ class DbShell(cmd.Cmd):
     def do_use(self, args):
         """(\\u) Use another instance, provided as argument."""
         self.instance = args
-        self.prompt = self.instance + "> "
+        self.prompt = self.instance + "> " if self.interactive else ""
         self.do_rehash(None)
 
     def do_pager(self, args):
@@ -350,7 +388,8 @@ class DbShell(cmd.Cmd):
                     results.columns,
                     results.column_types,
                     output,
-                    skip_column_names=self.skip_column_names,
+                    interactive=self.interactive,
+                    column_names=self.column_names,
                 )
             printer.add(row)
 
@@ -364,18 +403,17 @@ class DbShell(cmd.Cmd):
         if printer:
             printer.print_pending()
             printer.print_summary()
-        else:
+        elif self.interactive:
             print("Empty set\n", file=output)
 
     def preloop(self):
-        history_file = os.path.join(utils.CONFIG_DIR, "history")
-        if os.path.exists(history_file):
-            readline.read_history_file(history_file)
+        if self.histfile and os.path.exists(self.histfile):
+            readline.read_history_file(self.histfile)
 
     def postloop(self):
-        history_file = os.path.join(utils.CONFIG_DIR, "history")
-        readline.set_history_length(200)
-        readline.write_history_file(history_file)
+        if self.histfile:
+            readline.set_history_length(200)
+            readline.write_history_file(self.histfile)
 
     def cmdloop(self, *args, **kwargs):
         # Monkey-patch so that ctrl-c on cmd.Cmd does not quit
