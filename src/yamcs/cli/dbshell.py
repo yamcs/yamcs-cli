@@ -3,6 +3,7 @@ import cmd
 import io
 import json
 import os
+import readline
 import sys
 from collections import abc
 from pydoc import pager
@@ -350,6 +351,16 @@ class DbShell(cmd.Cmd):
             printer.print_summary()
         else:
             print("Empty set\n", file=output)
+
+    def preloop(self):
+        history_file = os.path.join(utils.CONFIG_DIR, "history")
+        if os.path.exists(history_file):
+            readline.read_history_file(history_file)
+
+    def postloop(self):
+        history_file = os.path.join(utils.CONFIG_DIR, "history")
+        readline.set_history_length(200)
+        readline.write_history_file(history_file)
 
     def cmdloop(self, *args, **kwargs):
         # Monkey-patch so that ctrl-c on cmd.Cmd does not quit
