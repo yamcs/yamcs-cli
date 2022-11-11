@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs dbshell** [*OPTIONS*]
+    | **yamcs dbshell** [<*OPTIONS*>]
 
 
 Description
@@ -30,7 +30,15 @@ Options
 
 .. option:: -B, --batch
 
-    Don't use history file. Disable interactive behavior.
+    Print results using tab as the column seperator.
+
+    Use of this option disables interactive behavior such as prompt display or the history file.
+
+    Any binary fields are printed raw instead of in hexadecimal notation.
+
+.. option:: --binary-as-hex
+
+    Display binary data using hexadecimal notation. This the default when running in interactive mode, but can be used in combination with :option:`--batch` to show hexadecimal values also in batch mode.
 
 
 DB Shell Commands
