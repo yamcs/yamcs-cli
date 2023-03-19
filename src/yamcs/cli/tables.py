@@ -3,9 +3,10 @@ import os
 import time
 from sys import stdout
 
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import TableCompleter
-from yamcs.client import YamcsClient
 
 
 class TablesCommand(utils.Command):
@@ -191,7 +192,7 @@ class TablesCommand(utils.Command):
             nonlocal path, fsize, txsize
             rate = (txsize / 1024 / 1024) / elapsed
             stdout.write(
-                "\r{}: {:.2f} MB (rx: {:.2f} MB at {:.2f} MB/s)".format(
+                "\r{}: {:.2f} MB (tx: {:.2f} MB at {:.2f} MB/s)".format(
                     path, fsize / 1024 / 1024, txsize / 1024 / 1024, rate
                 )
             )
