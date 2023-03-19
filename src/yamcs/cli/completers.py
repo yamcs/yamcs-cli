@@ -1,5 +1,6 @@
-from yamcs.cli import utils
 from yamcs.client import YamcsClient
+
+from yamcs.cli import utils
 
 
 def AlgorithmCompleter(prefix, parsed_args, **kwargs):
@@ -83,6 +84,13 @@ def ParameterCompleter(prefix, parsed_args, **kwargs):
     client = YamcsClient(**opts.client_kwargs)
     mdb = client.get_mdb(opts.require_instance())
     return [x.qualified_name for x in mdb.list_parameters()]
+
+
+def ProcessorCompleter(prefix, parsed_args, **kwargs):
+    opts = utils.CommandOptions(parsed_args)
+    client = YamcsClient(**opts.client_kwargs)
+    processors = client.list_processors(opts.require_instance())
+    return [x.name for x in processors]
 
 
 def ServiceCompleter(prefix, parsed_args, **kwargs):
