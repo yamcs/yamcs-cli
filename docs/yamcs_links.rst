@@ -12,6 +12,7 @@ Synopsis
     | **yamcs links** enable <*LINK*>...
     | **yamcs links** disable <*LINK*>...
     | **yamcs links** describe <*LINK*>
+    | **yamcs links** run-action <*LINK*> <*ACTION*>
 
 
 Description
@@ -38,3 +39,7 @@ Commands
 .. describe:: describe
 
     Describe a link
+
+.. describe:: run-action
+
+    Run a custom action

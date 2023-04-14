@@ -1,6 +1,7 @@
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import LinkCompleter
-from yamcs.client import YamcsClient
 
 
 class LinksCommand(utils.Command):
@@ -30,6 +31,17 @@ class LinksCommand(utils.Command):
             "links", metavar="LINK", type=str, nargs="+", help="name of the link"
         ).completer = LinkCompleter
         subparser.set_defaults(func=self.disable)
+
+        subparser = self.create_subparser(
+            subparsers, "run-action", "Run a custom link action"
+        )
+        subparser.add_argument(
+            "link", metavar="LINK", type=str, help="name of the link"
+        ).completer = LinkCompleter
+        subparser.add_argument(
+            "action", metavar="ACTION", type=str, help="name of the action"
+        )
+        subparser.set_defaults(func=self.run_action)
 
     def list_(self, args):
         opts = utils.CommandOptions(args)
@@ -69,3 +81,9 @@ class LinksCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         link = client.get_link(opts.require_instance(), args.link)
         print(link.get_info())
+
+    def run_action(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        link = client.get_link(opts.require_instance(), args.link)
+        link.run_action(args.action)
