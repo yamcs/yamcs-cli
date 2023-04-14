@@ -31,6 +31,27 @@ class TablesCommand(utils.Command):
         subparser.add_argument(
             "tables", metavar="TABLE", type=str, nargs="+", help="name of the tables"
         ).completer = TableCompleter
+
+        query_group = subparser.add_mutually_exclusive_group()
+        query_group.add_argument(
+            "-q",
+            "--query",
+            type=str,
+            help=(
+                "Provides a SQL WHERE search condition that limits the rows "
+                "included in the output"
+            ),
+        )
+        query_group.add_argument(
+            "--query-file",
+            metavar="FILE",
+            type=str,
+            help=(
+                "Specifies the path to a file containing a SQL WHERE search "
+                "condition that limits the rows included in the output"
+            ),
+        )
+
         subparser.set_defaults(func=self.dump)
         subparser.add_argument(
             "-d",
@@ -116,19 +137,25 @@ class TablesCommand(utils.Command):
             path = table + ".dump.gz" if args.gzip else table + ".dump"
             if args.dir:
                 path = os.path.join(args.dir, path)
+
+            query = args.query
+            if args.query_file:
+                with open(args.query_file, "rt") as file:
+                    query = file.read().strip()
+
             if args.gzip:
                 with gzip.open(path, "wb", compresslevel=1) as f:
-                    self.write_dump(f, archive, table, path)
+                    self.write_dump(f, archive, table, query, path)
             else:
                 with open(path, "wb") as f:
-                    self.write_dump(f, archive, table, path)
+                    self.write_dump(f, archive, table, query, path)
 
-    def write_dump(self, f, archive, table, path):
+    def write_dump(self, f, archive, table, query, path):
         txsize = 0
         t0 = time.time()
         t = t0
         prev_t = None
-        for chunk in archive.dump_table(table):
+        for chunk in archive.dump_table(table, query=query):
             txsize += f.write(chunk)
             t = time.time()
             if not prev_t or (t - prev_t > 0.5):  # Limit console writes
