@@ -37,6 +37,12 @@ class CommandsCommand(utils.Command):
             "--processor", type=str, help="name of the processor", default="realtime"
         ).completer = ProcessorCompleter
         subparser.add_argument(
+            "--sequence-number",
+            metavar="SEQNO",
+            type=int,
+            help="Set a sequence number",
+        )
+        subparser.add_argument(
             "--dry-run",
             action="store_true",
             help="Validate the command, but do not queue it",
@@ -87,6 +93,10 @@ class CommandsCommand(utils.Command):
             for arg in arg_arg:
                 self.add_argument(command_args, arg)
 
+        kwargs = {}
+        if args.sequence_number is not None:
+            kwargs["sequence_number"] = args.sequence_number
+
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         instance = opts.require_instance()
@@ -96,5 +106,6 @@ class CommandsCommand(utils.Command):
             args=command_args,
             dry_run=args.dry_run,
             comment=args.comment,
+            **kwargs,
         )
         print(command.id)

@@ -11,7 +11,8 @@ Synopsis
     | **yamcs commands** list
     | **yamcs commands** describe <*COMMAND*>
     | **yamcs commands** run [--processor <*PROCESSOR*>] [--dry-run]
-       [--arg-file <*FILE*>] [--arg <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
+       [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
+       [--arg <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
        <*COMMAND*>
 
 Description
@@ -56,3 +57,7 @@ Options
 .. option:: --arg <KEY=VALUE> [KEY=VALUE ...]
 
     With ``run``, set command arguments.
+
+.. option:: --sequence-number <SEQNO>
+
+    With ``run``, set the sequence number of this command. This is used to determine unicity of commands at the same time and coming from the same origin. If not set Yamcs will automatically assign a sequential number as if every submitted command is unique.
