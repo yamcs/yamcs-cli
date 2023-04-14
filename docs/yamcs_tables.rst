@@ -49,7 +49,7 @@ Commands
 Options
 -------
 
-.. option:: -d DIR, --dir DIR
+.. option:: -d <DIR>, --dir <DIR>
 
     Specifies the directory where to locate dump files. Defaults to current directory.
 
@@ -59,13 +59,13 @@ Options
 
     With ``load``, decompress the dump.
 
-.. option:: -s DATE, --since DATE
+.. option:: -s <DATE>, --since <DATE>
 
     With ``rebuild-histogram``, include records not older than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
 
-.. option:: -u DATE, --until DATE
+.. option:: -u <DATE>, --until <DATE>
 
     With ``rebuild-histogram``, include records not newer than the specified date.
 

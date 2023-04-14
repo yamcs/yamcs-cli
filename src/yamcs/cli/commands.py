@@ -1,3 +1,5 @@
+from itertools import islice
+
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
@@ -48,6 +50,28 @@ class CommandsCommand(utils.Command):
             help="Validate the command, but do not queue it",
         )
         subparser.add_argument("-c", "--comment", help="attach a comment")
+
+        subparser = self.create_subparser(subparsers, "log", "Read command log")
+        subparser.add_argument(
+            "-n",
+            "--lines",
+            type=int,
+            default=10,
+            help="Number of commands to show",
+        )
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include commands not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include commands not newer than the specified date",
+        )
+        subparser.set_defaults(func=self.log)
 
     def list_(self, args):
         opts = utils.CommandOptions(args)
@@ -109,3 +133,52 @@ class CommandsCommand(utils.Command):
             **kwargs,
         )
         print(command.id)
+
+    def log(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.require_instance())
+
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+
+        # When no range is specified, fetch only the most recent
+        descending = start is None and stop is None and args.lines != "all"
+
+        iterator = archive.list_command_history(
+            descending=descending,
+            start=start,
+            stop=stop,
+        )
+
+        # Limit, unless explicit filters are set
+        # We need to reverse it back to ascending in-memory.
+        if descending:
+            iterator = reversed(list(islice(iterator, 0, args.lines)))
+
+        rows = [["ID", "TIME", "COMMAND", "Q", "R", "S", "COMPLETION"]]
+        for command in iterator:
+            row = [command.id, command.generation_time, command.name]
+
+            ack = command.acknowledgments.get("Acknowledge_Queued")
+            row.append(ack.status if ack else "")
+
+            ack = command.acknowledgments.get("Acknowledge_Released")
+            row.append(ack.status if ack else "")
+
+            ack = command.acknowledgments.get("Acknowledge_Sent")
+            row.append(ack.status if ack else "")
+
+            if command.is_success():
+                row.append("SUCCESS")
+            elif command.is_failure():
+                row.append("FAILURE")
+            else:
+                row.append("")
+
+            rows.append(row)
+        utils.print_table(rows)
