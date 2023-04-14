@@ -10,6 +10,7 @@ Synopsis
 
     | **yamcs space-systems** list
     | **yamcs space-systems** describe <*SPACESYSTEM*>
+    | **yamcs space-systems** export <*SPACESYSTEM*>
 
 
 Description
@@ -28,3 +29,7 @@ Commands
 .. describe:: describe <SPACESYSTEM>
 
     Describe a space system
+
+.. describe:: export <SPACESYSTEM>
+
+    Export an XTCE representation of a space system

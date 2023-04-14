@@ -1,6 +1,7 @@
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import SpaceSystemCompleter
-from yamcs.client import YamcsClient
 
 
 class SpaceSystemsCommand(utils.Command):
@@ -23,6 +24,15 @@ class SpaceSystemsCommand(utils.Command):
         ).completer = SpaceSystemCompleter
         subparser.set_defaults(func=self.describe)
 
+        subparser = self.create_subparser(
+            subparsers, "export", "Export a space system in XTCE format"
+        )
+
+        subparser.add_argument(
+            "space_system", metavar="NAME", type=str, help="name of the space system"
+        ).completer = SpaceSystemCompleter
+        subparser.set_defaults(func=self.export)
+
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
@@ -44,3 +54,10 @@ class SpaceSystemsCommand(utils.Command):
         mdb = client.get_mdb(opts.require_instance())
         space_system = mdb.get_space_system(args.space_system)
         print(space_system._proto)
+
+    def export(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        mdb = client.get_mdb(opts.require_instance())
+        xtce = mdb.export_space_system(args.space_system)
+        print(xtce)
