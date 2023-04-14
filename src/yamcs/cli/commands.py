@@ -55,7 +55,7 @@ class CommandsCommand(utils.Command):
         subparser.add_argument(
             "-n",
             "--lines",
-            type=int,
+            type=str,
             default=10,
             help="Number of commands to show",
         )
@@ -146,19 +146,18 @@ class CommandsCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
 
-        # When no range is specified, fetch only the most recent
-        descending = start is None and stop is None and args.lines != "all"
+        most_recent_only = start is None and stop is None and args.lines != "all"
 
         iterator = archive.list_command_history(
-            descending=descending,
+            descending=most_recent_only,
             start=start,
             stop=stop,
         )
 
         # Limit, unless explicit filters are set
         # We need to reverse it back to ascending in-memory.
-        if descending:
-            iterator = reversed(list(islice(iterator, 0, args.lines)))
+        if most_recent_only:
+            iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
         rows = [["ID", "TIME", "COMMAND", "Q", "R", "S", "COMPLETION"]]
         for command in iterator:

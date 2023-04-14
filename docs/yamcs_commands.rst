@@ -70,7 +70,7 @@ Options
 
 .. option:: -n <LINES>, --lines <LINES>
 
-    With ``log``, specify the number of commands to show, or ``all`` to return all commands.
+    With ``log``, specify the number of commands to show, or ``all`` to show all.
 
     Default: 10, but only when ``--since`` and ``--until`` are unset.
 

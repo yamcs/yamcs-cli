@@ -1,7 +1,9 @@
 import os
+from itertools import islice
+
+from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
-from yamcs.client import YamcsClient
 
 
 class EventsCommand(utils.Command):
@@ -43,8 +45,29 @@ class EventsCommand(utils.Command):
             nargs="+",
             help="Set additional event properties",
         )
-
         subparser.set_defaults(func=self.create)
+
+        subparser = self.create_subparser(subparsers, "log", "Read event log")
+        subparser.add_argument(
+            "-n",
+            "--lines",
+            type=str,
+            default=10,
+            help="Number of events to show",
+        )
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include events not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include events not newer than the specified date",
+        )
+        subparser.set_defaults(func=self.log)
 
     def create(self, args):
         opts = utils.CommandOptions(args)
@@ -94,3 +117,40 @@ class EventsCommand(utils.Command):
                 severity=args.severity,
                 **kwargs,
             )
+
+    def log(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.require_instance())
+
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+
+        most_recent_only = start is None and stop is None and args.lines != "all"
+
+        iterator = archive.list_events(
+            descending=most_recent_only,
+            start=start,
+            stop=stop,
+        )
+
+        # Limit, unless explicit filters are set
+        # We need to reverse it back to ascending in-memory.
+        if most_recent_only:
+            iterator = reversed(list(islice(iterator, 0, int(args.lines))))
+
+        rows = [["SEVERITY", "TIME", "MESSAGE", "SOURCE", "TYPE"]]
+        for event in iterator:
+            row = [
+                '-' if event.severity is None else event.severity,
+                event.generation_time,
+                '-' if event.message is None else event.message,
+                '-' if event.source is None else event.source,
+                '-' if event.event_type is None else event.event_type,
+            ]
+            rows.append(row)
+        utils.print_table(rows)

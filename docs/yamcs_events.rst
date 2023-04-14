@@ -11,7 +11,8 @@ Synopsis
     | **yamcs events** create [-m <*MESSAGE*>, --message <*MESSAGE*>] [--date <*DATE*>]
        [--sequence-number <*SEQNO*>] [--severity <*LEVEL*>] [--source <*SOURCE*>]
        [--type <*TYPE*>] [--extra <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
-
+    | **yamcs events** log [-n <*LINES*>, --lines <*LINES*>]
+       [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
 
 Description
 -----------
@@ -25,6 +26,10 @@ Commands
 .. describe:: create
 
     Create an event. This command shows an editor where you can enter the event message. Alternatively you can specify the message using the ``--message`` option.
+
+.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+
+    Read event log
 
 
 Options
@@ -62,3 +67,21 @@ Options
 .. option:: --extra <KEY=VALUE> [KEY=VALUE ...]
 
     Set additional event properties.
+
+.. option:: -n <LINES>, --lines <LINES>
+
+    With ``log``, specify the number of events to show, or ``all`` to show all.
+
+    Default: 10, but only when ``--since`` and ``--until`` are unset.
+
+.. option:: -s <DATE>, --since <DATE>
+
+    With ``log``, include events not older than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: -u <DATE>, --until <DATE>
+
+    With ``log``, include events not newer than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
