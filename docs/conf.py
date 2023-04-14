@@ -178,14 +178,14 @@ man_pages = [
     (
         "yamcs_parameters",
         "yamcs-parameters",
-        "Read parameters",
+        "Manage parameters",
         author,
         1,
     ),
     (
         "yamcs_processors",
         "yamcs-processors",
-        "Read processors",
+        "Manage processors",
         author,
         1,
     ),

@@ -9,12 +9,13 @@ Synopsis
 .. rst-class:: synopsis
 
     | **yamcs processors** list
+    | **yamcs processors** delete <*PROCESSOR*>
 
 
 Description
 -----------
 
-Read processors.
+Manage processors.
 
 
 Commands
@@ -23,3 +24,7 @@ Commands
 .. describe:: list
 
     List processors
+
+.. describe:: delete <PROCESSOR>
+
+    Delete a processor

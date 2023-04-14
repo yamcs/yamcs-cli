@@ -55,9 +55,11 @@ Commands
 :doc:`logout <yamcs_logout>`
     Logout of a Yamcs server. See :manpage:`yamcs-logout(1)`.
 :doc:`parameters <yamcs_parameters>`
-    Read parameters. See :manpage:`yamcs-parameters(1)`.
+    Manage parameters. See :manpage:`yamcs-parameters(1)`.
+:doc:`parameter-archive <yamcs_parameter-archive>`
+    Manipulate the Parameter Archive. See :manpage:`yamcs-parameter-archive(1)`.
 :doc:`processors <yamcs_processors>`
-    Read processors. See :manpage:`yamcs-processors(1)`.
+    Manage processors. See :manpage:`yamcs-processors(1)`.
 :doc:`services <yamcs_services>`
     Read and manipulate services. See :manpage:`yamcs-services(1)`.
 :doc:`space-systems <yamcs_space-systems>`
