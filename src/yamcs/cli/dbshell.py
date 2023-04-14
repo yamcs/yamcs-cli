@@ -9,11 +9,12 @@ from collections import abc
 from pydoc import pager
 
 from google.protobuf import json_format
-from yamcs.cli import utils
-from yamcs.cli.protobuf import cmdhistory_pb2, timeline_pb2
 from yamcs.client import YamcsClient
 from yamcs.core.exceptions import YamcsError
 from yamcs.protobuf.events import events_pb2
+
+from yamcs.cli import utils
+from yamcs.cli.protobuf import cmdhistory_pb2, timeline_pb2
 
 SHOW_OPTIONS = ("databases", "engines", "streams", "tables", "stream")
 
@@ -47,7 +48,7 @@ class DbShellCommand(utils.Command):
             "-N",
             "--skip-column-names",
             action="store_true",
-            help="Don't print print column names",
+            help="Don't print column names",
         )
         self.parser.add_argument(
             "-B",
