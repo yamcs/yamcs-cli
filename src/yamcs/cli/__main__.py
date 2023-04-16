@@ -18,6 +18,7 @@ from yamcs.cli.instances import InstancesCommand
 from yamcs.cli.links import LinksCommand
 from yamcs.cli.login import LoginCommand
 from yamcs.cli.logout import LogoutCommand
+from yamcs.cli.packets import PacketsCommand
 from yamcs.cli.parameter_archive import ParameterArchiveCommand
 from yamcs.cli.parameters import ParametersCommand
 from yamcs.cli.processors import ProcessorsCommand
@@ -77,6 +78,7 @@ def main():
     LinksCommand(subparsers)
     LoginCommand(subparsers)
     LogoutCommand(subparsers)
+    PacketsCommand(subparsers)
     ParameterArchiveCommand(subparsers)
     ParametersCommand(subparsers)
     ProcessorsCommand(subparsers)

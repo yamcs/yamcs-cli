@@ -94,7 +94,7 @@ class ParametersCommand(utils.Command):
             if isinstance(val, bool):
                 print(str(val).lower())
             elif isinstance(val, (bytes, bytearray)):
-                print(str(binascii.hexlify(val)))
+                print(str(binascii.hexlify(val), "ascii"))
             else:
                 print(val)
 

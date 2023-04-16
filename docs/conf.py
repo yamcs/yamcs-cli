@@ -169,6 +169,13 @@ man_pages = [
         1,
     ),
     (
+        "yamcs_packets",
+        "yamcs-packets",
+        "Read packets",
+        author,
+        1,
+    ),
+    (
         "yamcs_parameter-archive",
         "yamcs-parameter-archive",
         "Manipulate the Parameter Archive",

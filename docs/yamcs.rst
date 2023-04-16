@@ -54,6 +54,8 @@ Commands
     Login to a Yamcs server. See :manpage:`yamcs-login(1)`.
 :doc:`logout <yamcs_logout>`
     Logout of a Yamcs server. See :manpage:`yamcs-logout(1)`.
+:doc:`packets <yamcs_packets>`
+    Read packets. See :manpage:`yamcs-packets(1)`.
 :doc:`parameters <yamcs_parameters>`
     Manage parameters. See :manpage:`yamcs-parameters(1)`.
 :doc:`parameter-archive <yamcs_parameter-archive>`
