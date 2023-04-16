@@ -25,19 +25,19 @@ class PacketsCommand(utils.Command):
             "--lines",
             type=str,
             default=10,
-            help="Number of events to show",
+            help="Number of packets to show",
         )
         subparser.add_argument(
             "-s",
             "--since",
             type=str,
-            help="Include events not older than the specified date",
+            help="Include packets not older than the specified date",
         )
         subparser.add_argument(
             "-u",
             "--until",
             type=str,
-            help="Include events not newer than the specified date",
+            help="Include packets not newer than the specified date",
         )
         subparser.set_defaults(func=self.log)
 

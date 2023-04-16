@@ -99,6 +99,13 @@ man_pages = [
         1,
     ),
     (
+        "yamcs_alarms",
+        "yamcs-alarms",
+        "Read alarms",
+        author,
+        1,
+    ),
+    (
         "yamcs_algorithms",
         "yamcs-algorithms",
         "Read algorithms",

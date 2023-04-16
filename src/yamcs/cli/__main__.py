@@ -6,6 +6,7 @@ import pkg_resources
 from yamcs.core.exceptions import Unauthorized
 
 from yamcs.cli import utils
+from yamcs.cli.alarms import AlarmsCommand
 from yamcs.cli.algorithms import AlgorithmsCommand
 from yamcs.cli.commands import CommandsCommand
 from yamcs.cli.completers import InstanceCompleter
@@ -68,6 +69,7 @@ def main():
     subparsers = parser.add_subparsers(title="Commands", metavar=metavar)
     subparsers.required = True
 
+    AlarmsCommand(subparsers)
     AlgorithmsCommand(subparsers)
     CommandsCommand(subparsers)
     ConfigCommand(subparsers)

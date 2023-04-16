@@ -43,7 +43,7 @@ Options
 
     Event time. If unspecified, defaults to mission time.
 
-    .. include:: _includes/timestamps.rst
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
 
 .. option:: --sequence-number <SEQNO>
 
@@ -85,3 +85,9 @@ Options
     With ``log``, include events not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+
+Timestamps
+----------
+
+.. include:: _includes/timestamps.rst

@@ -85,3 +85,9 @@ Options
     With ``log``, include commands not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+
+Timestamps
+----------
+
+.. include:: _includes/timestamps.rst

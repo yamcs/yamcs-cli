@@ -24,6 +24,7 @@ Run :doc:`yamcs_login` to initialize your environment:
     :titlesonly:
 
     yamcs
+    yamcs_alarms
     yamcs_algorithms
     yamcs_commands
     yamcs_config

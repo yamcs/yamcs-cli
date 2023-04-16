@@ -34,6 +34,8 @@ Options
 Commands
 --------
 
+:doc:`alarms <yamcs_alarms>`
+    Read alarms. See :manpage:`yamcs-alarms(1)`.
 :doc:`algorithms <yamcs_algorithms>`
     Read algorithms. See :manpage:`yamcs-algorithms(1)`.
 :doc:`commands <yamcs_commands>`
