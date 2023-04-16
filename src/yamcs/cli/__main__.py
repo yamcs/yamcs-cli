@@ -3,6 +3,8 @@ import logging
 
 import argcomplete
 import pkg_resources
+from yamcs.core.exceptions import Unauthorized
+
 from yamcs.cli import utils
 from yamcs.cli.algorithms import AlgorithmsCommand
 from yamcs.cli.commands import CommandsCommand
@@ -24,7 +26,6 @@ from yamcs.cli.space_systems import SpaceSystemsCommand
 from yamcs.cli.storage import StorageCommand
 from yamcs.cli.streams import StreamsCommand
 from yamcs.cli.tables import TablesCommand
-from yamcs.core.exceptions import Unauthorized
 
 
 def create_subparser(subparsers, command, help_):

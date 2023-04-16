@@ -7,9 +7,10 @@ from urllib.parse import urlparse
 
 import pkg_resources
 from dateutil import parser
-from yamcs.cli.exceptions import NoInstanceError, NoServerError
 from yamcs.core import auth
 from yamcs.core.helpers import parse_server_timestring, to_isostring
+
+from yamcs.cli.exceptions import NoInstanceError, NoServerError
 
 HOME = os.path.expanduser("~")
 CONFIG_DIR = os.path.join(os.path.join(HOME, ".config"), "yamcs-cli")
@@ -164,10 +165,8 @@ def parse_ys_url(url):
     else:
         return parts[0], None
 
-
 class Command(object):
-
-    config_options = ["core.url", "core.instance"]
+    config_options = ["core.url", "core.instance", "core.enable_utc"]
 
     def __init__(self, subparsers, command, help_, add_epilog=True):
         self.parser = self.create_subparser(
@@ -220,6 +219,9 @@ class CommandOptions(object):
         self._credentials = read_credentials()
         self._args = args
 
+        if self.enable_utc:
+            os.environ["PYTHON_YAMCS_CLIENT_UTC"] = "1"
+
     @property
     def instance(self):
         return self._args.instance or (
@@ -232,6 +234,12 @@ class CommandOptions(object):
         if self.config.has_section("core"):
             return self.config.get("core", "url", fallback=None)
         return None
+
+    @property
+    def enable_utc(self):
+        if self.config.has_section("core"):
+            return self.config.getboolean("core", "enable_utc", fallback=False)
+        return False
 
     @property
     def user_agent(self):

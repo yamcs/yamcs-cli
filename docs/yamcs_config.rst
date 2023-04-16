@@ -66,3 +66,7 @@ Properties
 .. describe:: instance
 
     Yamcs instance name
+
+.. describe:: enable_utc
+
+    If true, dates are printed in UTC format rather than using the system local timezone.
