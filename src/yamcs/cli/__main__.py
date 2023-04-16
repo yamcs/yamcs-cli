@@ -104,6 +104,8 @@ def main():
     except NoInstanceError:
         print("No instance. Run: 'yamcs config set instance <instance>'")
     except Unauthorized:
+        if args.debug:
+            print(logging.traceback.format_exc())
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
     except Exception as e:
         if args.debug:

@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs login** [<*URL*>]
+    | **yamcs login** [-u <*USERNAME*>, --username <*USERNAME*>] [<*URL*>]
 
 
 Description
@@ -23,3 +23,14 @@ Options
 .. option:: <URL>
 
     The server URL. Example: ``http://localhost:8090``
+
+.. option:: -u <USERNAME>, --username <USERNAME>
+
+    Username
+
+
+Environment
+-----------
+
+``YAMCS_CLI_PASSWORD``
+    Provide a password instead of prompting for input.

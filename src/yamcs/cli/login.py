@@ -1,8 +1,10 @@
+import os
 from getpass import getpass
 
-from yamcs.cli import utils
 from yamcs.client import YamcsClient
 from yamcs.core import auth
+
+from yamcs.cli import utils
 
 
 class LoginCommand(utils.Command):
@@ -21,6 +23,11 @@ class LoginCommand(utils.Command):
             "--kerberos",
             action="store_true",
             help="Authenticate using Kerberos negotiation",
+        )
+        self.parser.add_argument(
+            "-u",
+            "--username",
+            help="Username",
         )
 
     def do_login(self, args):
@@ -49,11 +56,20 @@ class LoginCommand(utils.Command):
             credentials = KerberosCredentials()
             client = YamcsClient(credentials=credentials, **client_kwargs)
             print("Login succeeded")
+        elif args.username:
+            credentials = self.read_credentials(username=args.username)
+            if credentials:
+                client = YamcsClient(credentials=credentials, **client_kwargs)
+                print("Login succeeded")
+            else:
+                return
         elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
             if credentials:
                 client = YamcsClient(credentials=credentials, **client_kwargs)
                 print("Login succeeded")
+            else:
+                return
         else:
             user_info = client.get_user_info()
             print("Anonymous login succeeded (username: {})".format(user_info.username))
@@ -64,13 +80,16 @@ class LoginCommand(utils.Command):
         default_url = opts.url or "http://localhost:8090"
         return input("URL [{}]: ".format(default_url)) or default_url
 
-    def read_credentials(self):
-        username = input("Username: ")
+    def read_credentials(self, username=None):
+        if username is None:
+            username = input("Username: ")
         if not username:
             print("*** Username may not be empty")
             return False
 
-        password = getpass("Password: ")
+        password = os.environ.get("YAMCS_CLI_PASSWORD")
+        if password is None:
+            password = getpass("Password: ")
         if not password:
             print("*** Password may not be empty")
             return False
