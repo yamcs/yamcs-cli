@@ -165,6 +165,7 @@ def parse_ys_url(url):
     else:
         return parts[0], None
 
+
 class Command(object):
     config_options = ["core.url", "core.instance", "core.enable_utc"]
 

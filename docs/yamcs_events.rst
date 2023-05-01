@@ -9,10 +9,10 @@ Synopsis
 .. rst-class:: synopsis
 
     | **yamcs events** create [-m <*MESSAGE*>, --message <*MESSAGE*>] [--date <*DATE*>]
-       [--sequence-number <*SEQNO*>] [--severity <*LEVEL*>] [--source <*SOURCE*>]
-       [--type <*TYPE*>] [--extra <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
+    |   [--sequence-number <*SEQNO*>] [--severity <*LEVEL*>] [--source <*SOURCE*>]
+    |   [--type <*TYPE*>] [--extra <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
     | **yamcs events** log [-n <*LINES*>, --lines <*LINES*>]
-       [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
 
 Description
 -----------

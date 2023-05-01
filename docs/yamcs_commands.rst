@@ -11,11 +11,11 @@ Synopsis
     | **yamcs commands** list
     | **yamcs commands** describe <*COMMAND*>
     | **yamcs commands** run [--processor <*PROCESSOR*>] [--dry-run]
-       [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
-       [--arg <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
-       <*COMMAND*>
+    |   [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
+    |   [--arg <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
+    |   <*COMMAND*>
     | **yamcs commands** log [-n <*LINES*>, --lines <*LINES*>]
-       [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
 
 Description
 -----------

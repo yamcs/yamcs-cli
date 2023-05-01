@@ -1,4 +1,3 @@
-import binascii
 from itertools import islice
 
 from yamcs.client import YamcsClient
@@ -9,7 +8,7 @@ from yamcs.cli.completers import ProcessorCompleter
 
 class AlarmsCommand(utils.Command):
     def __init__(self, parent):
-        super(AlarmsCommand, self).__init__(parent, "alarms", "Read alarms")
+        super(AlarmsCommand, self).__init__(parent, "alarms", "Manage alarms")
 
         subparsers = self.parser.add_subparsers(title="Commands", metavar="COMMAND")
         subparsers.required = True
@@ -23,7 +22,7 @@ class AlarmsCommand(utils.Command):
 
         # acknowledge
         subparser = self.create_subparser(
-            subparsers, "acknowledge", "Acknowledge an alarms"
+            subparsers, "acknowledge", "Acknowledge an alarm"
         )
         subparser.add_argument(
             "alarm", metavar="ALARM", type=str, help="name of the alarm"

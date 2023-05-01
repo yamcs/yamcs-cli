@@ -83,7 +83,7 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "yamcs-cli.tex",
+        f"yamcs-cli-{release}.tex",
         "Yamcs Command-Line Interface",
         "Space Applications Services",
         "manual",
@@ -101,7 +101,7 @@ man_pages = [
     (
         "yamcs_alarms",
         "yamcs-alarms",
-        "Read alarms",
+        "Manage alarms",
         author,
         1,
     ),

@@ -9,8 +9,8 @@ Synopsis
 .. rst-class:: synopsis
 
     | **yamcs packets** log [-p <*PACKET*>, --packet <*PACKET*>]
-       [-n <*LINES*>, --lines <*LINES*>] [-s <*DATE*>, --since <*DATE*>]
-       [-u <*DATE*>, --until <*DATE*>]
+    |   [-n <*LINES*>, --lines <*LINES*>] [-s <*DATE*>, --since <*DATE*>]
+    |   [-u <*DATE*>, --until <*DATE*>]
 
 Description
 -----------

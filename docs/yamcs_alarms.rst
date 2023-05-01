@@ -10,21 +10,21 @@ Synopsis
 
     | **yamcs alarms** list [--processor <*PROCESSOR*>]
     | **yamcs alarms** acknowledge [--processor <*PROCESSOR*>]
-       [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
+    |    [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** shelve [--processor <*PROCESSOR*>]
-       [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
+    |   [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** unshelve [--processor <*PROCESSOR*>]
-       [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
+    |   [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** clear [--processor <*PROCESSOR*>]
-       [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
+    |   [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** log [-n <*LINES*>, --lines <*LINES*>]
-       [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
 
 
 Description
 -----------
 
-Read alarms.
+Manage alarms.
 
 
 Commands

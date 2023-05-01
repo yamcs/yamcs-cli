@@ -10,10 +10,12 @@ Synopsis
 
     | **yamcs tables** list
     | **yamcs tables** describe <*TABLE*>
-    | **yamcs tables** dump [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
+    | **yamcs tables** dump [-d <*DIR*>, --dir <*DIR*>] [--gzip]
+    |   [-q <*QUERY*>, --query <*QUERY*> ] [--query-file <*FILE*>]
+    |   <*TABLE*>...
     | **yamcs tables** load [-d <*DIR*>, --dir <*DIR*>] [--gzip] <*TABLE*>...
     | **yamcs tables** rebuild-histogram [-s <*DATE*>, --since <*DATE*>]
-       [-u <*DATE*>, --until <*DATE*>] <*TABLE*>...
+    |   [-u <*DATE*>, --until <*DATE*>] <*TABLE*>...
 
 
 Description
@@ -33,7 +35,7 @@ Commands
 
     Describe a table
 
-.. describe:: dump [-d <DIR>, --dir <DIR>] [--gzip] <TABLE>...
+.. describe:: dump [-d <DIR>, --dir <DIR>] [-q <QUERY>, --query <QUERY>] [--query-file FILE] [--gzip] <TABLE>...
 
     Dump table data
 
@@ -58,6 +60,14 @@ Options
     With ``dump``, compress the output.
 
     With ``load``, decompress the dump.
+
+.. option:: -q <QUERY>, --query <QUERY>
+
+    With ``dump``, provide a SQL WHERE search condition to limit the rows included in the output.
+
+.. option:: --query-file <FILE>
+
+    With ``dump``, specify the path to a file containing a SQL WHERE search condition to limit the rows included in the output.
 
 .. option:: -s <DATE>, --since <DATE>
 
