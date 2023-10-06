@@ -1,4 +1,5 @@
 import binascii
+import sys
 
 from yamcs.client import YamcsClient
 
@@ -58,6 +59,37 @@ class ParametersCommand(utils.Command):
         )
         subparser.set_defaults(func=self.set)
 
+        subparser = self.create_subparser(
+            subparsers, "export-csv", "Export parameter values in CSV format"
+        )
+        subparser.add_argument(
+            "parameter",
+            metavar="PARAMETER",
+            type=str,
+            nargs="+",
+            help="name of the parameter",
+        ).completer = ParameterCompleter
+        subparser.add_argument("--namespace", type=str, help="preferred namespace")
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include values not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include values not newer than the specified date",
+        )
+        subparser.add_argument(
+            "--interval",
+            dest="interval",
+            type=float,
+            help="Limit values to max one per interval (in seconds)",
+        )
+        subparser.set_defaults(func=self.export_csv)
+
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
@@ -113,3 +145,25 @@ class ParametersCommand(utils.Command):
             args.value,
             **kwargs,
         )
+
+    def export_csv(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        instance = opts.require_instance()
+        archive = client.get_archive(instance)
+
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+
+        for chunk in archive.export_parameter_values(
+            parameters=args.parameter,
+            start=start,
+            stop=stop,
+            interval=args.interval,
+            namespace=args.namespace,
+        ):
+            sys.stdout.buffer.write(chunk)
