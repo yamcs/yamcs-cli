@@ -12,6 +12,8 @@ Description
     | **yamcs parameters** describe <*PARAMETER*>
     | **yamcs parameters** get [--date <*DATE*>] <*PARAMETER*>
     | **yamcs parameters** set [--next [--timeout <*TIMEOUT*>]] <*PARAMETER*> <*VALUE*>
+    | **yamcs parameters** export-csv [--interval <*INTERVAL*>]
+    |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>] <*PARAMETER*>
 
 
 Desription
@@ -37,7 +39,11 @@ Commands
 
 .. describe:: set <PARAMETER> <VALUE>
 
-    Set a parameter's value (if this parameter is not readonly).
+    Set a parameter's value (unless this is a readonly parameter).
+
+.. describe:: export-csv <PARAMETER>
+
+    Export parameter values in CSV format
 
 
 Options
@@ -64,3 +70,25 @@ Options
     Value time. If unspecified, defaults to mission time.
 
     .. include:: _includes/timestamps.rst
+
+.. option:: --interval <INTERVAL>
+
+    With ``export-csv``, limit values to max one per interval (in seconds).
+
+.. option:: -s <DATE>, --since <DATE>
+
+    With ``export-csv``, include values not older than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: -u <DATE>, --until <DATE>
+
+    With ``export-csv``, include values not newer than the specified date.
+
+    The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+
+Timestamps
+----------
+
+.. include:: _includes/timestamps.rst
