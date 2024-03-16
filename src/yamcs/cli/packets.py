@@ -1,5 +1,6 @@
 import binascii
 from itertools import islice
+from sys import stdout
 
 from yamcs.client import YamcsClient
 
@@ -41,6 +42,40 @@ class PacketsCommand(utils.Command):
         )
         subparser.set_defaults(func=self.log)
 
+        subparser = self.create_subparser(
+            subparsers, "rebuild-histogram", "Rebuild packet histogram"
+        )
+        subparser.set_defaults(func=self.rebuild_histogram)
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include packets not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include packets not newer than the specified date",
+        )
+
+        subparser = self.create_subparser(
+            subparsers, "rebuild-ccsds-index", "Rebuild CCSDS index"
+        )
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Include packets not older than the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Include packets not newer than the specified date",
+        )
+        subparser.set_defaults(func=self.rebuild_ccsds_index)
+
     def log(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
@@ -76,3 +111,38 @@ class PacketsCommand(utils.Command):
             ]
             rows.append(row)
         utils.print_table(rows)
+
+    def rebuild_histogram(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.require_instance())
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+
+        stdout.write(f"Rebuilding packet histogram")
+        stdout.flush()
+        archive.rebuild_histogram("tm", start=start, stop=stop)
+        stdout.write("done\n")
+        stdout.flush()
+
+    def rebuild_ccsds_index(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.require_instance())
+
+        start = None
+        if args.since:
+            start = utils.parse_timestamp(args.since)
+        stop = None
+        if args.until:
+            stop = utils.parse_timestamp(args.until)
+
+        stdout.write(f"Rebuilding CCSDS index... ")
+        stdout.flush()
+        archive.rebuild_ccsds_index(start, stop)
+        stdout.write("done\n")
+        stdout.flush()

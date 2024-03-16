@@ -11,6 +11,10 @@ Synopsis
     | **yamcs packets** log [-p <*PACKET*>, --packet <*PACKET*>]
     |   [-n <*LINES*>, --lines <*LINES*>] [-s <*DATE*>, --since <*DATE*>]
     |   [-u <*DATE*>, --until <*DATE*>]
+    | **yamcs packets** rebuild-histogram [-s <*DATE*>, --since <*DATE*>]
+    |   [-u <*DATE*>, --until <*DATE*>]
+    | **yamcs packets** rebuild-ccsds-index [-s <*DATE*>, --since <*DATE*>]
+    |   [-u <*DATE*>, --until <*DATE*>]
 
 Description
 -----------
@@ -24,6 +28,16 @@ Commands
 .. describe:: log [-p <PACKET> --packet <PACKET>] [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
 
     Read packet log
+
+.. describe:: rebuild-histogram [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+
+    Rebuilds the packet histogram. This may be necessary for example after bulk loading data.
+
+.. describe:: rebuild-ccsds-index [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+
+    Rebuilds the CCSDS index. This may be necessary for example after bulk loading data.
+
+    This method is only applicable when a ``CcsdsTmIndex`` service is used to calculate completeness.
 
 
 Options
@@ -41,13 +55,13 @@ Options
 
 .. option:: -s <DATE>, --since <DATE>
 
-    With ``log``, include packets not older than the specified date.
+    Include packets not older than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
 
 .. option:: -u <DATE>, --until <DATE>
 
-    With ``log``, include packets not newer than the specified date.
+    Include packets not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
 
