@@ -9,5 +9,5 @@ lint:
 build: lint
 	python setup.py sdist bdist_wheel
 
-deploy: build
+deploy: clean build
 	twine upload -r pypi dist/*
