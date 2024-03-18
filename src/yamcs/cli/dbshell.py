@@ -14,10 +14,18 @@ from yamcs.core.exceptions import YamcsError
 from yamcs.protobuf.events import events_pb2
 
 from yamcs.cli import utils
-from yamcs.cli.protobuf import cmdhistory_pb2, security_pb2, timeline_pb2
+from yamcs.cli.protobuf import (
+    activities_pb2,
+    cmdhistory_pb2,
+    security_pb2,
+    timeline_pb2,
+)
 
 SHOW_OPTIONS = ("databases", "engines", "streams", "tables", "stream")
 
+PB_ACTIVITY_DEFINITION_TYPE = (
+    "PROTOBUF(org.yamcs.activities.protobuf.ActivityDefinition)"
+)
 PB_ASSIGNMENT_TYPE = "PROTOBUF(org.yamcs.cmdhistory.protobuf.Cmdhistory$AssignmentInfo)"
 PB_BANDFILTER_TYPE = "PROTOBUF(org.yamcs.timeline.protobuf.BandFilter)"
 PB_EVENT_TYPE = "PROTOBUF(org.yamcs.yarch.protobuf.Db$Event)"
@@ -119,8 +127,8 @@ class ResultSetPrinter:
         for i, value in enumerate(row):
             if value is None:
                 string_value = "NULL"
-            elif self.column_types[i] == PB_EVENT_TYPE:
-                pb = events_pb2.Event()
+            elif self.column_types[i] == PB_ACTIVITY_DEFINITION_TYPE:
+                pb = activities_pb2.ActivityDefinition()
                 pb.ParseFromString(value)
                 dict_value = json_format.MessageToDict(pb)
                 string_value = json.dumps(dict_value)
@@ -134,13 +142,18 @@ class ResultSetPrinter:
                 pb.ParseFromString(value)
                 dict_value = json_format.MessageToDict(pb)
                 string_value = json.dumps(dict_value)
-            elif self.column_types[i] == PB_USER_ACCOUNT_DETAIL_TYPE:
-                pb = security_pb2.UserAccountRecordDetail()
+            elif self.column_types[i] == PB_EVENT_TYPE:
+                pb = events_pb2.Event()
                 pb.ParseFromString(value)
                 dict_value = json_format.MessageToDict(pb)
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_SERVICE_ACCOUNT_DETAIL_TYPE:
                 pb = security_pb2.ServiceAccountRecordDetail()
+                pb.ParseFromString(value)
+                dict_value = json_format.MessageToDict(pb)
+                string_value = json.dumps(dict_value)
+            elif self.column_types[i] == PB_USER_ACCOUNT_DETAIL_TYPE:
+                pb = security_pb2.UserAccountRecordDetail()
                 pb.ParseFromString(value)
                 dict_value = json_format.MessageToDict(pb)
                 string_value = json.dumps(dict_value)

@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto2',
   serialized_options=b'\n org.yamcs.yarch.rocksdb.protobuf',
-  serialized_pb=b'\n\x10tablespace.proto\"X\n\x12TimeBasedPartition\x12\x14\n\x0cpartitionDir\x18\x01 \x01(\t\x12\x16\n\x0epartitionStart\x18\x02 \x01(\x03\x12\x14\n\x0cpartitionEnd\x18\x03 \x01(\x03\"\xbd\x05\n\x10TablespaceRecord\x12\x10\n\x08tbsIndex\x18\x01 \x01(\r\x12$\n\x04type\x18\x02 \x01(\x0e\x32\x16.TablespaceRecord.Type\x12\x14\n\x0cinstanceName\x18\x03 \x01(\t\x12\x11\n\ttableName\x18\x04 \x01(\t\x12\x1b\n\x13histogramColumnName\x18\x05 \x01(\t\x12\x16\n\x0epartitionValue\x18\x06 \x01(\x0c\x12&\n\tpartition\x18\x07 \x01(\x0b\x32\x13.TimeBasedPartition\x12\x14\n\x0cparameterFqn\x18\x08 \x01(\t\x12\x15\n\rparameterType\x18\t \x01(\r\x12\x1a\n\x12partitioningSchema\x18\n \x01(\t\x12+\n\x10\x62ucketProperties\x18\x0b \x01(\x0b\x32\x11.BucketProperties\x12.\n\x0ftableDefinition\x18\x0c \x01(\x0b\x32\x15.ProtoTableDefinition\x12\'\n\x0esecondaryIndex\x18\r \x01(\x0b\x32\x0f.SecondaryIndex\x12\x13\n\x0btmIndexName\x18\x0e \x01(\t\x12\x10\n\x08memberId\x18\x0f \x03(\r\x12\x13\n\x0bnumericType\x18\x10 \x01(\r\"\xdf\x01\n\x04Type\x12\x13\n\x0fTABLE_PARTITION\x10\x01\x12\r\n\tHISTOGRAM\x10\x02\x12\x14\n\x10PARCHIVE_PGID2PG\x10\x04\x12\x11\n\rPARCHIVE_DATA\x10\x05\x12\x12\n\x0ePARCHIVE_PINFO\x10\x06\x12\t\n\x05TAGDB\x10\x07\x12\n\n\x06\x42UCKET\x10\x08\x12\x0c\n\x08TM_INDEX\x10\t\x12\x0c\n\x08PROTOBUF\x10\n\x12\x14\n\x10TABLE_DEFINITION\x10\x0b\x12\x13\n\x0fSECONDARY_INDEX\x10\x0c\x12\x18\n\x14PARCHIVE_AGGARR_INFO\x10\r\"{\n\x10\x42ucketProperties\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63reated\x18\x02 \x01(\x03\x12\x15\n\rmaxNumObjects\x18\x03 \x01(\x05\x12\x0f\n\x07maxSize\x18\x04 \x01(\x04\x12\x12\n\nnumObjects\x18\x05 \x01(\x05\x12\x0c\n\x04size\x18\x06 \x01(\x04\"\xca\x01\n\x10ObjectProperties\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08objectId\x18\x02 \x01(\r\x12\x13\n\x0b\x63ontentType\x18\x03 \x01(\t\x12\x0f\n\x07\x63reated\x18\x04 \x01(\x03\x12\x0c\n\x04size\x18\x05 \x01(\x04\x12\x31\n\x08metadata\x18\x06 \x03(\x0b\x32\x1f.ObjectProperties.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x9e\x01\n\x0fTableColumnInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12-\n\tenumValue\x18\x03 \x03(\x0b\x32\x1a.TableColumnInfo.EnumValue\x12\x15\n\rautoincrement\x18\x04 \x01(\x08\x1a)\n\tEnumValue\x12\r\n\x05value\x18\x01 \x01(\x05\x12\r\n\x05label\x18\x02 \x01(\t\"\xe0\x01\n\x10PartitioningInfo\x12\x30\n\x04type\x18\x01 \x01(\x0e\x32\".PartitioningInfo.PartitioningType\x12\x12\n\ntimeColumn\x18\x02 \x01(\t\x12\x1b\n\x13timePartitionSchema\x18\x03 \x01(\t\x12\x13\n\x0bvalueColumn\x18\x04 \x01(\t\x12\x17\n\x0fvalueColumnType\x18\x05 \x01(\t\";\n\x10PartitioningType\x12\x08\n\x04TIME\x10\x01\x12\t\n\x05VALUE\x10\x02\x12\x12\n\x0eTIME_AND_VALUE\x10\x03\"$\n\x0eSecondaryIndex\x12\x12\n\ncolumnName\x18\x01 \x03(\t\"\xa7\x02\n\x14ProtoTableDefinition\x12#\n\tkeyColumn\x18\x02 \x03(\x0b\x32\x10.TableColumnInfo\x12%\n\x0bvalueColumn\x18\x03 \x03(\x0b\x32\x10.TableColumnInfo\x12\x17\n\x0fhistogramColumn\x18\x05 \x03(\t\x12\x15\n\rstorageEngine\x18\x06 \x01(\t\x12\x15\n\rformatVersion\x18\x07 \x01(\x05\x12\x12\n\ntablespace\x18\x08 \x01(\t\x12\x12\n\ncompressed\x18\t \x01(\x08\x12+\n\x10partitioningInfo\x18\n \x01(\x0b\x32\x11.PartitioningInfo\x12\'\n\x0esecondaryIndex\x18\x0b \x03(\x0b\x32\x0f.SecondaryIndexB\"\n org.yamcs.yarch.rocksdb.protobuf'
+  serialized_pb=b'\n\x10tablespace.proto\"m\n\x12TimeBasedPartition\x12\x14\n\x0cpartitionDir\x18\x01 \x01(\t\x12\x16\n\x0epartitionStart\x18\x02 \x01(\x03\x12\x14\n\x0cpartitionEnd\x18\x03 \x01(\x03\x12\x13\n\x0bpartitionCf\x18\x04 \x01(\t\"\xd1\x05\n\x10TablespaceRecord\x12\x10\n\x08tbsIndex\x18\x01 \x01(\r\x12$\n\x04type\x18\x02 \x01(\x0e\x32\x16.TablespaceRecord.Type\x12\x14\n\x0cinstanceName\x18\x03 \x01(\t\x12\x11\n\ttableName\x18\x04 \x01(\t\x12\x1b\n\x13histogramColumnName\x18\x05 \x01(\t\x12\x16\n\x0epartitionValue\x18\x06 \x01(\x0c\x12&\n\tpartition\x18\x07 \x01(\x0b\x32\x13.TimeBasedPartition\x12\x14\n\x0cparameterFqn\x18\x08 \x01(\t\x12\x15\n\rparameterType\x18\t \x01(\r\x12\x1a\n\x12partitioningSchema\x18\n \x01(\t\x12+\n\x10\x62ucketProperties\x18\x0b \x01(\x0b\x32\x11.BucketProperties\x12.\n\x0ftableDefinition\x18\x0c \x01(\x0b\x32\x15.ProtoTableDefinition\x12\'\n\x0esecondaryIndex\x18\r \x01(\x0b\x32\x0f.SecondaryIndex\x12\x13\n\x0btmIndexName\x18\x0e \x01(\t\x12\x10\n\x08memberId\x18\x0f \x03(\r\x12\x13\n\x0bnumericType\x18\x10 \x01(\r\x12\x12\n\nparchiveCf\x18\x11 \x01(\t\"\xdf\x01\n\x04Type\x12\x13\n\x0fTABLE_PARTITION\x10\x01\x12\r\n\tHISTOGRAM\x10\x02\x12\x14\n\x10PARCHIVE_PGID2PG\x10\x04\x12\x11\n\rPARCHIVE_DATA\x10\x05\x12\x12\n\x0ePARCHIVE_PINFO\x10\x06\x12\t\n\x05TAGDB\x10\x07\x12\n\n\x06\x42UCKET\x10\x08\x12\x0c\n\x08TM_INDEX\x10\t\x12\x0c\n\x08PROTOBUF\x10\n\x12\x14\n\x10TABLE_DEFINITION\x10\x0b\x12\x13\n\x0fSECONDARY_INDEX\x10\x0c\x12\x18\n\x14PARCHIVE_AGGARR_INFO\x10\r\"{\n\x10\x42ucketProperties\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07\x63reated\x18\x02 \x01(\x03\x12\x15\n\rmaxNumObjects\x18\x03 \x01(\x05\x12\x0f\n\x07maxSize\x18\x04 \x01(\x04\x12\x12\n\nnumObjects\x18\x05 \x01(\x05\x12\x0c\n\x04size\x18\x06 \x01(\x04\"\xca\x01\n\x10ObjectProperties\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08objectId\x18\x02 \x01(\r\x12\x13\n\x0b\x63ontentType\x18\x03 \x01(\t\x12\x0f\n\x07\x63reated\x18\x04 \x01(\x03\x12\x0c\n\x04size\x18\x05 \x01(\x04\x12\x31\n\x08metadata\x18\x06 \x03(\x0b\x32\x1f.ObjectProperties.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x9e\x01\n\x0fTableColumnInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04type\x18\x02 \x01(\t\x12-\n\tenumValue\x18\x03 \x03(\x0b\x32\x1a.TableColumnInfo.EnumValue\x12\x15\n\rautoincrement\x18\x04 \x01(\x08\x1a)\n\tEnumValue\x12\r\n\x05value\x18\x01 \x01(\x05\x12\r\n\x05label\x18\x02 \x01(\t\"\xe0\x01\n\x10PartitioningInfo\x12\x30\n\x04type\x18\x01 \x01(\x0e\x32\".PartitioningInfo.PartitioningType\x12\x12\n\ntimeColumn\x18\x02 \x01(\t\x12\x1b\n\x13timePartitionSchema\x18\x03 \x01(\t\x12\x13\n\x0bvalueColumn\x18\x04 \x01(\t\x12\x17\n\x0fvalueColumnType\x18\x05 \x01(\t\";\n\x10PartitioningType\x12\x08\n\x04TIME\x10\x01\x12\t\n\x05VALUE\x10\x02\x12\x12\n\x0eTIME_AND_VALUE\x10\x03\"$\n\x0eSecondaryIndex\x12\x12\n\ncolumnName\x18\x01 \x03(\t\"\xb7\x02\n\x14ProtoTableDefinition\x12#\n\tkeyColumn\x18\x02 \x03(\x0b\x32\x10.TableColumnInfo\x12%\n\x0bvalueColumn\x18\x03 \x03(\x0b\x32\x10.TableColumnInfo\x12\x17\n\x0fhistogramColumn\x18\x05 \x03(\t\x12\x15\n\rstorageEngine\x18\x06 \x01(\t\x12\x15\n\rformatVersion\x18\x07 \x01(\x05\x12\x12\n\ntablespace\x18\x08 \x01(\t\x12\x12\n\ncompressed\x18\t \x01(\x08\x12+\n\x10partitioningInfo\x18\n \x01(\x0b\x32\x11.PartitioningInfo\x12\'\n\x0esecondaryIndex\x18\x0b \x03(\x0b\x32\x0f.SecondaryIndex\x12\x0e\n\x06\x63\x66Name\x18\x0c \x01(\tB\"\n org.yamcs.yarch.rocksdb.protobuf'
 )
 
 
@@ -80,8 +80,8 @@ _TABLESPACERECORD_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=589,
-  serialized_end=812,
+  serialized_start=630,
+  serialized_end=853,
 )
 _sym_db.RegisterEnumDescriptor(_TABLESPACERECORD_TYPE)
 
@@ -106,8 +106,8 @@ _PARTITIONINGINFO_PARTITIONINGTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1471,
-  serialized_end=1530,
+  serialized_start=1512,
+  serialized_end=1571,
 )
 _sym_db.RegisterEnumDescriptor(_PARTITIONINGINFO_PARTITIONINGTYPE)
 
@@ -140,6 +140,13 @@ _TIMEBASEDPARTITION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='partitionCf', full_name='TimeBasedPartition.partitionCf', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -153,7 +160,7 @@ _TIMEBASEDPARTITION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=20,
-  serialized_end=108,
+  serialized_end=129,
 )
 
 
@@ -276,6 +283,13 @@ _TABLESPACERECORD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='parchiveCf', full_name='TablespaceRecord.parchiveCf', index=16,
+      number=17, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -289,8 +303,8 @@ _TABLESPACERECORD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=111,
-  serialized_end=812,
+  serialized_start=132,
+  serialized_end=853,
 )
 
 
@@ -355,8 +369,8 @@ _BUCKETPROPERTIES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=814,
-  serialized_end=937,
+  serialized_start=855,
+  serialized_end=978,
 )
 
 
@@ -393,8 +407,8 @@ _OBJECTPROPERTIES_METADATAENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1095,
-  serialized_end=1142,
+  serialized_start=1136,
+  serialized_end=1183,
 )
 
 _OBJECTPROPERTIES = _descriptor.Descriptor(
@@ -458,8 +472,8 @@ _OBJECTPROPERTIES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=940,
-  serialized_end=1142,
+  serialized_start=981,
+  serialized_end=1183,
 )
 
 
@@ -496,8 +510,8 @@ _TABLECOLUMNINFO_ENUMVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1262,
-  serialized_end=1303,
+  serialized_start=1303,
+  serialized_end=1344,
 )
 
 _TABLECOLUMNINFO = _descriptor.Descriptor(
@@ -547,8 +561,8 @@ _TABLECOLUMNINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1145,
-  serialized_end=1303,
+  serialized_start=1186,
+  serialized_end=1344,
 )
 
 
@@ -607,8 +621,8 @@ _PARTITIONINGINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1306,
-  serialized_end=1530,
+  serialized_start=1347,
+  serialized_end=1571,
 )
 
 
@@ -638,8 +652,8 @@ _SECONDARYINDEX = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1532,
-  serialized_end=1568,
+  serialized_start=1573,
+  serialized_end=1609,
 )
 
 
@@ -713,6 +727,13 @@ _PROTOTABLEDEFINITION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='cfName', full_name='ProtoTableDefinition.cfName', index=9,
+      number=12, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -725,8 +746,8 @@ _PROTOTABLEDEFINITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1571,
-  serialized_end=1866,
+  serialized_start=1612,
+  serialized_end=1923,
 )
 
 _TABLESPACERECORD.fields_by_name['type'].enum_type = _TABLESPACERECORD_TYPE
