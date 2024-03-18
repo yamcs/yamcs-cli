@@ -123,7 +123,7 @@ class PacketsCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
 
-        stdout.write(f"Rebuilding packet histogram")
+        stdout.write("Rebuilding packet histogram")
         stdout.flush()
         archive.rebuild_histogram("tm", start=start, stop=stop)
         stdout.write("done\n")
@@ -141,7 +141,7 @@ class PacketsCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
 
-        stdout.write(f"Rebuilding CCSDS index... ")
+        stdout.write("Rebuilding CCSDS index... ")
         stdout.flush()
         archive.rebuild_ccsds_index(start, stop)
         stdout.write("done\n")
