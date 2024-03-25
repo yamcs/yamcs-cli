@@ -1,5 +1,8 @@
-from yamcs.cli import utils
+from sys import stdout
+
 from yamcs.client import YamcsClient
+
+from yamcs.cli import utils
 
 
 class ParameterArchiveCommand(utils.Command):
@@ -29,6 +32,8 @@ class ParameterArchiveCommand(utils.Command):
         )
         subparser = self.create_subparser(
             subparsers, "purge", "Remove all data from the Parameter Archive"
+        )
+        subparser.set_defaults(func=self.purge)
 
     def rebuild(self, args):
         opts = utils.CommandOptions(args)
@@ -46,4 +51,8 @@ class ParameterArchiveCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
+        stdout.write("Purging Parameter Archive... ")
+        stdout.flush()
         archive.purge_parameter_archive()
+        stdout.write("done\n")
+        stdout.flush()

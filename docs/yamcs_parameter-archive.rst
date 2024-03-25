@@ -9,6 +9,7 @@ Synopsis
 .. rst-class:: synopsis
 
     | **yamcs parameter-archive** rebuild <*START*> <*STOP*>
+    | **yamcs parameter-archive** purge
 
 
 Description
@@ -29,16 +30,20 @@ Commands
     Rebuild run as an asynchronous operation: this command will not await the outcome.
 
 
+.. describe:: purge
+
+    Remove all data from the Parameter Archive
+
 Options
 -------
 
 .. option:: <START>
 
-    Date specification in ISO format or as detailed under `Timestamps`_.
+    With ``rebuild``, date specification in ISO format or as detailed under `Timestamps`_.
 
 .. option:: <STOP>
 
-    Date specification in ISO format or as detailed under `Timestamps`_.
+    With ``rebuild``, date specification in ISO format or as detailed under `Timestamps`_.
 
 
 Timestamps
