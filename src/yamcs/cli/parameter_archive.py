@@ -27,6 +27,8 @@ class ParameterArchiveCommand(utils.Command):
             type=str,
             help="Stop time",
         )
+        subparser = self.create_subparser(
+            subparsers, "purge", "Remove all data from the Parameter Archive"
 
     def rebuild(self, args):
         opts = utils.CommandOptions(args)
@@ -38,3 +40,10 @@ class ParameterArchiveCommand(utils.Command):
 
         archive.rebuild_parameter_archive(start=start, stop=stop)
         print("Task submitted. It will finish asynchronously.")
+
+    def purge(self, args):
+        opts = utils.CommandOptions(args)
+        client = YamcsClient(**opts.client_kwargs)
+        archive = client.get_archive(opts.require_instance())
+
+        archive.purge_parameter_archive()
