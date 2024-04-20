@@ -3,10 +3,11 @@ import shutil
 import sys
 import tempfile
 
-from yamcs.cli import utils
-from yamcs.cli.completers import BucketCompleter, BucketOrObjectCompleter
 from yamcs.client import YamcsClient
 from yamcs.core.helpers import to_isostring
+
+from yamcs.cli import utils
+from yamcs.cli.completers import BucketCompleter, BucketOrObjectCompleter
 
 
 class StorageCommand(utils.Command):
@@ -236,6 +237,7 @@ class StorageCommand(utils.Command):
 
     def _cp_object_to_file(self, opts, src, dst):
         src_bucket, src_object = utils.parse_ys_url(src)
+        assert src_object
         _, src_filename = os.path.split(src_object)
 
         client = YamcsClient(**opts.client_kwargs)

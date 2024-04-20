@@ -155,7 +155,7 @@ def parse_timestamp(timestamp):
     return parsed if parsed.tzinfo else parsed.astimezone(tz=tz)
 
 
-def parse_ys_url(url):
+def parse_ys_url(url: str):
     parts = url[5:].split("/", 1)
     if len(parts) == 2 and parts[1]:
         if parts[1] == "/":
@@ -166,7 +166,7 @@ def parse_ys_url(url):
         return parts[0], None
 
 
-class Command(object):
+class Command:
     config_options = ["core.url", "core.instance", "core.enable_utc"]
 
     def __init__(self, subparsers, command, help_, add_epilog=True):
@@ -214,7 +214,7 @@ class Command(object):
             Command.config_options.append(option)
 
 
-class CommandOptions(object):
+class CommandOptions:
     def __init__(self, args):
         self.config = read_config()
         self._credentials = read_credentials()

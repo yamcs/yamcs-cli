@@ -1,5 +1,6 @@
 import os
 from getpass import getpass
+from typing import Optional
 
 from yamcs.client import YamcsClient
 from yamcs.core import auth
@@ -28,6 +29,11 @@ class LoginCommand(utils.Command):
             "-u",
             "--username",
             help="Username",
+        )
+        self.parser.add_argument(
+            "--instance",
+            dest="preferred_instance",
+            help="Selected instance",
         )
 
     def do_login(self, args):
@@ -74,7 +80,16 @@ class LoginCommand(utils.Command):
             user_info = client.get_user_info()
             print("Anonymous login succeeded (username: {})".format(user_info.username))
 
-        self.save_client_config(client, opts.config)
+        # Allow to influence the instance selection.
+        #
+        # Either from the top-level "instance" argument, or (more importantly)
+        # from the option on this subcommand.
+        #
+        # If nothing is specified, a somewhat random instance is selected
+        # (the first in the list).
+        preferred_instance = args.preferred_instance or args.instance
+
+        self.save_client_config(client, opts.config, preferred_instance)
 
     def read_url(self, opts):
         default_url = opts.url or "http://localhost:8090"
@@ -96,18 +111,37 @@ class LoginCommand(utils.Command):
 
         return auth.Credentials(username=username, password=password)
 
-    def save_client_config(self, client, config):
+    def save_client_config(
+        self,
+        client: YamcsClient,
+        config,
+        preferred_instance: Optional[str],
+    ):
         utils.clear_credentials()
         if client.ctx.credentials:
             utils.save_credentials(client.ctx.credentials)
-        server_info = client.get_server_info()
+
+        selected_instance: Optional[str] = preferred_instance
+        if not selected_instance:
+            # Autoselect an instance, but provide some awareness
+            # of the result
+            server_info = client.get_server_info()
+            selected_instance = server_info.default_yamcs_instance
+            if selected_instance:
+                print(
+                    "Using instance:",
+                    selected_instance,
+                    "(change with: yamcs config set instance xyz)",
+                )
+            else:
+                print("No instance")
 
         if not config.has_section("core"):
             config.add_section("core")
         config.set("core", "url", client.ctx.url)
 
-        if server_info.default_yamcs_instance:
-            config.set("core", "instance", server_info.default_yamcs_instance)
+        if selected_instance:
+            config.set("core", "instance", selected_instance)
         else:
             config.remove_option("core", "instance")
         utils.save_config(config)

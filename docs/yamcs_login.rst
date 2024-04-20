@@ -8,7 +8,8 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs login** [-u <*USERNAME*>, --username <*USERNAME*>] [<*URL*>]
+    | **yamcs login** [-u <*USERNAME*>, --username <*USERNAME*>]
+    |   [--instance <*INSTANCE*>] [<*URL*>]
 
 
 Description
@@ -27,6 +28,13 @@ Options
 .. option:: -u <USERNAME>, --username <USERNAME>
 
     Username
+
+.. option:: --instance <INSTANCE>
+
+    Initial instance.
+
+    This defaults to the first available instance on the
+    target Yamcs server.
 
 
 Environment
