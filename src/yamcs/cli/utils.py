@@ -23,21 +23,6 @@ def get_user_agent():
     return "Yamcs CLI v" + dist.version
 
 
-def _parse_url(url):
-    components = urlparse(url)
-    tls = components.scheme == "https"
-    address = components.netloc
-    # YamcsClient defaults to 8090 if no port is set, with CLI
-    # we prefer to use HTTP defaults instead.
-    if ":" not in address:
-        if tls:
-            address += ":443"
-        else:
-            address += ":80"
-    address += components.path
-    return {"address": address, "tls": tls}
-
-
 def read_config():
     config = ConfigParser()
     if os.path.exists(CONFIG_FILE):
@@ -259,7 +244,7 @@ class CommandOptions:
         if not self.url:
             raise NoServerError
         return {
-            **_parse_url(self.url),
+            "address": self.url,
             "tls_verify": False,
             "user_agent": self.user_agent,
             "credentials": self._credentials,

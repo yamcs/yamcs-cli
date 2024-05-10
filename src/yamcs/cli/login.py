@@ -42,7 +42,7 @@ class LoginCommand(utils.Command):
         url = args.url or self.read_url(opts)
 
         client_kwargs = {
-            **utils._parse_url(url),
+            "address": url,
             "tls_verify": False,
         }
 
