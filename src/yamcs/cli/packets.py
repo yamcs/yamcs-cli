@@ -1,6 +1,6 @@
 import binascii
+import sys
 from itertools import islice
-from sys import stdout
 
 from yamcs.client import YamcsClient
 
@@ -123,11 +123,11 @@ class PacketsCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
 
-        stdout.write("Rebuilding packet histogram")
-        stdout.flush()
+        sys.stderr.write("Rebuilding packet histogram")
+        sys.stderr.flush()
         archive.rebuild_histogram("tm", start=start, stop=stop)
-        stdout.write("done\n")
-        stdout.flush()
+        sys.stderr.write("done\n")
+        sys.stderr.flush()
 
     def rebuild_ccsds_index(self, args):
         opts = utils.CommandOptions(args)
@@ -141,8 +141,8 @@ class PacketsCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
 
-        stdout.write("Rebuilding CCSDS index... ")
-        stdout.flush()
+        sys.stderr.write("Rebuilding CCSDS index... ")
+        sys.stderr.flush()
         archive.rebuild_ccsds_index(start, stop)
-        stdout.write("done\n")
-        stdout.flush()
+        sys.stderr.write("done\n")
+        sys.stderr.flush()

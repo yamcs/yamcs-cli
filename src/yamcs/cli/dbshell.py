@@ -20,6 +20,7 @@ from yamcs.cli.protobuf import (
     security_pb2,
     timeline_pb2,
 )
+from yamcs.cli.utils import eprint
 
 SHOW_OPTIONS = ("databases", "engines", "streams", "tables", "stream")
 
@@ -254,7 +255,7 @@ class DbShell(cmd.Cmd):
     def do_delimiter(self, args):
         """(\\d) Set statement delimiter."""
         if not args:
-            print("*** Delimiter not set")
+            eprint("*** Delimiter not set")
         else:
             self.delimiter = args
 
@@ -300,7 +301,7 @@ class DbShell(cmd.Cmd):
                     results = archive.execute_sql(statement)
                     self.paginate(results)
         except YamcsError as e:
-            print(e)
+            eprint(e)
             sys.exit(1)
 
     def run_command(self, command):
@@ -336,12 +337,12 @@ class DbShell(cmd.Cmd):
             elif command == "\\P":
                 self.do_pager(args)
             else:
-                print(f"*** Unknown command '{command}'")
+                eprint(f"*** Unknown command '{command}'")
 
     def do_edit(self, args):
         """(\\e) Edit a command with $EDITOR."""
         if "EDITOR" not in os.environ:
-            print("*** $EDITOR not set")
+            eprint("*** $EDITOR not set")
         else:
             path = os.path.join(utils.CONFIG_DIR, "sql")
             cmd = os.environ["EDITOR"]
@@ -359,14 +360,14 @@ class DbShell(cmd.Cmd):
     def do_source(self, args):
         """(\\.) Execute an SQL script file, provided as argument."""
         if not args:
-            print("*** Usage: \\. <filename> | source <filename>")
+            eprint("*** Usage: \\. <filename> | source <filename>")
         else:
             try:
                 with open(args, "rt") as f:
                     for sql in f.readlines():
                         self.default(sql)
             except OSError as e:
-                print("***", e)
+                eprint("***", e)
 
     def do_rehash(self, args):
         """(\\#) Rebuild completion hash."""

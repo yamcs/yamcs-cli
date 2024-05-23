@@ -1,8 +1,9 @@
-from sys import stdout
+import sys
 
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
+from yamcs.cli.utils import eprint
 
 
 class ParameterArchiveCommand(utils.Command):
@@ -44,15 +45,15 @@ class ParameterArchiveCommand(utils.Command):
         stop = utils.parse_timestamp(args.stop)
 
         archive.rebuild_parameter_archive(start=start, stop=stop)
-        print("Task submitted. It will finish asynchronously.")
+        eprint("Task submitted. It will finish asynchronously.")
 
     def purge(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
-        stdout.write("Purging Parameter Archive... ")
-        stdout.flush()
+        sys.stderr.write("Purging Parameter Archive... ")
+        sys.stderr.flush()
         archive.purge_parameter_archive()
-        stdout.write("done\n")
-        stdout.flush()
+        sys.stderr.write("done\n")
+        sys.stderr.flush()

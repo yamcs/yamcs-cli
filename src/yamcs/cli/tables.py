@@ -1,7 +1,7 @@
 import gzip
 import os
+import sys
 import time
-from sys import stdout
 
 from yamcs.client import YamcsClient
 
@@ -163,17 +163,17 @@ class TablesCommand(utils.Command):
                 prev_t = t
         if txsize > 0:
             self.report_dump_stats(path, txsize, t - t0)
-            stdout.write("\n")
+            sys.stdout.write("\n")
 
     def report_dump_stats(self, path, txsize, elapsed):
         fsize = os.path.getsize(path)
         rate = (txsize / 1024 / 1024) / elapsed
-        stdout.write(
+        sys.stdout.write(
             "\r{}: {:.2f} MB (rx: {:.2f} MB at {:.2f} MB/s)".format(
                 path, fsize / 1024 / 1024, txsize / 1024 / 1024, rate
             )
         )
-        stdout.flush()
+        sys.stdout.flush()
 
     def load(self, args):
         opts = utils.CommandOptions(args)
@@ -201,11 +201,11 @@ class TablesCommand(utils.Command):
         if args.until:
             stop = utils.parse_timestamp(args.until)
         for table in args.tables:
-            stdout.write(f"Rebuilding histogram of table '{table}'... ")
-            stdout.flush()
+            sys.stdout.write(f"Rebuilding histogram of table '{table}'... ")
+            sys.stdout.flush()
             archive.rebuild_histogram(table, start=start, stop=stop)
-            stdout.write("done\n")
-            stdout.flush()
+            sys.stdout.write("done\n")
+            sys.stdout.flush()
 
     def read_dump(self, f, archive, table, path):
         txsize = 0
@@ -218,12 +218,12 @@ class TablesCommand(utils.Command):
         def report_load_stats(elapsed):
             nonlocal path, fsize, txsize
             rate = (txsize / 1024 / 1024) / elapsed
-            stdout.write(
+            sys.stdout.write(
                 "\r{}: {:.2f} MB (tx: {:.2f} MB at {:.2f} MB/s)".format(
                     path, fsize / 1024 / 1024, txsize / 1024 / 1024, rate
                 )
             )
-            stdout.flush()
+            sys.stdout.flush()
 
         def read_in_chunks():
             nonlocal f, txsize, t0, t, prev_t
@@ -238,6 +238,6 @@ class TablesCommand(utils.Command):
                 chunk = f.read(chunk_size)
             if txsize > 0:
                 report_load_stats(t - t0)
-                stdout.write("\n")
+                sys.stdout.write("\n")
 
         archive.load_table(table, data=read_in_chunks(), chunk_size=None)

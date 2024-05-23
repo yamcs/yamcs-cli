@@ -1,4 +1,5 @@
 from yamcs.cli import utils
+from yamcs.cli.utils import eprint
 
 
 class LogoutCommand(utils.Command):
@@ -13,6 +14,6 @@ class LogoutCommand(utils.Command):
         opts = utils.CommandOptions(args)
         if not utils.clear_credentials():
             if opts.url:
-                print("Not logged in to {}".format(opts.url))
+                eprint("Not logged in to {}".format(opts.url))
             else:
-                print("Not logged in")
+                eprint("Not logged in")

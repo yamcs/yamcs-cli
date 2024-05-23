@@ -29,6 +29,7 @@ from yamcs.cli.space_systems import SpaceSystemsCommand
 from yamcs.cli.storage import StorageCommand
 from yamcs.cli.streams import StreamsCommand
 from yamcs.cli.tables import TablesCommand
+from yamcs.cli.utils import eprint
 
 
 def create_subparser(subparsers, command, help_):
@@ -105,21 +106,21 @@ def main():
     except KeyboardInterrupt:
         print()  # Clear prompt
     except NoServerError:
-        print("No server. Run: 'yamcs login' to login to Yamcs")
+        eprint("No server. Run: 'yamcs login' to login to Yamcs")
         sys.exit(1)
     except NoInstanceError:
-        print("No instance. Run: 'yamcs config set instance <instance>'")
+        eprint("No instance. Run: 'yamcs config set instance <instance>'")
         sys.exit(1)
     except Unauthorized:
         if args.debug:
-            print(logging.traceback.format_exc())
-        print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
+            eprint(logging.traceback.format_exc())
+        eprint("Unauthorized. Run: 'yamcs login' to login to Yamcs")
         sys.exit(1)
     except Exception as e:
         if args.debug:
-            print(logging.traceback.format_exc())
+            eprint(logging.traceback.format_exc())
         else:
-            print(e)
+            eprint(e)
         sys.exit(1)
 
 

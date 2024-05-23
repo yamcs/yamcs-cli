@@ -4,6 +4,7 @@ from itertools import islice
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
+from yamcs.cli.utils import eprint
 
 
 class EventsCommand(utils.Command):
@@ -76,7 +77,7 @@ class EventsCommand(utils.Command):
         message = (args.message or "").strip()
         if not message:
             if "EDITOR" not in os.environ:
-                print("*** $EDITOR not set")
+                eprint("*** $EDITOR not set")
                 return False
             path = os.path.join(utils.CONFIG_DIR, "event")
             cmd = os.environ["EDITOR"]
@@ -146,11 +147,11 @@ class EventsCommand(utils.Command):
         rows = [["SEVERITY", "TIME", "MESSAGE", "SOURCE", "TYPE"]]
         for event in iterator:
             row = [
-                '-' if event.severity is None else event.severity,
+                "-" if event.severity is None else event.severity,
                 event.generation_time,
-                '-' if event.message is None else event.message,
-                '-' if event.source is None else event.source,
-                '-' if event.event_type is None else event.event_type,
+                "-" if event.message is None else event.message,
+                "-" if event.source is None else event.source,
+                "-" if event.event_type is None else event.event_type,
             ]
             rows.append(row)
         utils.print_table(rows)

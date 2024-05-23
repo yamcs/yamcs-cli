@@ -1,9 +1,9 @@
 import argparse
 import json
 import os
+import sys
 from configparser import ConfigParser
 from datetime import datetime, timedelta, timezone
-from urllib.parse import urlparse
 
 import pkg_resources
 from dateutil import parser
@@ -138,6 +138,11 @@ def parse_timestamp(timestamp):
     # Switch to datetime.fromisoformat when dropping Python 3.6
     parsed = parser.isoparse(timestamp)
     return parsed if parsed.tzinfo else parsed.astimezone(tz=tz)
+
+
+def eprint(*args, **kwargs):
+    """Print to stderr instead of stdout."""
+    print(*args, file=sys.stderr, **kwargs)
 
 
 def parse_ys_url(url: str):

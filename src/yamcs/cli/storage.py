@@ -8,6 +8,7 @@ from yamcs.core.helpers import to_isostring
 
 from yamcs.cli import utils
 from yamcs.cli.completers import BucketCompleter, BucketOrObjectCompleter
+from yamcs.cli.utils import eprint
 
 
 class StorageCommand(utils.Command):
@@ -167,12 +168,12 @@ class StorageCommand(utils.Command):
 
         for obj in args.object:
             if not obj.startswith("ys://"):
-                print("*** specify objects in the format ys://bucket/object")
+                eprint("*** specify objects in the format ys://bucket/object")
                 return False
 
             bucket_name, object_name = utils.parse_ys_url(obj)
             if not object_name:
-                print("*** specify objects in the format ys://bucket/object")
+                eprint("*** specify objects in the format ys://bucket/object")
                 return False
 
             storage.remove_object(bucket_name=bucket_name, object_name=object_name)
@@ -184,12 +185,12 @@ class StorageCommand(utils.Command):
 
         for obj in args.object:
             if not obj.startswith("ys://"):
-                print("*** specify objects in the format ys://bucket/object")
+                eprint("*** specify objects in the format ys://bucket/object")
                 return False
 
             bucket_name, object_name = utils.parse_ys_url(obj)
             if not object_name:
-                print("*** specify objects in the format ys://bucket/object")
+                eprint("*** specify objects in the format ys://bucket/object")
                 return False
 
             content = storage.download_object(
@@ -206,7 +207,7 @@ class StorageCommand(utils.Command):
             if args.src.startswith("ys://"):
                 bucket_name, object_name = utils.parse_ys_url(args.src)
                 if not object_name:
-                    print("*** specify objects in the format ys://bucket/object")
+                    eprint("*** specify objects in the format ys://bucket/object")
                     return False
 
                 storage.remove_object(bucket_name=bucket_name, object_name=object_name)
@@ -256,7 +257,7 @@ class StorageCommand(utils.Command):
 
     def _cp_file_to_object(self, opts, src, dst):
         if os.path.isdir(src):
-            print("*** {} is a directory".format(src))
+            eprint("*** {} is a directory".format(src))
             return False
 
         dst_bucket, dst_object = utils.parse_ys_url(dst)

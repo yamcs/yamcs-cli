@@ -6,6 +6,7 @@ from yamcs.client import YamcsClient
 from yamcs.core import auth
 
 from yamcs.cli import utils
+from yamcs.cli.utils import eprint
 
 
 class LoginCommand(utils.Command):
@@ -53,7 +54,7 @@ class LoginCommand(utils.Command):
             try:
                 from yamcs.kerberos import KerberosCredentials
             except ImportError:
-                print(
+                eprint(
                     "*** Missing Kerberos support. This is included in "
                     "the optional package: yamcs-client-kerberos"
                 )
@@ -61,24 +62,26 @@ class LoginCommand(utils.Command):
 
             credentials = KerberosCredentials()
             client = YamcsClient(credentials=credentials, **client_kwargs)
-            print("Login succeeded")
+            eprint("Login succeeded")
         elif args.username:
             credentials = self.read_credentials(username=args.username)
             if credentials:
                 client = YamcsClient(credentials=credentials, **client_kwargs)
-                print("Login succeeded")
+                eprint("Login succeeded")
             else:
                 return
         elif client.get_auth_info().require_authentication:
             credentials = self.read_credentials()
             if credentials:
                 client = YamcsClient(credentials=credentials, **client_kwargs)
-                print("Login succeeded")
+                eprint("Login succeeded")
             else:
                 return
         else:
             user_info = client.get_user_info()
-            print("Anonymous login succeeded (username: {})".format(user_info.username))
+            eprint(
+                "Anonymous login succeeded (username: {})".format(user_info.username)
+            )
 
         # Allow to influence the instance selection.
         #
@@ -99,14 +102,14 @@ class LoginCommand(utils.Command):
         if username is None:
             username = input("Username: ")
         if not username:
-            print("*** Username may not be empty")
+            eprint("*** Username may not be empty")
             return False
 
         password = os.environ.get("YAMCS_CLI_PASSWORD")
         if password is None:
             password = getpass("Password: ")
         if not password:
-            print("*** Password may not be empty")
+            eprint("*** Password may not be empty")
             return False
 
         return auth.Credentials(username=username, password=password)
@@ -128,13 +131,13 @@ class LoginCommand(utils.Command):
             server_info = client.get_server_info()
             selected_instance = server_info.default_yamcs_instance
             if selected_instance:
-                print(
+                eprint(
                     "Using instance:",
                     selected_instance,
                     "(change with: yamcs config set instance xyz)",
                 )
             else:
-                print("No instance")
+                eprint("No instance")
 
         if not config.has_section("core"):
             config.add_section("core")
