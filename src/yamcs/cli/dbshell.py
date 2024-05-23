@@ -301,6 +301,7 @@ class DbShell(cmd.Cmd):
                     self.paginate(results)
         except YamcsError as e:
             print(e)
+            sys.exit(1)
 
     def run_command(self, command):
         if command == "\\":

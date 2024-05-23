@@ -1,5 +1,6 @@
 import argparse
 import logging
+import sys
 
 import argcomplete
 import pkg_resources
@@ -105,17 +106,21 @@ def main():
         print()  # Clear prompt
     except NoServerError:
         print("No server. Run: 'yamcs login' to login to Yamcs")
+        sys.exit(1)
     except NoInstanceError:
         print("No instance. Run: 'yamcs config set instance <instance>'")
+        sys.exit(1)
     except Unauthorized:
         if args.debug:
             print(logging.traceback.format_exc())
         print("Unauthorized. Run: 'yamcs login' to login to Yamcs")
+        sys.exit(1)
     except Exception as e:
         if args.debug:
             print(logging.traceback.format_exc())
         else:
             print(e)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
