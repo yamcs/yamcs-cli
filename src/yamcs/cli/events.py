@@ -1,5 +1,6 @@
 import os
 from itertools import islice
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -144,7 +145,7 @@ class EventsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows = [["SEVERITY", "TIME", "MESSAGE", "SOURCE", "TYPE"]]
+        rows: List[List[Any]] = [["SEVERITY", "TIME", "MESSAGE", "SOURCE", "TYPE"]]
         for event in iterator:
             row = [
                 "-" if event.severity is None else event.severity,

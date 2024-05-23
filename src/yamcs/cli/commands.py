@@ -1,4 +1,5 @@
 from itertools import islice
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -78,7 +79,7 @@ class CommandsCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
 
-        rows = [["NAME", "DESCRIPTION", "ABSTRACT"]]
+        rows: List[List[Any]] = [["NAME", "DESCRIPTION", "ABSTRACT"]]
         for command in mdb.list_commands():
             rows.append(
                 [
@@ -107,7 +108,7 @@ class CommandsCommand(utils.Command):
         command_args = {}
 
         if args.arg_file:
-            with open(args.arg_file, "rb") as f:
+            with open(args.arg_file, "rt") as f:
                 for arg in f.readlines():
                     arg = arg.strip()
                     if arg and not arg.startswith("#"):
@@ -159,7 +160,7 @@ class CommandsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows = [["ID", "TIME", "COMMAND", "Q", "R", "S", "COMPLETION"]]
+        rows: List[List[Any]] = [["ID", "TIME", "COMMAND", "Q", "R", "S", "COMPLETION"]]
         for command in iterator:
             row = [command.id, command.generation_time, command.name]
 

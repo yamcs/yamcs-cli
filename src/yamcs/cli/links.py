@@ -1,3 +1,5 @@
+from typing import Any, List
+
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
@@ -47,7 +49,7 @@ class LinksCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
 
-        rows = [["NAME", "CLASS", "STATUS", "IN", "OUT"]]
+        rows: List[List[Any]] = [["NAME", "CLASS", "STATUS", "IN", "OUT"]]
         for link in client.list_links(opts.require_instance()):
             rows.append(
                 [

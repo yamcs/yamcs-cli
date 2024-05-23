@@ -1,4 +1,5 @@
 from itertools import islice
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -113,7 +114,7 @@ class AlarmsCommand(utils.Command):
         instance = opts.require_instance()
         processor = client.get_processor(instance, args.processor)
 
-        rows = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
+        rows: List[List[Any]] = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
         for alarm in processor.list_alarms():
             row = [
                 alarm.trigger_time,
@@ -150,7 +151,7 @@ class AlarmsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
+        rows: List[List[Any]] = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
         for alarm in iterator:
             row = [
                 alarm.trigger_time,

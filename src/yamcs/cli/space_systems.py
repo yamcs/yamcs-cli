@@ -1,3 +1,5 @@
+from typing import Any, List
+
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
@@ -38,7 +40,7 @@ class SpaceSystemsCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
 
-        rows = [["NAME", "DESCRIPTION"]]
+        rows: List[List[Any]] = [["NAME", "DESCRIPTION"]]
         for space_system in mdb.list_space_systems():
             rows.append(
                 [

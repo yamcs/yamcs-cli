@@ -52,7 +52,7 @@ class LoginCommand(utils.Command):
 
         if args.kerberos:
             try:
-                from yamcs.kerberos import KerberosCredentials
+                from yamcs.kerberos import KerberosCredentials  # type: ignore
             except ImportError:
                 eprint(
                     "*** Missing Kerberos support. This is included in "

@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 import tempfile
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 from yamcs.core.helpers import to_isostring
@@ -125,7 +126,7 @@ class StorageCommand(utils.Command):
             listing = storage.list_objects(
                 bucket_name=bucket_name, delimiter=delimiter, prefix=prefix
             )
-            rows = []
+            rows: List[List[Any]] = []
             for prefix in listing.prefixes:
                 url = "ys://{}/{}".format(bucket_name, prefix)
                 if args.long:

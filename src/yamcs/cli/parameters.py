@@ -1,5 +1,6 @@
 import binascii
 import sys
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -95,7 +96,7 @@ class ParametersCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
 
-        rows = [["NAME", "DATA SOURCE"]]
+        rows: List[List[Any]] = [["NAME", "DATA SOURCE"]]
         for parameter in mdb.list_parameters():
             rows.append(
                 [

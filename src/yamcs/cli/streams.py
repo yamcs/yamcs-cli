@@ -1,6 +1,9 @@
+from typing import Any, List
+
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import StreamCompleter
-from yamcs.client import YamcsClient
 
 
 class StreamsCommand(utils.Command):
@@ -37,7 +40,7 @@ class StreamsCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
-        rows = [["NAME"]]
+        rows: List[List[Any]] = [["NAME"]]
         for stream in archive.list_streams():
             rows.append([stream.name])
         utils.print_table(rows)

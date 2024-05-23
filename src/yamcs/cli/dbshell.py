@@ -7,6 +7,7 @@ import readline
 import sys
 from collections import abc
 from pydoc import pager
+from typing import Any, List
 
 from google.protobuf import json_format
 from yamcs.client import YamcsClient
@@ -118,45 +119,45 @@ class ResultSetPrinter:
         else:
             self.widths = [0 for _ in columns]
         self.separator = ""
-        self.pending_rows = []
+        self.pending_rows: List[List[Any]] = []
         self.output = output
         self.printed_row_count = 0
         self.delimiter = ";"
 
     def add(self, row):
-        print_row = []
+        print_row: List[Any] = []
         for i, value in enumerate(row):
             if value is None:
                 string_value = "NULL"
             elif self.column_types[i] == PB_ACTIVITY_DEFINITION_TYPE:
                 pb = activities_pb2.ActivityDefinition()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_ASSIGNMENT_TYPE:
                 pb = cmdhistory_pb2.AssignmentInfo()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_BANDFILTER_TYPE:
                 pb = timeline_pb2.BandFilter()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_EVENT_TYPE:
                 pb = events_pb2.Event()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_SERVICE_ACCOUNT_DETAIL_TYPE:
                 pb = security_pb2.ServiceAccountRecordDetail()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif self.column_types[i] == PB_USER_ACCOUNT_DETAIL_TYPE:
                 pb = security_pb2.UserAccountRecordDetail()
                 pb.ParseFromString(value)
-                dict_value = json_format.MessageToDict(pb)
+                dict_value = json_format.MessageToDict(pb)  # type: ignore
                 string_value = json.dumps(dict_value)
             elif isinstance(value, (bytes, bytearray)):
                 if self.opts.binary_as_hex:
@@ -239,7 +240,7 @@ class DbShell(cmd.Cmd):
     def print_topics(self, header, cmds, cmdlen, maxcol):
         if cmds:
             print("List of dbshell commands:")
-            rows = [["?", "(\\?) Show help."]]
+            rows: List[List[Any]] = [["?", "(\\?) Show help."]]
             for command in cmds:
                 if command == "EOF":  # Don't document EOF
                     continue
@@ -261,7 +262,7 @@ class DbShell(cmd.Cmd):
 
     def do_status(self, args):
         """(\\s) Print status information."""
-        rows = []
+        rows: List[List[Any]] = []
         rows.append(["Current instance:", self.instance])
         rows.append(["Pager:", "yes" if self.pager else "no"])
         rows.append(["Using delimiter:", self.delimiter])
@@ -428,6 +429,7 @@ class DbShell(cmd.Cmd):
                     output,
                     opts=self.opts,
                 )
+            assert printer
             printer.add(row)
 
             # When we have a decent amount, print the results.

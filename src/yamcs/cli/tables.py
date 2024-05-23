@@ -2,6 +2,7 @@ import gzip
 import os
 import sys
 import time
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -113,7 +114,7 @@ class TablesCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
-        rows = [["NAME"]]
+        rows: List[List[Any]] = [["NAME"]]
         for table in archive.list_tables():
             rows.append([table.name])
         utils.print_table(rows)

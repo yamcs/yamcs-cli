@@ -1,6 +1,9 @@
+from typing import Any, List
+
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import InstanceCompleter
-from yamcs.client import YamcsClient
 
 
 class InstancesCommand(utils.Command):
@@ -37,7 +40,7 @@ class InstancesCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
 
-        rows = [["NAME", "STATE", "MISSION TIME"]]
+        rows: List[List[Any]] = [["NAME", "STATE", "MISSION TIME"]]
         for instance in client.list_instances():
             rows.append(
                 [

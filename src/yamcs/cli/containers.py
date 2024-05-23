@@ -1,6 +1,9 @@
+from typing import Any, List
+
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import ContainerCompleter
-from yamcs.client import YamcsClient
 
 
 class ContainersCommand(utils.Command):
@@ -26,7 +29,7 @@ class ContainersCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
 
-        rows = [["NAME", "DESCRIPTION"]]
+        rows: List[List[Any]] = [["NAME", "DESCRIPTION"]]
         for container in mdb.list_containers():
             rows.append(
                 [

@@ -1,6 +1,9 @@
+from typing import Any, List
+
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import ServiceCompleter
-from yamcs.client import YamcsClient
 
 
 class ServicesCommand(utils.Command):
@@ -37,7 +40,7 @@ class ServicesCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
 
-        rows = [["NAME", "CLASS", "STATUS"]]
+        rows: List[List[Any]] = [["NAME", "CLASS", "STATUS"]]
         for service in client.list_services(opts.require_instance()):
             rows.append(
                 [

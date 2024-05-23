@@ -1,3 +1,5 @@
+from typing import Any, List
+
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
@@ -28,7 +30,7 @@ class ProcessorsCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
 
-        rows = [
+        rows: List[List[Any]] = [
             [
                 "NAME",
                 "TYPE",

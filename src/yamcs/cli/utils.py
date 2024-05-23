@@ -4,6 +4,7 @@ import os
 import sys
 from configparser import ConfigParser
 from datetime import datetime, timedelta, timezone
+from typing import Any, List
 
 import pkg_resources
 from dateutil import parser
@@ -79,7 +80,7 @@ def clear_credentials():
     return False
 
 
-def print_table(rows, decorate=False, header=False):
+def print_table(rows: List[List[Any]], decorate=False, header=False):
     if not rows:
         return
 

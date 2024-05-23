@@ -1,6 +1,9 @@
+from typing import Any, List
+
+from yamcs.client import YamcsClient
+
 from yamcs.cli import utils
 from yamcs.cli.completers import AlgorithmCompleter
-from yamcs.client import YamcsClient
 
 
 class AlgorithmsCommand(utils.Command):
@@ -26,7 +29,7 @@ class AlgorithmsCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
 
-        rows = [["NAME", "DESCRIPTION"]]
+        rows: List[List[Any]] = [["NAME", "DESCRIPTION"]]
         for algorithm in mdb.list_algorithms():
             rows.append(
                 [

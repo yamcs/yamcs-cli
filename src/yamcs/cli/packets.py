@@ -1,6 +1,7 @@
 import binascii
 import sys
 from itertools import islice
+from typing import Any, List
 
 from yamcs.client import YamcsClient
 
@@ -102,7 +103,7 @@ class PacketsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows = [["NAME", "TIME", "DATA"]]
+        rows: List[List[Any]] = [["NAME", "TIME", "DATA"]]
         for packet in iterator:
             row = [
                 packet.name,
