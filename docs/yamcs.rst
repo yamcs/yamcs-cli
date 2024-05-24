@@ -64,6 +64,8 @@ Commands
     Manipulate the Parameter Archive. See :manpage:`yamcs-parameter-archive(1)`.
 :doc:`processors <yamcs_processors>`
     Manage processors. See :manpage:`yamcs-processors(1)`.
+:doc:`rocksdb <yamcs_rocksdb>`
+    Manage RocksDB storage engine. See :manpage:`yamcs-rocksdb(1)`.
 :doc:`services <yamcs_services>`
     Read and manipulate services. See :manpage:`yamcs-services(1)`.
 :doc:`space-systems <yamcs_space-systems>`

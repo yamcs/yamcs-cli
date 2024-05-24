@@ -39,6 +39,7 @@ Run :doc:`yamcs_login` to initialize your environment:
     yamcs_parameter-archive
     yamcs_parameters
     yamcs_processors
+    yamcs_rocksdb
     yamcs_services
     yamcs_space-systems
     yamcs_storage

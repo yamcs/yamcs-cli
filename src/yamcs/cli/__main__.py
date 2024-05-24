@@ -24,6 +24,7 @@ from yamcs.cli.packets import PacketsCommand
 from yamcs.cli.parameter_archive import ParameterArchiveCommand
 from yamcs.cli.parameters import ParametersCommand
 from yamcs.cli.processors import ProcessorsCommand
+from yamcs.cli.rocksdb import RocksDBCommand
 from yamcs.cli.services import ServicesCommand
 from yamcs.cli.space_systems import SpaceSystemsCommand
 from yamcs.cli.storage import StorageCommand
@@ -86,6 +87,7 @@ def main():
     ParameterArchiveCommand(subparsers)
     ParametersCommand(subparsers)
     ProcessorsCommand(subparsers)
+    RocksDBCommand(subparsers)
     ServicesCommand(subparsers)
     SpaceSystemsCommand(subparsers)
     StorageCommand(subparsers)

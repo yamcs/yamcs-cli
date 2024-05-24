@@ -204,6 +204,13 @@ man_pages = [
         1,
     ),
     (
+        "yamcs_rocksdb",
+        "yamcs-rocksdb",
+        "Manage RocksDB storage engine",
+        author,
+        1,
+    ),
+    (
         "yamcs_services",
         "yamcs-services",
         "Read and manipulate services",
