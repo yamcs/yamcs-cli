@@ -1,6 +1,6 @@
 import argparse
-import logging
 import sys
+import traceback
 
 import argcomplete
 import pkg_resources
@@ -115,12 +115,12 @@ def main():
         sys.exit(1)
     except Unauthorized:
         if args.debug:
-            eprint(logging.traceback.format_exc())
+            eprint(traceback.format_exc())
         eprint("Unauthorized. Run: 'yamcs login' to login to Yamcs")
         sys.exit(1)
     except Exception as e:
         if args.debug:
-            eprint(logging.traceback.format_exc())
+            eprint(traceback.format_exc())
         else:
             eprint(e)
         sys.exit(1)
