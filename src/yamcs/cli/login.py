@@ -2,8 +2,7 @@ import os
 from getpass import getpass
 from typing import Optional
 
-from yamcs.client import YamcsClient
-from yamcs.core import auth
+from yamcs.client import Credentials, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.utils import eprint
@@ -112,7 +111,7 @@ class LoginCommand(utils.Command):
             eprint("*** Password may not be empty")
             return False
 
-        return auth.Credentials(username=username, password=password)
+        return Credentials(username=username, password=password)
 
     def save_client_config(
         self,

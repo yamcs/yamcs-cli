@@ -4,8 +4,7 @@ import sys
 import tempfile
 from typing import Any, List
 
-from yamcs.client import YamcsClient
-from yamcs.core.helpers import to_isostring
+from yamcs.client import YamcsClient, to_isostring
 
 from yamcs.cli import utils
 from yamcs.cli.completers import BucketCompleter, BucketOrObjectCompleter

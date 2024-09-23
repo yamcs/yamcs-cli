@@ -8,8 +8,7 @@ from typing import Any, List
 
 import pkg_resources
 from dateutil import parser
-from yamcs.core import auth
-from yamcs.core.helpers import parse_server_timestring, to_isostring
+from yamcs.client import Credentials, parse_server_timestring, to_isostring
 
 from yamcs.cli.exceptions import NoInstanceError, NoServerError
 
@@ -65,7 +64,7 @@ def read_credentials():
             access_token = d["access_token"]
             refresh_token = d["refresh_token"]
             expiry = parse_server_timestring(d["expiry"]) if "expiry" in d else None
-            return auth.Credentials(
+            return Credentials(
                 access_token=access_token,
                 refresh_token=refresh_token,
                 expiry=expiry,

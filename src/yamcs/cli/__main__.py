@@ -4,7 +4,7 @@ import traceback
 
 import argcomplete
 import pkg_resources
-from yamcs.core.exceptions import Unauthorized
+from yamcs.client import Unauthorized
 
 from yamcs.cli import utils
 from yamcs.cli.alarms import AlarmsCommand

@@ -10,8 +10,7 @@ from pydoc import pager
 from typing import Any, List
 
 from google.protobuf import json_format
-from yamcs.client import YamcsClient
-from yamcs.core.exceptions import YamcsError
+from yamcs.client import YamcsClient, YamcsError
 from yamcs.protobuf.events import events_pb2
 
 from yamcs.cli import utils
