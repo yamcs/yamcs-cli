@@ -1,4 +1,0 @@
-argcomplete
-python-dateutil
-yamcs-client
-yamcs-client-kerberos
