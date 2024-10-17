@@ -38,20 +38,18 @@ def save_config(config):
         config.write(f)
 
 
-def save_credentials(credentials):
+def save_credentials(credentials: Credentials):
     if not os.path.exists(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
 
     with open(CREDENTIALS_FILE, "wt") as f:
-        json.dump(
-            {
-                "access_token": credentials.access_token,
-                "refresh_token": credentials.refresh_token,
-                "expiry": to_isostring(credentials.expiry),
-            },
-            f,
-            indent=2,
-        )
+        obj = {
+            "access_token": credentials.access_token,
+            "refresh_token": credentials.refresh_token,
+        }
+        if credentials.expiry:
+            obj["expiry"] = to_isostring(credentials.expiry)
+        json.dump(obj, f, indent=2)
 
 
 def read_credentials():
