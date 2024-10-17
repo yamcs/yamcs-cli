@@ -19,7 +19,7 @@ except KeyError:
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
-    "sphinxcontrib.fulltoc",
+    "sphinxcontrib.yamcs",
 ]
 
 # Force-disable conversion of -- to en-dash
