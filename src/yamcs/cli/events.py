@@ -69,6 +69,12 @@ class EventsCommand(utils.Command):
             type=str,
             help="Include events not newer than the specified date",
         )
+        subparser.add_argument(
+            "--filter",
+            metavar="EXPRESSION",
+            type=str,
+            help="Apply a filter expression to each event",
+        )
         subparser.set_defaults(func=self.log)
 
     def create(self, args):
@@ -135,6 +141,7 @@ class EventsCommand(utils.Command):
         most_recent_only = start is None and stop is None and args.lines != "all"
 
         iterator = archive.list_events(
+            filter=args.filter,
             descending=most_recent_only,
             start=start,
             stop=stop,

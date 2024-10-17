@@ -47,7 +47,7 @@ Commands
 :doc:`dbshell <yamcs_dbshell>`
     Launch Yamcs DB Shell. See :manpage:`yamcs-dbshell(1)`.
 :doc:`events <yamcs_events>`
-    Create events. See :manpage:`yamcs-events(1)`.
+    Read and create events. See :manpage:`yamcs-events(1)`.
 :doc:`instances <yamcs_instances>`
     Read Yamcs instances. See :manpage:`yamcs-instances(1)`.
 :doc:`links <yamcs_links>`

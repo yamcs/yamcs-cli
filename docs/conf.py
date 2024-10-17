@@ -143,7 +143,7 @@ man_pages = [
     (
         "yamcs_events",
         "yamcs-events",
-        "Create events",
+        "Read and create events",
         author,
         1,
     ),

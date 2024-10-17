@@ -13,6 +13,7 @@ Synopsis
     |   [--type <*TYPE*>] [--extra <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
     | **yamcs events** log [-n <*LINES*>, --lines <*LINES*>]
     |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [--filter <*EXPRESSION*>]
 
 Description
 -----------
@@ -27,7 +28,7 @@ Commands
 
     Create an event. This command shows an editor where you can enter the event message. Alternatively you can specify the message using the ``--message`` option.
 
-.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] [--filter <EXPRESSION>]
 
     Read event log
 
@@ -85,6 +86,10 @@ Options
     With ``log``, include events not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: --filter <EXPRESSION>
+
+    With ``log``, include events that match the filter expression.
 
 
 Timestamps
