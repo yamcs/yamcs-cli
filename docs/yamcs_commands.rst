@@ -10,8 +10,8 @@ Synopsis
 
     | **yamcs commands** list
     | **yamcs commands** describe <*COMMAND*>
-    | **yamcs commands** run [--processor <*PROCESSOR*>] [--dry-run]
-    |   [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
+    | **yamcs commands** run [--stream <*STREAM*>] [--processor <*PROCESSOR*>]
+    |   [--dry-run] [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
     |   [--arg <*KEY=VALUE*> [<*KEY=VALUE*> ...]]
     |   <*COMMAND*>
     | **yamcs commands** log [-n <*LINES*>, --lines <*LINES*>]
@@ -45,6 +45,12 @@ Commands
 
 Options
 -------
+
+.. option:: --stream <STREAM>
+
+    With ``run``, specifies the name of the target stream.
+
+    Default behaviour is for Yamcs to automatically select a stream.
 
 .. option:: --processor <PROCESSOR>
 

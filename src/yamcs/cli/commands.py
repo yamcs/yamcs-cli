@@ -4,7 +4,7 @@ from typing import Any, List
 from yamcs.client import YamcsClient
 
 from yamcs.cli import utils
-from yamcs.cli.completers import CommandCompleter, ProcessorCompleter
+from yamcs.cli.completers import CommandCompleter, ProcessorCompleter, StreamCompleter
 
 
 class CommandsCommand(utils.Command):
@@ -26,7 +26,7 @@ class CommandsCommand(utils.Command):
         subparser = self.create_subparser(subparsers, "run", "Run a command")
         subparser.set_defaults(func=self.run)
         subparser.add_argument(
-            "command", metavar="NAME", type=str, help="name of the command"
+            "command", metavar="NAME", type=str, help="Name of the command"
         ).completer = CommandCompleter
         subparser.add_argument("--arg-file", help="Read arguments from a file")
         subparser.add_argument(
@@ -37,7 +37,10 @@ class CommandsCommand(utils.Command):
             help="Set arguments",
         )
         subparser.add_argument(
-            "--processor", type=str, help="name of the processor", default="realtime"
+            "--stream", type=str, help="Name of the stream"
+        ).completer = StreamCompleter
+        subparser.add_argument(
+            "--processor", type=str, help="Name of the processor", default="realtime"
         ).completer = ProcessorCompleter
         subparser.add_argument(
             "--sequence-number",
@@ -131,6 +134,7 @@ class CommandsCommand(utils.Command):
             args=command_args,
             dry_run=args.dry_run,
             comment=args.comment,
+            stream=args.stream,
             **kwargs,
         )
         print(command.id)
