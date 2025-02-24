@@ -36,7 +36,7 @@ class ParameterArchiveCommand(utils.Command):
         )
         subparser.set_defaults(func=self.purge)
         subparser = self.create_subparser(
-            subparsers, "backfilling", "Enable/disable the parameter archive automatic backfilling."
+            subparsers, "backfilling", "Manage Parameter Archive backfilling"
         )
         subparser.add_argument(
             "action",
@@ -69,20 +69,20 @@ class ParameterArchiveCommand(utils.Command):
         sys.stderr.write("done\n")
         sys.stderr.flush()
 
-    def backfilling(self, args):        
+    def backfilling(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
         if args.action.lower() == "enable":
-            sys.stderr.write("Enabling the automatic backfilling... ")
+            sys.stderr.write("Enabling automatic backfilling... ")
             sys.stderr.flush()
             archive.enable_parameter_archive_backfilling()
             sys.stderr.write("done\n")
             sys.stderr.flush()
         elif args.action.lower() == "disable":
-            sys.stderr.write("Disabling the automatic backfilling... ")
+            sys.stderr.write("Disabling automatic backfilling... ")
             sys.stderr.flush()
             archive.disable_parameter_archive_backfilling()
             sys.stderr.write("done\n")
-            sys.stderr.flush()        
+            sys.stderr.flush()

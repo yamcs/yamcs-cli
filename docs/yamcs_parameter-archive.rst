@@ -10,12 +10,14 @@ Synopsis
 
     | **yamcs parameter-archive** rebuild <*START*> <*STOP*>
     | **yamcs parameter-archive** purge
+    | **yamcs parameter-archive** backfilling enable
+    | **yamcs parameter-archive** backfilling disable
 
 
 Description
 -----------
 
-Manipulate the Parameter Archive.
+Manage the Parameter Archive.
 
 
 Commands
@@ -33,6 +35,12 @@ Commands
 .. describe:: purge
 
     Remove all data from the Parameter Archive
+
+
+.. describe:: backfilling
+
+   Enable or disable backfilling in the Parameter Archive
+
 
 Options
 -------
