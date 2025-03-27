@@ -8,7 +8,8 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs parameter-archive** rebuild <*START*> <*STOP*>
+    | **yamcs parameter-archive** rebuild [-s <*DATE*>, --since <*DATE*>]
+    |   [-u <*DATE*>, --until <*DATE*>]
     | **yamcs parameter-archive** purge
     | **yamcs parameter-archive** backfilling enable
     | **yamcs parameter-archive** backfilling disable
@@ -27,7 +28,7 @@ Commands
 
     Rebuild the Parameter Archive.
 
-    This operation must be constrained by using the ``START`` and ``STOP`` options. These values are only hints to the Parameter Archive, which will extend the requested range based on archive segmentation.
+    This operation may be constrained by using the ``--since`` and ``--until`` options. These values are only hints to the Parameter Archive, which will extend the requested range based on archive segmentation.
 
     Rebuild run as an asynchronous operation: this command will not await the outcome.
 
@@ -45,11 +46,11 @@ Commands
 Options
 -------
 
-.. option:: <START>
+.. option:: -s <DATE>, --since <DATE>
 
     With ``rebuild``, date specification in ISO format or as detailed under `Timestamps`_.
 
-.. option:: <STOP>
+.. option:: -u <DATE>, --until <DATE>
 
     With ``rebuild``, date specification in ISO format or as detailed under `Timestamps`_.
 

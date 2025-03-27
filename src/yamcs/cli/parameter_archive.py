@@ -1,3 +1,4 @@
+import argparse
 import sys
 
 from yamcs.client import YamcsClient
@@ -23,13 +24,27 @@ class ParameterArchiveCommand(utils.Command):
             "start",
             metavar="START",
             type=str,
-            help="Start time",
+            help=argparse.SUPPRESS,  # Deprecated
+            nargs="?",
         )
         subparser.add_argument(
             "stop",
             metavar="STOP",
             type=str,
-            help="Stop time",
+            help=argparse.SUPPRESS,  # Deprecated
+            nargs="?",
+        )
+        subparser.add_argument(
+            "-s",
+            "--since",
+            type=str,
+            help="Ignore data before the specified date",
+        )
+        subparser.add_argument(
+            "-u",
+            "--until",
+            type=str,
+            help="Ignore data after the specified date",
         )
         subparser = self.create_subparser(
             subparsers, "purge", "Remove all data from the Parameter Archive"
@@ -52,8 +67,25 @@ class ParameterArchiveCommand(utils.Command):
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
 
-        start = utils.parse_timestamp(args.start)
-        stop = utils.parse_timestamp(args.stop)
+        start = None
+        if args.start:
+            eprint(
+                "*** WARNING: deprecated use of positional 'START' argument. "
+                "Use --since START instead."
+            )
+            start = utils.parse_timestamp(args.start)
+        elif args.since:
+            start = utils.parse_timestamp(args.since)
+
+        stop = None
+        if args.stop:
+            eprint(
+                "*** WARNING: deprecated use of positional 'STOP' argument. "
+                "Use --until STOP instead."
+            )
+            stop = utils.parse_timestamp(args.stop)
+        elif args.until:
+            stop = utils.parse_timestamp(args.until)
 
         archive.rebuild_parameter_archive(start=start, stop=stop)
         eprint("Task submitted. It will finish asynchronously.")
