@@ -185,11 +185,12 @@ class TablesCommand(utils.Command):
             if args.dir:
                 path = os.path.join(args.dir, path)
             if args.gzip:
-                with gzip.open(path, "rb") as f:
-                    self.read_dump(f, archive, table, path)
+                with open(path, "rb") as f:
+                    with gzip.open(f, "rb") as uncompressed_f:
+                        self.read_dump(f, uncompressed_f, archive, table, path)
             else:
                 with open(path, "rb") as f:
-                    self.read_dump(f, archive, table, path)
+                    self.read_dump(f, f, archive, table, path)
 
     def rebuild_histogram(self, args):
         opts = utils.CommandOptions(args)
@@ -208,7 +209,8 @@ class TablesCommand(utils.Command):
             sys.stdout.write("done\n")
             sys.stdout.flush()
 
-    def read_dump(self, f, archive, table, path):
+    def read_dump(self, f, uncompressed_f, archive, table, path):
+        f_progress = 0
         txsize = 0
         t0 = time.time()
         t = t0
@@ -217,26 +219,30 @@ class TablesCommand(utils.Command):
         fsize = os.path.getsize(path)
 
         def report_load_stats(elapsed):
-            nonlocal path, fsize, txsize
+            nonlocal path, fsize, txsize, f_progress
             rate = (txsize / 1024 / 1024) / elapsed
             sys.stdout.write(
-                "\r{}: {:.2f} MB (tx: {:.2f} MB at {:.2f} MB/s)".format(
-                    path, fsize / 1024 / 1024, txsize / 1024 / 1024, rate
+                "\r{}: {:.2f}% (tx: {:.2f} MB at {:.2f} MB/s)".format(
+                    path,
+                    100 * (f_progress / fsize),
+                    txsize / 1024 / 1024,
+                    rate,
                 )
             )
             sys.stdout.flush()
 
         def read_in_chunks():
-            nonlocal f, txsize, t0, t, prev_t
-            chunk = f.read(chunk_size)
+            nonlocal f, uncompressed_f, f_progress, txsize, t0, t, prev_t
+            chunk = uncompressed_f.read(chunk_size)
             while chunk:
                 yield chunk
+                f_progress = f.tell()
                 txsize += len(chunk)
                 t = time.time()
                 if not prev_t or (t - prev_t > 0.5):  # Limit console writes
                     report_load_stats(t - t0)
                     prev_t = t
-                chunk = f.read(chunk_size)
+                chunk = uncompressed_f.read(chunk_size)
             if txsize > 0:
                 report_load_stats(t - t0)
                 sys.stdout.write("\n")
