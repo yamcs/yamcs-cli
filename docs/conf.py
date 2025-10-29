@@ -11,10 +11,9 @@ version = ""
 try:
     release = os.environ["DOC_VERSION"]
 except KeyError:
-    import pkg_resources
+    from importlib.metadata import version as get_pkg_version
 
-    dist = pkg_resources.get_distribution("yamcs-cli")
-    release = dist.version
+    release = get_pkg_version("yamcs-cli")
 
 extensions = [
     "sphinx.ext.autodoc",

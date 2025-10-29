@@ -1,9 +1,9 @@
 import argparse
 import sys
 import traceback
+from importlib.metadata import entry_points
 
 import argcomplete
-import pkg_resources
 from yamcs.client import Unauthorized
 
 from yamcs.cli import utils
@@ -95,8 +95,8 @@ def main():
     TablesCommand(subparsers)
 
     # Discover subcommand plugins
-    for entry in pkg_resources.iter_entry_points(group="yamcs.cli.subcommands"):
-        subcommand_cls = entry.load(subparsers)
+    for entry in entry_points(group="yamcs.cli.subcommands"):
+        subcommand_cls = entry.load()
         subcommand_cls(subparsers)
 
     # Provide bash autocompletion

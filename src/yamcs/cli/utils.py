@@ -4,9 +4,9 @@ import os
 import sys
 from configparser import ConfigParser
 from datetime import datetime, timedelta, timezone
+from importlib.metadata import version
 from typing import Any, List
 
-import pkg_resources
 from dateutil import parser
 from yamcs.client import Credentials, parse_server_timestring, to_isostring
 
@@ -19,8 +19,7 @@ CREDENTIALS_FILE = os.path.join(CONFIG_DIR, "credentials")
 
 
 def get_user_agent():
-    dist = pkg_resources.get_distribution("yamcs-cli")
-    return "Yamcs CLI v" + dist.version
+    return "Yamcs CLI v" + version("yamcs-cli")
 
 
 def read_config():
