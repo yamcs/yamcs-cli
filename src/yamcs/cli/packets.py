@@ -41,6 +41,12 @@ class PacketsCommand(utils.Command):
             type=str,
             help="Include packets not newer than the specified date",
         )
+        subparser.add_argument(
+            "--filter",
+            metavar="EXPRESSION",
+            type=str,
+            help="Apply a filter expression to each packet",
+        )
         subparser.set_defaults(func=self.log)
 
         subparser = self.create_subparser(
@@ -93,6 +99,7 @@ class PacketsCommand(utils.Command):
 
         iterator = archive.list_packets(
             name=args.packet,
+            filter=args.filter,
             descending=most_recent_only,
             start=start,
             stop=stop,
