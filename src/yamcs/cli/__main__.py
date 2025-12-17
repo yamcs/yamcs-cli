@@ -95,7 +95,11 @@ def main():
     TablesCommand(subparsers)
 
     # Discover subcommand plugins
-    for entry in entry_points(group="yamcs.cli.subcommands"):
+    try:
+        eps = entry_points(group="yamcs.cli.subcommands")
+    except TypeError:  # < Python 3.10
+        eps = entry_points().get("yamcs.cli.subcommands", [])
+    for entry in eps:
         subcommand_cls = entry.load()
         subcommand_cls(subparsers)
 
