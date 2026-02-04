@@ -50,7 +50,7 @@ class ParametersCommand(utils.Command):
             "--processor", type=str, help="name of the processor", default="realtime"
         ).completer = ProcessorCompleter
         subparser.add_argument(
-            "--date", metavar="DATE", type=str, help="Override the event time"
+            "--date", metavar="DATE", type=str, help="Set an explicit generation time"
         )
         subparser.add_argument(
             "parameter", metavar="PARAMETER", type=str, help="name of the parameter"

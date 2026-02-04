@@ -20,7 +20,7 @@ class EventsCommand(utils.Command):
             "-m", "--message", metavar="MESSAGE", type=str, help="event message"
         )
         subparser.add_argument(
-            "--date", metavar="DATE", type=str, help="Override the event time"
+            "--date", metavar="DATE", type=str, help="Set an explicit event time"
         )
         subparser.add_argument(
             "--sequence-number",

@@ -1,10 +1,37 @@
+import binascii
 from itertools import islice
 from typing import Any, List
 
-from yamcs.client import YamcsClient
+from yamcs.client import EventAlarm, ParameterAlarm, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import ProcessorCompleter
+
+
+def format_parameter_trip_value(alarm: ParameterAlarm):
+    # Complicated condition to workaround a seen use case
+    # where the alarm table contains no trigger value
+    # (which should really not occur)
+    if alarm._proto.parameterDetail.HasField("triggerValue"):
+        val = alarm.trigger_value.eng_value
+        if isinstance(val, bool):
+            return str(val).lower()
+        elif isinstance(val, (bytes, bytearray)):
+            return str(binascii.hexlify(val), "ascii")
+        else:
+            return str(alarm.trigger_value.eng_value)
+    else:
+        return None
+
+
+def format_event_trip_value(alarm: EventAlarm):
+    # Complicated condition to workaround a seen use case
+    # where the alarm table contains no trigger value
+    # (which should really not occur)
+    if alarm._proto.eventDetail.HasField("triggerEvent"):
+        return alarm.trigger_event.message
+    else:
+        return None
 
 
 class AlarmsCommand(utils.Command):
@@ -114,15 +141,43 @@ class AlarmsCommand(utils.Command):
         instance = opts.require_instance()
         processor = client.get_processor(instance, args.processor)
 
-        rows: List[List[Any]] = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
-        for alarm in processor.list_alarms():
-            row = [
-                alarm.trigger_time,
-                alarm.name,
-                alarm.sequence_number,
-                alarm.severity,
+        rows: List[List[Any]] = [
+            [
+                "TIME",
+                "TYPE",
+                "SUBJECT",
+                "SEQNO",
+                "SEVERITY",
+                "TRIP VALUE",
+                "SAMPLE COUNT",
+                "VIOLATION COUNT",
             ]
-            rows.append(row)
+        ]
+        for alarm in processor.list_alarms():
+            if isinstance(alarm, ParameterAlarm):
+                row = [
+                    alarm.trigger_time,
+                    "PARAMETER",
+                    alarm.name,
+                    alarm.sequence_number,
+                    alarm.severity,
+                    format_parameter_trip_value(alarm),
+                    alarm.count,
+                    alarm.violation_count,
+                ]
+                rows.append(row)
+            elif isinstance(alarm, EventAlarm):
+                row = [
+                    alarm.trigger_time,
+                    "EVENT",
+                    alarm.name,
+                    alarm.sequence_number,
+                    alarm.severity,
+                    format_event_trip_value(alarm),
+                    alarm.count,
+                    alarm.violation_count,
+                ]
+                rows.append(row)
         utils.print_table(rows)
 
     def log(self, args):
@@ -151,15 +206,51 @@ class AlarmsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows: List[List[Any]] = [["TIME", "NAME", "SEQNO", "SEVERITY"]]
-        for alarm in iterator:
-            row = [
-                alarm.trigger_time,
-                alarm.name,
-                alarm.sequence_number,
-                alarm.severity,
+        rows: List[List[Any]] = [
+            [
+                "TIME",
+                "TYPE",
+                "SUBJECT",
+                "SEQNO",
+                "SEVERITY",
+                "TRIP VALUE",
+                "SAMPLE COUNT",
+                "VIOLATION COUNT",
             ]
-            rows.append(row)
+        ]
+        for alarm in iterator:
+
+            # Avoid defaulting to WATCH severity if severity is not set.
+            # It 'should' always be set, however it has been seen missing
+            # for unknown reason.
+            severity = alarm.severity if alarm._proto.HasField("severity") else None
+
+            if isinstance(alarm, ParameterAlarm):
+                trip_value = format_parameter_trip_value(alarm)
+                row = [
+                    alarm.trigger_time,
+                    "PARAMETER",
+                    alarm.name,
+                    alarm.sequence_number,
+                    "-" if severity is None else severity,
+                    "-" if trip_value is None else trip_value,
+                    alarm.count,
+                    alarm.violation_count,
+                ]
+                rows.append(row)
+            elif isinstance(alarm, EventAlarm):
+                trip_value = format_event_trip_value(alarm)
+                row = [
+                    alarm.trigger_time,
+                    "EVENT",
+                    alarm.name,
+                    alarm.sequence_number,
+                    "-" if severity is None else severity,
+                    "-" if trip_value is None else trip_value,
+                    alarm.count,
+                    alarm.violation_count,
+                ]
+                rows.append(row)
         utils.print_table(rows)
 
     def acknowledge(self, args):
