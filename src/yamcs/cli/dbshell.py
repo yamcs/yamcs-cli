@@ -44,9 +44,11 @@ class DbShellOptions:
         self.column_names = not args.skip_column_names
         self.binary_as_hex = not args.batch or args.binary_as_hex
         self.histfile = os.path.join(utils.CONFIG_DIR, "history")
+        self.exit_on_error = False
 
         if args.batch or args.command:
             self.histfile = None
+            self.exit_on_error = True
 
 
 class DbShellCommand(utils.Command):
@@ -250,7 +252,7 @@ class DbShell(cmd.Cmd):
             print()
 
     def emptyline(self):
-        pass  # Override default behaviour of repeating the last command
+        return False  # Override default behaviour of repeating the last command
 
     def do_delimiter(self, args):
         """(\\d) Set statement delimiter."""
@@ -301,8 +303,9 @@ class DbShell(cmd.Cmd):
                     results = archive.execute_sql(statement)
                     self.paginate(results)
         except YamcsError as e:
-            eprint(e)
-            sys.exit(1)
+            eprint("\n".join("*** " + line for line in str(e).splitlines()))
+            if self.opts.exit_on_error:
+                sys.exit(1)
 
     def run_command(self, command):
         if command == "\\":
