@@ -10,8 +10,8 @@ Description
 
     | **yamcs parameters** list
     | **yamcs parameters** describe <*PARAMETER*>
-    | **yamcs parameters** get [--date <*DATE*>] <*PARAMETER*>
-    | **yamcs parameters** set [--next [--timeout <*TIMEOUT*>]] <*PARAMETER*> <*VALUE*>
+    | **yamcs parameters** get [--next [--timeout <*TIMEOUT*>]] <*PARAMETER*>
+    | **yamcs parameters** set [--date <*DATE*>] <*PARAMETER*> <*VALUE*>
     | **yamcs parameters** export-csv [--interval <*INTERVAL*>]
     |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>] <*PARAMETER*>
 
