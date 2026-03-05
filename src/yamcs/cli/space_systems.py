@@ -33,6 +33,13 @@ class SpaceSystemsCommand(utils.Command):
         subparser.add_argument(
             "space_system", metavar="NAME", type=str, help="name of the space system"
         ).completer = SpaceSystemCompleter
+        subparser.add_argument(
+            "--xtce-version",
+            type=str,
+            help="XTCE version",
+            choices=["1.2", "1.3"],
+            default="1.2",
+        )
         subparser.set_defaults(func=self.export)
 
     def list_(self, args):
@@ -61,5 +68,5 @@ class SpaceSystemsCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
-        xtce = mdb.export_space_system(args.space_system)
+        xtce = mdb.export_space_system(args.space_system, version=args.xtce_version)
         print(xtce)

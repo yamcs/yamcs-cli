@@ -10,7 +10,7 @@ Synopsis
 
     | **yamcs space-systems** list
     | **yamcs space-systems** describe <*SPACESYSTEM*>
-    | **yamcs space-systems** export <*SPACESYSTEM*>
+    | **yamcs space-systems** export [--xtce-version <*VERSION*>] <*SPACESYSTEM*>
 
 
 Description
@@ -33,3 +33,13 @@ Commands
 .. describe:: export <SPACESYSTEM>
 
     Export an XTCE representation of a space system
+
+
+Options
+-------
+
+.. option:: --xtce-version <VERSION>
+
+    XTCE version. One of ``1.2`` or ``1.3``.
+
+    Default is ``1.2``
