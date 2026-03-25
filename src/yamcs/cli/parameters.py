@@ -124,12 +124,7 @@ class ParametersCommand(utils.Command):
         )
         if pval and pval.eng_value is not None:
             val = pval.eng_value
-            if isinstance(val, bool):
-                print(str(val).lower())
-            elif isinstance(val, (bytes, bytearray)):
-                print(str(binascii.hexlify(val), "ascii"))
-            else:
-                print(val)
+            print(utils.print_value(val))
 
     def set(self, args):
         opts = utils.CommandOptions(args)

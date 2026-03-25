@@ -1,4 +1,5 @@
 import argparse
+import binascii
 import json
 import os
 import sys
@@ -74,6 +75,15 @@ def clear_credentials():
         os.remove(CREDENTIALS_FILE)
         return True
     return False
+
+
+def print_value(value: Any):
+    if isinstance(value, bool):
+        return str(value).lower()
+    elif isinstance(value, (bytes, bytearray)):
+        return str(binascii.hexlify(value), "ascii")
+    else:
+        return str(value)
 
 
 def print_table(rows: List[List[Any]], decorate=False, header=False):

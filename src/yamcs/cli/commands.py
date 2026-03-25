@@ -1,3 +1,4 @@
+import json
 from itertools import islice
 from typing import Any, List
 
@@ -164,9 +165,17 @@ class CommandsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
-        rows: List[List[Any]] = [["ID", "TIME", "COMMAND", "Q", "R", "S", "COMPLETION"]]
+        rows: List[List[Any]] = [
+            ["ID", "TIME", "COMMAND", "ARGS", "Q", "R", "S", "COMPLETION"]
+        ]
         for command in iterator:
             row = [command.id, command.generation_time, command.name]
+
+            if command.assignments:
+                args = {k: utils.print_value(v) for k, v in command.assignments.items()}
+            else:
+                args = None
+            row.append(json.dumps(args) if args else "")
 
             ack = command.acknowledgments.get("Acknowledge_Queued")
             row.append(ack.status if ack else "")
