@@ -8,7 +8,7 @@ from yamcs.cli import utils
 from yamcs.cli.completers import ProcessorCompleter
 
 
-def format_parameter_trip_value(alarm: ParameterAlarm):
+def format_parameter_trigger_value(alarm: ParameterAlarm):
     # Complicated condition to workaround a seen use case
     # where the alarm table contains no trigger value
     # (which should really not occur)
@@ -24,7 +24,7 @@ def format_parameter_trip_value(alarm: ParameterAlarm):
         return None
 
 
-def format_event_trip_value(alarm: EventAlarm):
+def format_event_trigger_value(alarm: EventAlarm):
     # Complicated condition to workaround a seen use case
     # where the alarm table contains no trigger value
     # (which should really not occur)
@@ -148,7 +148,7 @@ class AlarmsCommand(utils.Command):
                 "SUBJECT",
                 "SEQNO",
                 "SEVERITY",
-                "TRIP VALUE",
+                "TRIGGER VALUE",
                 "SAMPLE COUNT",
                 "VIOLATION COUNT",
             ]
@@ -161,7 +161,7 @@ class AlarmsCommand(utils.Command):
                     alarm.name,
                     alarm.sequence_number,
                     alarm.severity,
-                    format_parameter_trip_value(alarm),
+                    format_parameter_trigger_value(alarm),
                     alarm.count,
                     alarm.violation_count,
                 ]
@@ -173,7 +173,7 @@ class AlarmsCommand(utils.Command):
                     alarm.name,
                     alarm.sequence_number,
                     alarm.severity,
-                    format_event_trip_value(alarm),
+                    format_event_trigger_value(alarm),
                     alarm.count,
                     alarm.violation_count,
                 ]
@@ -213,7 +213,7 @@ class AlarmsCommand(utils.Command):
                 "SUBJECT",
                 "SEQNO",
                 "SEVERITY",
-                "TRIP VALUE",
+                "TRIGGER VALUE",
                 "SAMPLE COUNT",
                 "VIOLATION COUNT",
             ]
@@ -226,27 +226,27 @@ class AlarmsCommand(utils.Command):
             severity = alarm.severity if alarm._proto.HasField("severity") else None
 
             if isinstance(alarm, ParameterAlarm):
-                trip_value = format_parameter_trip_value(alarm)
+                trigger_value = format_parameter_trigger_value(alarm)
                 row = [
                     alarm.trigger_time,
                     "PARAMETER",
                     alarm.name,
                     alarm.sequence_number,
                     "-" if severity is None else severity,
-                    "-" if trip_value is None else trip_value,
+                    "-" if trigger_value is None else trigger_value,
                     alarm.count,
                     alarm.violation_count,
                 ]
                 rows.append(row)
             elif isinstance(alarm, EventAlarm):
-                trip_value = format_event_trip_value(alarm)
+                trigger_value = format_event_trigger_value(alarm)
                 row = [
                     alarm.trigger_time,
                     "EVENT",
                     alarm.name,
                     alarm.sequence_number,
                     "-" if severity is None else severity,
-                    "-" if trip_value is None else trip_value,
+                    "-" if trigger_value is None else trigger_value,
                     alarm.count,
                     alarm.violation_count,
                 ]
