@@ -89,6 +89,14 @@ class ParametersCommand(utils.Command):
             type=float,
             help="Limit values to max one per interval (in seconds)",
         )
+        subparser.add_argument(
+            "--source",
+            dest="source",
+            type=str,
+            help="Where to search for values",
+            choices=["parchive", "replay"],
+            default="parchive",
+        )
         subparser.set_defaults(func=self.export_csv)
 
     def list_(self, args):
@@ -148,6 +156,10 @@ class ParametersCommand(utils.Command):
         instance = opts.require_instance()
         archive = client.get_archive(instance)
 
+        source = args.source
+        if source == "parchive":
+            source = "ParameterArchive"
+
         start = None
         if args.since:
             start = utils.parse_timestamp(args.since)
@@ -161,5 +173,6 @@ class ParametersCommand(utils.Command):
             stop=stop,
             interval=args.interval,
             namespace=args.namespace,
+            source=source,
         ):
             sys.stdout.buffer.write(chunk)
