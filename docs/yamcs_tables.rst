@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs tables** list
+    | **yamcs tables** list [--format <*FORMAT*>]
     | **yamcs tables** describe <*TABLE*>
     | **yamcs tables** dump [-d <*DIR*>, --dir <*DIR*>] [--gzip]
     |   [-q <*QUERY*>, --query <*QUERY*> ] [--query-file <*FILE*>]
@@ -27,7 +27,7 @@ Read and manipulate tables.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List tables
 
@@ -80,6 +80,15 @@ Options
     With ``rebuild-histogram``, include records not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format
 
 
 Timestamps

@@ -1,10 +1,12 @@
 import gzip
+import json
 import os
 import sys
 import time
-from typing import Any, List
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import Table, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import TableCompleter
@@ -20,6 +22,14 @@ class TablesCommand(utils.Command):
         subparsers.required = True
 
         subparser = self.create_subparser(subparsers, "list", "List tables")
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.list_)
 
         subparser = self.create_subparser(subparsers, "describe", "Describe a table")
@@ -113,9 +123,20 @@ class TablesCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
+        iterator = archive.list_tables()
+        if args.format == "json":
+            self.list_json(iterator)
+        else:
+            self.list_table(iterator)
 
+    def list_json(self, iterator: Iterable[Table]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def list_table(self, iterator: Iterable[Table]):
         rows: List[List[Any]] = [["NAME"]]
-        for table in archive.list_tables():
+        for table in iterator:
             rows.append([table.name])
         utils.print_table(rows)
 

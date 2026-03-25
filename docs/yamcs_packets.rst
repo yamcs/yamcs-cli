@@ -11,6 +11,7 @@ Synopsis
     | **yamcs packets** log [-p <*PACKET*>, --packet <*PACKET*>]
     |   [-n <*LINES*>, --lines <*LINES*>] [-s <*DATE*>, --since <*DATE*>]
     |   [-u <*DATE*>, --until <*DATE*>] [--filter <*EXPRESSION*>]
+    |   [--format <*FORMAT*>]
     | **yamcs packets** rebuild-histogram [-s <*DATE*>, --since <*DATE*>]
     |   [-u <*DATE*>, --until <*DATE*>]
     | **yamcs packets** rebuild-ccsds-index [-s <*DATE*>, --since <*DATE*>]
@@ -25,7 +26,7 @@ Read packets.
 Commands
 --------
 
-.. describe:: log [-p <PACKET> --packet <PACKET>] [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] [--filter <EXPRESSION>]
+.. describe:: log [-p <PACKET> --packet <PACKET>] [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] [--filter <EXPRESSION>] [--format <FORMAT>]
 
     Read packet log
 
@@ -68,6 +69,15 @@ Options
 .. option:: --filter <EXPRESSION>
 
     With ``log``, include packets that match the filter expression.
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format
 
 
 Timestamps

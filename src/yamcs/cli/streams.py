@@ -1,6 +1,8 @@
-from typing import Any, List
+import json
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import Stream, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import StreamCompleter
@@ -14,6 +16,14 @@ class StreamsCommand(utils.Command):
         subparsers.required = True
 
         subparser = self.create_subparser(subparsers, "list", "List streams")
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.list_)
 
         subparser = self.create_subparser(subparsers, "describe", "Describe a stream")
@@ -39,9 +49,20 @@ class StreamsCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         archive = client.get_archive(opts.require_instance())
+        iterator = archive.list_streams()
+        if args.format == "json":
+            self.list_json(iterator)
+        else:
+            self.list_table(iterator)
 
+    def list_json(self, iterator: Iterable[Stream]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def list_table(self, iterator: Iterable[Stream]):
         rows: List[List[Any]] = [["NAME"]]
-        for stream in archive.list_streams():
+        for stream in iterator:
             rows.append([stream.name])
         utils.print_table(rows)
 

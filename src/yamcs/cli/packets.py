@@ -1,9 +1,11 @@
 import binascii
+import json
 import sys
 from itertools import islice
-from typing import Any, List
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import Packet, YamcsClient
 
 from yamcs.cli import utils
 
@@ -46,6 +48,14 @@ class PacketsCommand(utils.Command):
             metavar="EXPRESSION",
             type=str,
             help="Apply a filter expression to each packet",
+        )
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
         )
         subparser.set_defaults(func=self.log)
 
@@ -110,6 +120,17 @@ class PacketsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
+        if args.format == "json":
+            self.log_json(iterator)
+        else:
+            self.log_table(iterator)
+
+    def log_json(self, iterator: Iterable[Packet]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def log_table(self, iterator: Iterable[Packet]):
         rows: List[List[Any]] = [["NAME", "TIME", "DATA"]]
         for packet in iterator:
             row = [

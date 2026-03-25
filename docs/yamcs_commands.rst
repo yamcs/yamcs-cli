@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs commands** list
+    | **yamcs commands** list [--format <*FORMAT*>]
     | **yamcs commands** describe <*COMMAND*>
     | **yamcs commands** run [--stream <*STREAM*>] [--processor <*PROCESSOR*>]
     |   [--dry-run] [--sequence-number <*SEQNO*>] [--arg-file <*FILE*>]
@@ -16,6 +16,8 @@ Synopsis
     |   <*COMMAND*>
     | **yamcs commands** log [-n <*LINES*>, --lines <*LINES*>]
     |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [--format <*FORMAT*>]
+
 
 Description
 -----------
@@ -26,7 +28,7 @@ Manage commands.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List commands
 
@@ -38,7 +40,7 @@ Commands
 
     Run a command
 
-.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] [--format <FORMAT>]
 
     Read command log
 
@@ -91,6 +93,15 @@ Options
     With ``log``, include commands not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format
 
 
 Timestamps

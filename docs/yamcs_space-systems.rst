@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs space-systems** list
+    | **yamcs space-systems** list [--format <*FORMAT*>]
     | **yamcs space-systems** describe <*SPACESYSTEM*>
     | **yamcs space-systems** export [--xtce-version <*VERSION*>] <*SPACESYSTEM*>
 
@@ -22,7 +22,7 @@ Read space systems.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List space systems
 
@@ -43,3 +43,12 @@ Options
     XTCE version. One of ``1.2`` or ``1.3``.
 
     Default is ``1.2``
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

@@ -9,6 +9,7 @@ Synopsis
 .. rst-class:: synopsis
 
     | **yamcs alarms** list [--processor <*PROCESSOR*>]
+    |   [--format <*FORMAT*>]
     | **yamcs alarms** acknowledge [--processor <*PROCESSOR*>]
     |    [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** shelve [--processor <*PROCESSOR*>]
@@ -19,6 +20,7 @@ Synopsis
     |   [-c <*COMMENT*>, --comment <*COMMENT*>] <*ALARM*> <*SEQNO*>
     | **yamcs alarms** log [-n <*LINES*>, --lines <*LINES*>]
     |   [-s <*DATE*>, --since <*DATE*>] [-u <*DATE*>, --until <*DATE*>]
+    |   [--format <*FORMAT*>]
 
 
 Description
@@ -30,7 +32,7 @@ Manage alarms.
 Commands
 --------
 
-.. describe:: list [--processor <PROCESSOR>]
+.. describe:: list [--processor <PROCESSOR>] [--format <FORMAT>]
 
     Show active alarms
 
@@ -50,7 +52,7 @@ Commands
 
     Clear an alarm
 
-.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>]
+.. describe:: log [-n <LINES>, --lines <LINES>] [-s <DATE>, --since <DATE>] [-u <DATE>, --until <DATE>] [--format <FORMAT>]
 
     Read alarm log
 
@@ -93,6 +95,15 @@ Options
     With ``log``, include alarms not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format
 
 
 Timestamps

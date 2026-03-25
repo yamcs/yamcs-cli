@@ -1,6 +1,8 @@
-from typing import Any, List
+import json
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import Processor, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import ProcessorCompleter
@@ -14,6 +16,14 @@ class ProcessorsCommand(utils.Command):
         subparsers.required = True
 
         subparser = self.create_subparser(subparsers, "list", "List processors")
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.list_)
 
         subparser = self.create_subparser(subparsers, "delete", "Delete processor")
@@ -29,7 +39,18 @@ class ProcessorsCommand(utils.Command):
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
+        iterator = client.list_processors(opts.require_instance())
+        if args.format == "json":
+            self.list_json(iterator)
+        else:
+            self.list_table(iterator)
 
+    def list_json(self, iterator: Iterable[Processor]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def list_table(self, iterator: Iterable[Processor]):
         rows: List[List[Any]] = [
             [
                 "NAME",
@@ -41,7 +62,7 @@ class ProcessorsCommand(utils.Command):
                 "STATE",
             ]
         ]
-        for processor in client.list_processors(opts.require_instance()):
+        for processor in iterator:
             rows.append(
                 [
                     processor.name,

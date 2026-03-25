@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs processors** list
+    | **yamcs processors** list [--format <*FORMAT*>]
     | **yamcs processors** delete <*PROCESSOR*>
 
 
@@ -21,10 +21,23 @@ Manage processors.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List processors
 
 .. describe:: delete <PROCESSOR>
 
     Delete a processor
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

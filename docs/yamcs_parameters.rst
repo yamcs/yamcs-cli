@@ -8,7 +8,7 @@ Description
 
 .. rst-class:: synopsis
 
-    | **yamcs parameters** list
+    | **yamcs parameters** list [--format <*FORMAT*>]
     | **yamcs parameters** describe <*PARAMETER*>
     | **yamcs parameters** get [--next [--timeout <*TIMEOUT*>]] <*PARAMETER*>
     | **yamcs parameters** set [--date <*DATE*>] <*PARAMETER*> <*VALUE*>
@@ -25,7 +25,7 @@ Manage parameters.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List parameters
 
@@ -86,6 +86,15 @@ Options
     With ``export-csv``, include values not newer than the specified date.
 
     The date should be specified in ISO format or as detailed under `Timestamps`_.
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format
 
 
 Timestamps

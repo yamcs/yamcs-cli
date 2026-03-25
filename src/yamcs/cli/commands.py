@@ -1,8 +1,9 @@
 import json
 from itertools import islice
-from typing import Any, List
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import Command, CommandHistory, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import CommandCompleter, ProcessorCompleter, StreamCompleter
@@ -16,6 +17,14 @@ class CommandsCommand(utils.Command):
         subparsers.required = True
 
         subparser = self.create_subparser(subparsers, "list", "List commands")
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.list_)
 
         subparser = self.create_subparser(subparsers, "describe", "Describe a command")
@@ -76,15 +85,34 @@ class CommandsCommand(utils.Command):
             type=str,
             help="Include commands not newer than the specified date",
         )
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.log)
 
     def list_(self, args):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
+        iterator = mdb.list_commands()
+        if args.format == "json":
+            self.list_json(iterator)
+        else:
+            self.list_table(iterator)
 
+    def list_json(self, iterator: Iterable[Command]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def list_table(self, iterator: Iterable[Command]):
         rows: List[List[Any]] = [["NAME", "DESCRIPTION", "ABSTRACT"]]
-        for command in mdb.list_commands():
+        for command in iterator:
             rows.append(
                 [
                     command.qualified_name,
@@ -165,6 +193,17 @@ class CommandsCommand(utils.Command):
         if most_recent_only:
             iterator = reversed(list(islice(iterator, 0, int(args.lines))))
 
+        if args.format == "json":
+            self.log_json(iterator)
+        else:
+            self.log_table(iterator)
+
+    def log_json(self, iterator: Iterable[CommandHistory]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def log_table(self, iterator: Iterable[CommandHistory]):
         rows: List[List[Any]] = [
             ["ID", "TIME", "COMMAND", "ARGS", "Q", "R", "S", "COMPLETION"]
         ]

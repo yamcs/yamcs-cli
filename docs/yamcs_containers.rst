@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs containers** list
+    | **yamcs containers** list [--format <*FORMAT*>]
     | **yamcs containers** describe <*CONTAINER*>
 
 
@@ -28,3 +28,16 @@ Commands
 .. describe:: describe <CONTAINER>
 
     Describe a container
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

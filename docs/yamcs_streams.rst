@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs streams** list
+    | **yamcs streams** list [--format <*FORMAT*>]
     | **yamcs streams** describe
     | **yamcs streams** subscribe
 
@@ -22,7 +22,7 @@ Read and manipulate streams.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List streams
 
@@ -33,3 +33,16 @@ Commands
 .. describe:: subscribe
 
     Subscribe to a stream
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

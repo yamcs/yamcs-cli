@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs instances** list
+    | **yamcs instances** list [--format <*FORMAT*>]
     | **yamcs instances** start <*INSTANCE*>...
     | **yamcs instances** stop <*INSTANCE*>...
 
@@ -22,7 +22,7 @@ Read Yamcs instances.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List instances
 
@@ -33,3 +33,16 @@ Commands
 .. describe:: stop <INSTANCE>...
 
     Stop an instance
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

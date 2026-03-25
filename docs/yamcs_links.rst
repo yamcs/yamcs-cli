@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs links** list
+    | **yamcs links** list [--format <*FORMAT*>]
     | **yamcs links** enable <*LINK*>...
     | **yamcs links** disable <*LINK*>...
     | **yamcs links** describe <*LINK*>
@@ -24,7 +24,7 @@ Read and manipulate data links.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List links
 
@@ -43,3 +43,16 @@ Commands
 .. describe:: run-action
 
     Run a custom action
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

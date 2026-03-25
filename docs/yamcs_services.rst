@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs services** list
+    | **yamcs services** list [--format <*FORMAT*>]
     | **yamcs services** start <*SERVICE*>...
     | **yamcs services** stop <*SERVICE*>...
 
@@ -22,7 +22,7 @@ Read and manipulate services.
 Commands
 --------
 
-.. describe:: list
+.. describe:: list [--format <FORMAT>]
 
     List services
 
@@ -33,3 +33,16 @@ Commands
 .. describe:: stop <SERVICE>...
 
     Stop a service
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

@@ -8,7 +8,7 @@ Synopsis
 
 .. rst-class:: synopsis
 
-    | **yamcs algorithms** list
+    | **yamcs algorithms** list [--format <*FORMAT*>]
     | **yamcs algorithms** describe <*ALGORITHM*>
 
 
@@ -23,8 +23,21 @@ Commands
 
 .. describe:: list
 
-    List algorithms
+    List algorithms [--format <FORMAT>]
 
 .. describe:: describe <ALGORITHM>
 
     Describe an algorithm
+
+
+Options
+-------
+
+.. option:: --format <FORMAT>
+
+    For subcommands that support it, set the output format to:
+
+    ``table``
+        Print a human-friendly table
+    ``json``
+        Print in JSON format

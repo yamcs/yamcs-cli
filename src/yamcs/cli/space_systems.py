@@ -1,6 +1,8 @@
-from typing import Any, List
+import json
+from typing import Any, Iterable, List
 
-from yamcs.client import YamcsClient
+from google.protobuf.json_format import MessageToJson
+from yamcs.client import SpaceSystem, YamcsClient
 
 from yamcs.cli import utils
 from yamcs.cli.completers import SpaceSystemCompleter
@@ -16,6 +18,14 @@ class SpaceSystemsCommand(utils.Command):
         subparsers.required = True
 
         subparser = self.create_subparser(subparsers, "list", "List space systems")
+        subparser.add_argument(
+            "--format",
+            dest="format",
+            type=str,
+            help="Format for printing",
+            choices=["table", "json"],
+            default="table",
+        )
         subparser.set_defaults(func=self.list_)
 
         subparser = self.create_subparser(
@@ -46,9 +56,20 @@ class SpaceSystemsCommand(utils.Command):
         opts = utils.CommandOptions(args)
         client = YamcsClient(**opts.client_kwargs)
         mdb = client.get_mdb(opts.require_instance())
+        iterator = mdb.list_space_systems()
+        if args.format == "json":
+            self.list_json(iterator)
+        else:
+            self.list_table(iterator)
 
+    def list_json(self, iterator: Iterable[SpaceSystem]):
+        msg_array = [MessageToJson(x._proto, indent=2) for x in iterator]
+        json_array = json.loads("[" + ",".join(msg_array) + "]")
+        print(json.dumps(json_array, indent=2))
+
+    def list_table(self, iterator: Iterable[SpaceSystem]):
         rows: List[List[Any]] = [["NAME", "DESCRIPTION"]]
-        for space_system in mdb.list_space_systems():
+        for space_system in iterator:
             rows.append(
                 [
                     space_system.qualified_name,
