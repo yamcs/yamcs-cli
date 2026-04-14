@@ -153,6 +153,8 @@ class ParametersCommand(utils.Command):
         if pval and pval.eng_value is not None:
             val = pval.eng_value
             print(utils.print_value(val))
+        else:
+            sys.exit(124 if args.next else 1)
 
     def set(self, args):
         opts = utils.CommandOptions(args)
