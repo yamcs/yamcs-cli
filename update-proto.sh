@@ -17,3 +17,17 @@ protoc --proto_path=. --python_out=. *.proto
 
 rm -rf yamcs
 rm *.proto
+
+# Detect OS and set sed command
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS (BSD sed)
+  SED_CMD=(sed -i '')
+else
+  # Linux (GNU sed)
+  SED_CMD=(sed -i)
+fi
+
+# This targets the 'from google.protobuf' string and redirects it to the vendor folder
+find . -name "*_pb2.py" -exec "${SED_CMD[@]}" \
+    -e 's/^from google\.protobuf/from yamcs.protobuf._vendor.google.protobuf/g' \
+    -e 's/^import google\.protobuf/import yamcs.protobuf._vendor.google.protobuf/g' {} +

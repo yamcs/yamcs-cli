@@ -9,7 +9,7 @@ from collections import abc
 from pydoc import pager
 from typing import Any, List
 
-from google.protobuf import json_format
+from yamcs.protobuf._vendor.google.protobuf import json_format
 from yamcs.client import YamcsClient, YamcsError
 from yamcs.protobuf.events import events_pb2
 

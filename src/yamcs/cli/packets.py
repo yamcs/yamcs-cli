@@ -4,7 +4,7 @@ import sys
 from itertools import islice
 from typing import Any, Iterable, List
 
-from google.protobuf.json_format import MessageToJson
+from yamcs.protobuf._vendor.google.protobuf.json_format import MessageToJson
 from yamcs.client import Packet, YamcsClient
 
 from yamcs.cli import utils

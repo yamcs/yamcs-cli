@@ -5,7 +5,7 @@ import sys
 import time
 from typing import Any, Iterable, List
 
-from google.protobuf.json_format import MessageToJson
+from yamcs.protobuf._vendor.google.protobuf.json_format import MessageToJson
 from yamcs.client import Table, YamcsClient
 
 from yamcs.cli import utils
