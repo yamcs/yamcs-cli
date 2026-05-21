@@ -7,7 +7,7 @@ with io.open("README.md", encoding="utf-8") as f:
 
 setuptools.setup(
     name="yamcs-cli",
-    version="1.5.0rc1",
+    version="1.5.0",
     description="Yamcs Command-Line Tools",
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -37,7 +37,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     platforms="Posix; MacOS X; Windows",
-    install_requires=["argcomplete", "python-dateutil", "yamcs-client>=2.0.0rc1"],
+    install_requires=["argcomplete", "python-dateutil", "yamcs-client>=2.0.0"],
     extras_require={"kerberos": ["yamcs-client-kerberos>=1.3.0"]},
     include_package_data=True,
     zip_safe=False,
